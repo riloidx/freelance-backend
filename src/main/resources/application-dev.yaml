@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: freelance-backend
+
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${$POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    show-sql: true
+
+
+jwt:
+  access:
+    key: ${JWT_ACCESS_KEY}
+    expiration-ms: ${JWT_ACCESS_EXPIRATION} # 15 minutes
+  refresh:
+    key: ${JWT_REFRESH_KEY}
+    expiration-ms: ${JWT_REFRESH_EXPIRATION} # 7 days

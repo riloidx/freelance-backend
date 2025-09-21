@@ -1,0 +1,10 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: freelance-backend
+
