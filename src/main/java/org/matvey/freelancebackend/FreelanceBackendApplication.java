@@ -1,4 +1,4 @@
-package org.example.freelancebackend;
+package org.matvey.freelancebackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
