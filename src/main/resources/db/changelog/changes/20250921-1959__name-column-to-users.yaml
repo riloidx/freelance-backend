@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250921-1959-add-name-column-users
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  type: VARCHAR(128)
