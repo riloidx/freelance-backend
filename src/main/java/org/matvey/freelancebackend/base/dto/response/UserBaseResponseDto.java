@@ -3,6 +3,7 @@ package org.matvey.freelancebackend.base.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.matvey.freelancebackend.ads.entity.Ad;
 import org.matvey.freelancebackend.roles.entity.Role;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 @Builder
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserBaseResponseDto {
     private Long id;
     private String username;
