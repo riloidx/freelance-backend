@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import org.matvey.freelancebackend.base.dto.request.UserBaseRequestDto;
 
 @Getter
-public class RegisterDto extends UserBaseRequestDto {
+public class RegistrationDto extends UserBaseRequestDto {
     @NotNull
     @Length(min = 8, max = 20, message = "Password must have length between 8 and 20")
     private String password;

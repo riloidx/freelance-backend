@@ -6,7 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.config.JwtProperties;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class JwtService {
+public class JwtUtil {
     private final JwtProperties jwtProperties;
 
     public String extractUsername(String token, boolean isRefresh) {

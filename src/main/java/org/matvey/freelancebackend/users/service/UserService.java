@@ -3,7 +3,7 @@ package org.matvey.freelancebackend.users.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.matvey.freelancebackend.security.dto.request.RegisterDto;
+import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.security.service.PasswordService;
 import org.matvey.freelancebackend.users.dto.request.UpdateUserDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
@@ -12,7 +12,6 @@ import org.matvey.freelancebackend.users.exception.UserAlreadyExistsException;
 import org.matvey.freelancebackend.users.exception.UserNotFoundException;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.matvey.freelancebackend.users.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,16 +23,14 @@ public class UserService {
 
 
     @Transactional
-    public UserResponseDto create(RegisterDto dto) {
+    public User create(RegistrationDto dto) {
         existsByUsernameOrThrow(dto.getUsername());
         existsByEmailOrThrow(dto.getEmail());
 
         User user = userMapper.toEntity(dto);
         user.setPasswordHash(passwordService.encodePassword(dto.getPassword()));
 
-
-        User saved = userRepo.save(user);
-        return userMapper.toDto(saved);
+        return userRepo.save(user);
     }
 
 
@@ -46,7 +43,6 @@ public class UserService {
         User saved = userRepo.save(user);
         return userMapper.toDto(saved);
     }
-
 
     @Transactional
     public void delete(Long id) {
