@@ -1,11 +1,13 @@
 package org.matvey.freelancebackend.security.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.matvey.freelancebackend.base.dto.response.UserBaseResponseDto;
+import lombok.Data;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 
-@SuperBuilder
-public class AuthResponseDto extends UserBaseResponseDto {
+@Data
+@AllArgsConstructor
+public class AuthResponseDto {
+    UserResponseDto user;
     String accessToken;
+
 }

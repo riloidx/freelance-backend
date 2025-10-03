@@ -33,9 +33,8 @@ public class UserService {
         return userRepo.save(user);
     }
 
-
     @Transactional
-    public UserResponseDto update(Long id, UpdateUserDto dto) {
+    public UserResponseDto update(long id, UpdateUserDto dto) {
         User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         userMapper.updateEntityFromDto(dto, user);
@@ -44,8 +43,17 @@ public class UserService {
         return userMapper.toDto(saved);
     }
 
+    public User findUserByEmail(String email) {
+        return userRepo.findByEmail(email).
+                orElseThrow(() -> new UserNotFoundException(email));
+    }
+
+    public UserResponseDto findUserDtoByEmail(String email) {
+        return userMapper.toDto(findUserByEmail(email));
+    }
+
     @Transactional
-    public void delete(Long id) {
+    public void delete(long id) {
         User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userRepo.delete(user);
     }
