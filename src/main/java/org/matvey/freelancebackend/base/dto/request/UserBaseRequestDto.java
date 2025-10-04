@@ -1,6 +1,5 @@
 package org.matvey.freelancebackend.base.dto.request;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +18,5 @@ public class UserBaseRequestDto {
     @NotNull
     @Length(min = 2, max = 50, message = "Name must have length between 2 and 50")
     private String name;
-
-    @NotNull
-    @Email(message = "Email should be valid")
-    private String email;
 }
 

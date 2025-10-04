@@ -8,7 +8,7 @@ import org.matvey.freelancebackend.ads.entity.Ad;
 import org.matvey.freelancebackend.roles.entity.Role;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -55,6 +55,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new LinkedHashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
 }

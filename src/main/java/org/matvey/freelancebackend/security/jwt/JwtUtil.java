@@ -54,7 +54,7 @@ public class JwtUtil {
         return generateToken(new HashMap<>(), userDetails, true);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, boolean isRefresh) {
+    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, boolean isRefresh) {
         long expiration = isRefresh ? jwtProperties.getRefresh().getExpirationMs()
                 : jwtProperties.getAccess().getExpirationMs();
         Key key = getKey(isRefresh);

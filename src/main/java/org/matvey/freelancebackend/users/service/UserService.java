@@ -35,9 +35,10 @@ public class UserService {
 
     @Transactional
     public UserResponseDto update(long id, UpdateUserDto dto) {
-        User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User user = userRepo.findById(id).
+                orElseThrow(() -> new UserNotFoundException("id", String.valueOf(id)));
 
-        userMapper.updateEntityFromDto(dto, user);
+            userMapper.updateEntityFromDto(dto, user);
 
         User saved = userRepo.save(user);
         return userMapper.toDto(saved);
@@ -45,7 +46,7 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         return userRepo.findByEmail(email).
-                orElseThrow(() -> new UserNotFoundException(email));
+                orElseThrow(() -> new UserNotFoundException("email", email));
     }
 
     public UserResponseDto findUserDtoByEmail(String email) {
@@ -54,7 +55,8 @@ public class UserService {
 
     @Transactional
     public void delete(long id) {
-        User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User user = userRepo.findById(id).
+                orElseThrow(() -> new UserNotFoundException("id", String.valueOf(id)));
         userRepo.delete(user);
     }
 
