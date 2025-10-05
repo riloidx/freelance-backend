@@ -3,7 +3,8 @@ package org.matvey.freelancebackend.users.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.matvey.freelancebackend.ads.entity.Ad;
 import org.matvey.freelancebackend.roles.entity.Role;
 
@@ -37,11 +38,11 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @ColumnDefault("now()")
-    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    @ColumnDefault("now()")
+    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
@@ -49,9 +50,9 @@ public class User {
     @JoinColumn(name = "user_id")
     private List<Ad> ads;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
