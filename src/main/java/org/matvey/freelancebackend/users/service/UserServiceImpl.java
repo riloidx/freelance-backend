@@ -1,10 +1,8 @@
 package org.matvey.freelancebackend.users.service;
 
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
-import org.matvey.freelancebackend.security.service.PasswordService;
 import org.matvey.freelancebackend.users.dto.request.UpdateUserDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
@@ -12,27 +10,30 @@ import org.matvey.freelancebackend.users.exception.UserAlreadyExistsException;
 import org.matvey.freelancebackend.users.exception.UserNotFoundException;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.matvey.freelancebackend.users.repository.UserRepository;
+import org.matvey.freelancebackend.users.service.api.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
-    private final PasswordService passwordService;
+    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-
+    @Override
     @Transactional
     public User create(RegistrationDto dto) {
         existsByUsernameOrThrow(dto.getUsername());
         existsByEmailOrThrow(dto.getEmail());
 
         User user = userMapper.toEntity(dto);
-        user.setPasswordHash(passwordService.encodePassword(dto.getPassword()));
+        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
 
         return userRepo.save(user);
     }
 
+    @Override
     @Transactional
     public UserResponseDto update(long id, UpdateUserDto dto) {
         User user = userRepo.findById(id).
@@ -44,15 +45,18 @@ public class UserService {
         return userMapper.toDto(saved);
     }
 
+    @Override
     public User findUserByEmail(String email) {
         return userRepo.findByEmail(email).
                 orElseThrow(() -> new UserNotFoundException("email", email));
     }
 
+    @Override
     public UserResponseDto findUserDtoByEmail(String email) {
         return userMapper.toDto(findUserByEmail(email));
     }
 
+    @Override
     @Transactional
     public void delete(long id) {
         User user = userRepo.findById(id).
