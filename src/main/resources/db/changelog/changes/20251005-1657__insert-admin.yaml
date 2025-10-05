@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250924-1105-insert-admin-user
+      author: matvey
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: email
+                  value: matveybabashka@gmail.com
+              - column:
+                  name: name
+                  value: matvey
+              - column:
+                  name: password_hash
+                  value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q #admin123
+
+  - changeSet:
+      id: 20250924-1106-insert-admin-role-user
+      author: matvey
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: role_id
+                  value: 1
+
+  - changeSet:
+      id: 20250924-1107-insert-admin-role-admin
+      author: matvey
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: role_id
+                  value: 2

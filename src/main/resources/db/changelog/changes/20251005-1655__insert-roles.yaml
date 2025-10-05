@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250924-1103-insert-role-user
+      author: matvey
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: USER
+
+  - changeSet:
+      id: 20250924-1104-insert-role-admin
+      author: matvey
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: ADMIN

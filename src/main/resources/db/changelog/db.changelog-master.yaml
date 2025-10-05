@@ -3,3 +3,7 @@ databaseChangeLog:
       file: db/changelog/baseline/20250914-1501__init-schema.yaml
   - include:
       file: db/changelog/changes/20250921-1959__name-column-to-users.yaml
+  - include:
+      file: db/changelog/changes/20251005-1655__insert-roles.yaml
+  - include:
+      file: db/changelog/changes/20251005-1657__insert-admin.yaml
