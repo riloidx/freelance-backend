@@ -8,7 +8,8 @@ import org.matvey.freelancebackend.security.jwt.JwtUtil;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
-import org.matvey.freelancebackend.users.service.UserService;
+import org.matvey.freelancebackend.users.service.api.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +18,7 @@ public class AuthService {
     private final UserService userService;
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
-    private final PasswordService passwordService;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthResponseDto register(RegistrationDto registrationDto) {
         User user = userService.create(registrationDto);
@@ -37,8 +38,8 @@ public class AuthService {
     }
 
     private void matchPasswordOrThrow(String hashPassword, String password) {
-        if (!passwordService.matches(password, hashPassword)) {
-            throw new RuntimeException("Неверный пароль или почта");
+        if (!passwordEncoder.matches(password, hashPassword)) {
+            throw new RuntimeException("Invalid login or password");
         }
     }
 }

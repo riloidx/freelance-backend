@@ -6,7 +6,7 @@ import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
-public class RegistrationDto extends LoginDto {
+public class RegistrationDto {
     @NotNull
     @Length(min = 3, max = 20, message = "Username must have length between 3 and 20")
     private String username;
