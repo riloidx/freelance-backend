@@ -10,16 +10,63 @@ import org.matvey.freelancebackend.users.exception.UserAlreadyExistsException;
 import org.matvey.freelancebackend.users.exception.UserNotFoundException;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.matvey.freelancebackend.users.repository.UserRepository;
-import org.matvey.freelancebackend.users.service.api.UserService;
+import org.matvey.freelancebackend.users.service.api.UserCommandService;
+import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserCommandService, UserQueryService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+
+    @Override
+    public List<UserResponseDto> findAllUsersDto() {
+        List<User> users = userRepo.findAll();
+
+        return userMapper.toDto(users);
+    }
+
+    @Override
+    public User findUserById(long id) {
+        return userRepo.findById(id).
+                orElseThrow(() -> new UserNotFoundException("id", String.valueOf(id)));
+    }
+
+    @Override
+    public UserResponseDto findUserDtoById(long id) {
+        User user = findUserById(id);
+
+        return userMapper.toDto(user);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepo.findByEmail(email).
+                orElseThrow(() -> new UserNotFoundException("email", email));
+    }
+
+    @Override
+    public UserResponseDto findUserDtoByEmail(String email) {
+        return userMapper.toDto(findUserByEmail(email));
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return userRepo.findByUsername(username).
+                orElseThrow(() -> new UserNotFoundException("username", username));
+    }
+
+    @Override
+    public UserResponseDto findUserDtoByUsername(String username) {
+        User user = findUserByUsername(username);
+
+        return userMapper.toDto(user);
+    }
 
     @Override
     @Transactional
@@ -36,25 +83,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto update(long id, UpdateUserDto dto) {
-        User user = userRepo.findById(id).
-                orElseThrow(() -> new UserNotFoundException("id", String.valueOf(id)));
+        User user = findUserById(id);
 
-            userMapper.updateEntityFromDto(dto, user);
+        userMapper.updateEntityFromDto(dto, user);
 
         User saved = userRepo.save(user);
         return userMapper.toDto(saved);
     }
 
-    @Override
-    public User findUserByEmail(String email) {
-        return userRepo.findByEmail(email).
-                orElseThrow(() -> new UserNotFoundException("email", email));
-    }
-
-    @Override
-    public UserResponseDto findUserDtoByEmail(String email) {
-        return userMapper.toDto(findUserByEmail(email));
-    }
 
     @Override
     @Transactional

@@ -8,9 +8,13 @@ import org.matvey.freelancebackend.users.dto.request.UpdateUserDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {RoleMapper.class})
 public interface UserMapper {
     UserResponseDto toDto(User user);
+
+    List<UserResponseDto> toDto(List<User> users);
 
     User toEntity(RegistrationDto dto);
 
