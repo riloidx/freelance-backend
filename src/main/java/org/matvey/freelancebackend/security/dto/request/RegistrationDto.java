@@ -2,10 +2,16 @@ package org.matvey.freelancebackend.security.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RegistrationDto {
     @NotNull
     @Length(min = 3, max = 20, message = "Username must have length between 3 and 20")
