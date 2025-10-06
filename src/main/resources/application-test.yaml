@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+
+  liquibase:
+    enabled: true
+
+jwt:
+  access:
+    key: test-access-key
+    expiration-ms: 60000
+  refresh:
+    key: test-refresh-key
+    expiration-ms: 120000
