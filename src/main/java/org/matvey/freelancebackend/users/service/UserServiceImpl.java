@@ -82,8 +82,8 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
 
     @Override
     @Transactional
-    public UserResponseDto update(long id, UpdateUserDto dto) {
-        User user = findUserById(id);
+    public UserResponseDto update(String email, UpdateUserDto dto) {
+        User user = findUserByEmail(email);
 
         userMapper.updateEntityFromDto(dto, user);
 

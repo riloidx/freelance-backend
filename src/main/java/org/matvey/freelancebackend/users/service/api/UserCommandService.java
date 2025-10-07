@@ -9,7 +9,7 @@ public interface UserCommandService {
 
     User create(RegistrationDto dto);
 
-    UserResponseDto update(long id, UpdateUserDto dto);
+    UserResponseDto update(String email, UpdateUserDto dto);
 
     void delete(long id);
 }
