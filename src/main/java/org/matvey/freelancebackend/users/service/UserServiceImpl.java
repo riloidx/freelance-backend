@@ -2,7 +2,10 @@ package org.matvey.freelancebackend.users.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.matvey.freelancebackend.roles.entity.Role;
+import org.matvey.freelancebackend.roles.service.api.RoleQueryService;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
+import org.matvey.freelancebackend.security.exception.UnauthorizedException;
 import org.matvey.freelancebackend.users.dto.request.UpdateUserDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
@@ -23,6 +26,7 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final RoleQueryService roleService;
 
     @Override
     public List<UserResponseDto> findAllUsersDto() {
@@ -74,8 +78,7 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
         existsByUsernameOrThrow(dto.getUsername());
         existsByEmailOrThrow(dto.getEmail());
 
-        User user = userMapper.toEntity(dto);
-        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+        User user = prepareUser(dto);
 
         return userRepo.save(user);
     }
@@ -84,6 +87,7 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
     @Transactional
     public UserResponseDto update(String email, UpdateUserDto dto) {
         User user = findUserByEmail(email);
+        verifyUserById(user.getId(), dto.getId());
 
         userMapper.updateEntityFromDto(dto, user);
 
@@ -91,13 +95,28 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
         return userMapper.toDto(saved);
     }
 
-
     @Override
     @Transactional
     public void delete(long id) {
-        User user = userRepo.findById(id).
-                orElseThrow(() -> new UserNotFoundException("id", String.valueOf(id)));
+        User user = findUserById(id);
+
         userRepo.delete(user);
+    }
+
+    private User prepareUser(RegistrationDto dto) {
+        User user = userMapper.toEntity(dto);
+        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+
+        Role role = roleService.findRoleByName("USER");
+        user.getRoles().add(role);
+
+        return user;
+    }
+
+    private void verifyUserById(long curId, long dtoId) {
+        if (curId != dtoId) {
+            throw new UnauthorizedException("User with id=" +  curId + " can't change data of user with id=" +  dtoId);
+        }
     }
 
     private void existsByUsernameOrThrow(String username) {
