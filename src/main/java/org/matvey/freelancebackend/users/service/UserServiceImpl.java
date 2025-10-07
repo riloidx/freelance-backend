@@ -91,12 +91,11 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
         return userMapper.toDto(saved);
     }
 
-
     @Override
     @Transactional
     public void delete(long id) {
-        User user = userRepo.findById(id).
-                orElseThrow(() -> new UserNotFoundException("id", String.valueOf(id)));
+        User user = findUserById(id);
+
         userRepo.delete(user);
     }
 

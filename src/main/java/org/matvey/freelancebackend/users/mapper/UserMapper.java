@@ -2,6 +2,7 @@ package org.matvey.freelancebackend.users.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 import org.matvey.freelancebackend.roles.mapper.RoleMapper;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.users.dto.request.UpdateUserDto;
@@ -10,7 +11,7 @@ import org.matvey.freelancebackend.users.entity.User;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {RoleMapper.class})
+@Mapper(componentModel = "spring", uses = {RoleMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
     UserResponseDto toDto(User user);
 
