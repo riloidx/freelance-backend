@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.users.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.matvey.freelancebackend.roles.mapper.RoleMapper;
@@ -17,6 +18,7 @@ public interface UserMapper {
 
     List<UserResponseDto> toDto(List<User> users);
 
+    @Mapping(target = "roles", ignore = true)
     User toEntity(RegistrationDto dto);
 
     void updateEntityFromDto(UpdateUserDto dto, @MappingTarget User user);

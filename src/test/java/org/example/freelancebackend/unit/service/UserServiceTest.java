@@ -2,6 +2,8 @@ package org.example.freelancebackend.unit.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.matvey.freelancebackend.roles.entity.Role;
+import org.matvey.freelancebackend.roles.service.api.RoleService;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.users.dto.request.UpdateUserDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
@@ -14,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,6 +36,9 @@ public class UserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private RoleService roleService;
 
 
     @Test
@@ -78,9 +84,13 @@ public class UserServiceTest {
                 .build();
 
         User user = createBasicUser();
+        Role role = new Role();
+        role.setId(1L);
+        role.setName("USER");
 
         when(userMapper.toEntity(dto)).thenReturn(user);
         when(passwordEncoder.encode(dto.getPassword())).thenReturn("test");
+        when(roleService.findRoleByName("USER")).thenReturn(role);
         when(userRepo.save(user)).thenReturn(user);
 
         User result = userService.create(dto);
@@ -94,6 +104,7 @@ public class UserServiceTest {
         User user = createBasicUser();
 
         UpdateUserDto dto = UpdateUserDto.builder()
+                .id(1L)
                 .name("Updated Name")
                 .description("Updated Description")
                 .build();
@@ -144,6 +155,7 @@ public class UserServiceTest {
                 .name("Test")
                 .passwordHash("test")
                 .email("test@test.com")
+                .roles(new HashSet<>())
                 .build();
     }
 }

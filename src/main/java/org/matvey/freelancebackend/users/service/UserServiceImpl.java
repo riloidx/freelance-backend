@@ -3,7 +3,7 @@ package org.matvey.freelancebackend.users.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.roles.entity.Role;
-import org.matvey.freelancebackend.roles.service.api.RoleQueryService;
+import org.matvey.freelancebackend.roles.service.api.RoleService;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.security.exception.UnauthorizedException;
 import org.matvey.freelancebackend.users.dto.request.UpdateUserDto;
@@ -18,6 +18,7 @@ import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    private final RoleQueryService roleService;
+    private final RoleService roleService;
 
     @Override
     public List<UserResponseDto> findAllUsersDto() {
@@ -106,6 +107,10 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
     private User prepareUser(RegistrationDto dto) {
         User user = userMapper.toEntity(dto);
         user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+
+        if (user.getRoles() == null) {
+            user.setRoles(new HashSet<>());
+        }
 
         Role role = roleService.findRoleByName("USER");
         user.getRoles().add(role);

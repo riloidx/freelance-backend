@@ -11,6 +11,7 @@ import org.matvey.freelancebackend.ads.entity.Ad;
 import org.matvey.freelancebackend.roles.entity.Role;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +53,7 @@ public class User {
 
     @OneToMany
     @JoinColumn(name = "user_id")
-    private List<Ad> ads;
+    private List<Ad> ads = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
