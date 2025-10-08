@@ -1,12 +1,14 @@
-package org.matvey.freelancebackend.roles.dto;
+package org.matvey.freelancebackend.roles.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleResponseDto {
+public class RoleCreateDto {
     private String name;
 }
