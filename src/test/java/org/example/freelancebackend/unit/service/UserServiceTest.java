@@ -92,6 +92,7 @@ public class UserServiceTest {
         when(passwordEncoder.encode(dto.getPassword())).thenReturn("test");
         when(roleService.findRoleByName("USER")).thenReturn(role);
         when(userRepo.save(user)).thenReturn(user);
+        when(userRepo.save(user)).thenReturn(user);
 
         User result = userService.create(dto);
 
@@ -104,7 +105,6 @@ public class UserServiceTest {
         User user = createBasicUser();
 
         UpdateUserDto dto = UpdateUserDto.builder()
-                .id(1L)
                 .name("Updated Name")
                 .description("Updated Description")
                 .build();
