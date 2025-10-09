@@ -9,6 +9,7 @@ import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.users.dto.request.UpdateUserDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,7 +17,9 @@ import java.util.List;
 public interface UserMapper {
     UserResponseDto toDto(User user);
 
-    List<UserResponseDto> toDto(List<User> users);
+    default Page<UserResponseDto> toDto(Page<User> users) {
+        return users.map(this::toDto);
+    }
 
     @Mapping(target = "roles", ignore = true)
     User toEntity(RegistrationDto dto);

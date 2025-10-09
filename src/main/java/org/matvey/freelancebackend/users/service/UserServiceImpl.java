@@ -15,11 +15,12 @@ import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.matvey.freelancebackend.users.repository.UserRepository;
 import org.matvey.freelancebackend.users.service.api.UserCommandService;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +31,8 @@ public class UserServiceImpl implements UserCommandService, UserQueryService {
     private final RoleService roleService;
 
     @Override
-    public List<UserResponseDto> findAllUsersDto() {
-        List<User> users = userRepo.findAll();
+    public Page<UserResponseDto> findAllUsersDto(Pageable pageable) {
+        Page<User> users = userRepo.findAll(pageable);
 
         return userMapper.toDto(users);
     }

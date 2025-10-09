@@ -2,12 +2,12 @@ package org.matvey.freelancebackend.users.service.api;
 
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserQueryService {
 
-    List<UserResponseDto> findAllUsersDto();
+    Page<UserResponseDto> findAllUsersDto(Pageable pageable);
 
     UserResponseDto findUserDtoById(long id);
 
