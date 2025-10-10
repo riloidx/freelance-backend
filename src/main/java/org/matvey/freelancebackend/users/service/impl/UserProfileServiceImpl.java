@@ -42,6 +42,8 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     @Transactional
     public void deleteUserProfile(long id, Authentication authentication) {
+        userQueryService.findUserById(id);
+        userQueryService.findUserByEmail(authentication.getName());
         User user = prepareVerificatedUser(id, authentication);
 
         userRepo.delete(user);
