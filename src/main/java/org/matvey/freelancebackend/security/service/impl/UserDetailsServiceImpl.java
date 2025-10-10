@@ -1,9 +1,8 @@
-package org.matvey.freelancebackend.security.service;
+package org.matvey.freelancebackend.security.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
-import org.matvey.freelancebackend.users.service.api.UserCommandService;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserQueryService userQueryService;
 
     @Override

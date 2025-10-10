@@ -7,10 +7,6 @@ spring:
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
 
-  jpa:
-    show-sql: true
-
-
 jwt:
   access:
     key: ${JWT_ACCESS_KEY:6aec213d794e0cbd15a0bd961b21b2e6d74376ad897f8423939278479b20c7fb}

@@ -1,15 +1,16 @@
-package org.matvey.freelancebackend.security.service;
+package org.matvey.freelancebackend.security.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.security.dto.request.LoginDto;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.security.dto.response.AuthResponseDto;
+import org.matvey.freelancebackend.security.exception.InvalidCredentialsException;
 import org.matvey.freelancebackend.security.jwt.JwtUtil;
 import org.matvey.freelancebackend.security.service.api.AuthService;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
-import org.matvey.freelancebackend.users.service.api.UserCommandService;
+import org.matvey.freelancebackend.users.service.api.UserAuthService;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private final UserCommandService userCommandService;
+    private final UserAuthService userAuthService;
     private final UserQueryService userQueryService;
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
@@ -25,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDto register(RegistrationDto registrationDto) {
-        User user = userCommandService.create(registrationDto);
+        User user = userAuthService.createUser(registrationDto);
 
         String token = jwtUtil.generateAccessToken(new CustomUserDetails(user));
 
@@ -44,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
     private void matchPasswordOrThrow(String hashPassword, String password) {
         if (!passwordEncoder.matches(password, hashPassword)) {
-            throw new RuntimeException("Invalid login or password");
+            throw new InvalidCredentialsException("Invalid login or password");
         }
     }
 }
