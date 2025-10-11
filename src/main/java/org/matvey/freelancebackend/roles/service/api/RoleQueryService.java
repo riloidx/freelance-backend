@@ -5,7 +5,7 @@ import org.matvey.freelancebackend.roles.entity.Role;
 
 import java.util.List;
 
-public interface RoleService {
+public interface RoleQueryService {
     List<RoleResponseDto> findAllRolesDto();
 
     Role findRoleById(long id);

@@ -2,7 +2,7 @@ package org.matvey.freelancebackend.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.roles.entity.Role;
-import org.matvey.freelancebackend.roles.service.api.RoleService;
+import org.matvey.freelancebackend.roles.service.api.RoleQueryService;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.exception.UserAlreadyHasRoleException;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final UserQueryService userQueryService;
-    private final RoleService roleService;
+    private final RoleQueryService roleQueryService;
     private final UserMapper userMapper;
 
     @Override
@@ -36,7 +36,7 @@ public class AdminServiceImpl implements AdminService {
 
     private UserResponseDto updateUserRole(String roleName, long userId, boolean add) {
         User user = userQueryService.findUserById(userId);
-        Role role = roleService.findRoleByName(roleName);
+        Role role = roleQueryService.findRoleByName(roleName);
 
         if (add) {
             ensureUserDoesNotHaveRole(user, role);

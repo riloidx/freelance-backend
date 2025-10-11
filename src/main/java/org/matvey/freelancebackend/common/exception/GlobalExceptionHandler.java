@@ -1,8 +1,8 @@
-package org.matvey.freelancebackend.advice;
+package org.matvey.freelancebackend.common.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.matvey.freelancebackend.advice.dto.ErrorResponse;
-import org.matvey.freelancebackend.advice.dto.ValidationErrorResponse;
+import org.matvey.freelancebackend.common.exception.dto.ErrorResponse;
+import org.matvey.freelancebackend.common.exception.dto.ValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
+    public ResponseEntity<ValidationErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
                                                                    HttpServletRequest request) {
         var body = buildValidationErrorResponse(e, request);
 
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleException(Exception e,
+    public ResponseEntity<ErrorResponse> handleException(Exception e,
                                                   HttpServletRequest request) {
         var body = buildErrorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR, request);
 

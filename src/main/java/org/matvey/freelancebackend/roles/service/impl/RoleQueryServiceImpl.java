@@ -1,20 +1,19 @@
-package org.matvey.freelancebackend.roles.service;
+package org.matvey.freelancebackend.roles.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.roles.dto.response.RoleResponseDto;
 import org.matvey.freelancebackend.roles.entity.Role;
-import org.matvey.freelancebackend.roles.exception.RoleAlreadyExistsException;
 import org.matvey.freelancebackend.roles.exception.RoleNotFoundException;
 import org.matvey.freelancebackend.roles.mapper.RoleMapper;
 import org.matvey.freelancebackend.roles.repository.RoleRepository;
-import org.matvey.freelancebackend.roles.service.api.RoleService;
+import org.matvey.freelancebackend.roles.service.api.RoleQueryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService {
+public class RoleQueryServiceImpl implements RoleQueryService {
     private final RoleRepository roleRepo;
     private final RoleMapper roleMapper;
 

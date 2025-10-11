@@ -1,4 +1,4 @@
-package org.matvey.freelancebackend.advice.dto;
+package org.matvey.freelancebackend.common.exception.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

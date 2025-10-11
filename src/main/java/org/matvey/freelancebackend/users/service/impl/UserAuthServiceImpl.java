@@ -2,7 +2,7 @@ package org.matvey.freelancebackend.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.roles.entity.Role;
-import org.matvey.freelancebackend.roles.service.api.RoleService;
+import org.matvey.freelancebackend.roles.service.api.RoleQueryService;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.exception.UserAlreadyExistsException;
@@ -19,7 +19,7 @@ import java.util.HashSet;
 @RequiredArgsConstructor
 public class UserAuthServiceImpl implements UserAuthService {
     private final UserRepository userRepo;
-    private final RoleService roleService;
+    private final RoleQueryService roleQueryService;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
@@ -42,7 +42,7 @@ public class UserAuthServiceImpl implements UserAuthService {
             user.setRoles(new HashSet<>());
         }
 
-        Role role = roleService.findRoleByName("USER");
+        Role role = roleQueryService.findRoleByName("USER");
         user.getRoles().add(role);
 
         return user;

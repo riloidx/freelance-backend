@@ -37,13 +37,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") long id, Authentication authentication) {
-        userProfileService.deleteUserProfile(id, authentication);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-    }
-
     @GetMapping
     public ResponseEntity<?> findAll(
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
@@ -58,5 +51,12 @@ public class UserController {
         UserResponseDto user = userQueryService.findUserDtoById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id, Authentication authentication) {
+        userProfileService.deleteUserProfile(id, authentication);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }
