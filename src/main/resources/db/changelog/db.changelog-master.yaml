@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changes/20251005-1655__insert-roles.yaml
   - include:
       file: db/changelog/changes/20251005-1657__insert-admin.yaml
+  - include:
+      file: db/changelog/changes/20251011-1649__add-ads-count-to-category.yaml

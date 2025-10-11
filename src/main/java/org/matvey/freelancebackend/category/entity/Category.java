@@ -28,14 +28,15 @@ public class Category {
     private String name;
 
     @NotNull
-    @ColumnDefault("now()")
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     @NotNull
-    @ColumnDefault("now()")
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    @Column(name = "ads_count")
+    private Integer adsCount;
 
     @OneToMany
     @JoinColumn(name = "category_id")

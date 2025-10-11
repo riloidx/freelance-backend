@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251011-1649-add-ads-count-in-category
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: categories
+            columns:
+              - column:
+                  name: ads_count
+                  type: BIGINT
+                  defaultValueNumeric: "0"
