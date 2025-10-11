@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251011-2214__add-type-col-to-ad.yaml
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: ads
+            columns:
+              - column:
+                  name: ad_type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

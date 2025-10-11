@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/changes/20251005-1657__insert-admin.yaml
   - include:
       file: db/changelog/changes/20251011-1649__add-ads-count-to-category.yaml
+  - include:
+      file: db/changelog/changes/20251011-2214__add-type-col-to-ad.yaml
