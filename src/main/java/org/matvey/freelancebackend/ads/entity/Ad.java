@@ -1,65 +1,58 @@
 package org.matvey.freelancebackend.ads.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.matvey.freelancebackend.category.entity.Category;
 import org.matvey.freelancebackend.users.entity.User;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "ads")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Size(max = 64)
-    @NotNull
-    @Column(name = "title", nullable = false, length = 64)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @NotNull
-    @Column(name = "description", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "description", nullable = false)
     private String description;
+
+    @Column(name = "ad_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AdType adType;
 
     @Column(name = "budget", precision = 10, scale = 2)
     private BigDecimal budget;
 
-    @Size(max = 20)
-    @ColumnDefault("'active'")
-    @Column(name = "status", length = 20)
-    private String status;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private AdStatus status;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NotNull
-    @ColumnDefault("now()")
     @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
     private Instant createdAt;
 
-    @NotNull
-    @ColumnDefault("now()")
     @Column(name = "updated_at", nullable = false)
+    @UpdateTimestamp
     private Instant updatedAt;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
 }
