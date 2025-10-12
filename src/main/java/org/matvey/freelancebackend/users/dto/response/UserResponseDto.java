@@ -17,7 +17,6 @@ public class UserResponseDto {
     private String description;
     private String name;
     private Instant createdAt;
-    private Instant updatedAt;
     private List<Ad> ads;
     private Set<String> roles;
 }

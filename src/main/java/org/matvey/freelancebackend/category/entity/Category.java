@@ -23,7 +23,7 @@ public class Category {
 
     @Size(max = 32)
     @NotNull
-    @Column(name = "name", nullable = false, length = 32)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotNull

@@ -18,7 +18,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +27,7 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username", nullable = false, length = 30)
+    @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "email", nullable = false)
@@ -37,7 +36,7 @@ public class User {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
-    @Column(name = "name", length = 128)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "password_hash", nullable = false)
