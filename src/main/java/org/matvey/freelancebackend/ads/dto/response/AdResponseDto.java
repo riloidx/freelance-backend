@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.matvey.freelancebackend.ads.entity.AdStatus;
 import org.matvey.freelancebackend.ads.entity.AdType;
+import org.matvey.freelancebackend.category.dto.response.CategoryResponseDto;
 import org.matvey.freelancebackend.category.entity.Category;
+import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
 
 import java.math.BigDecimal;
@@ -21,8 +24,8 @@ public class AdResponseDto {
     private String description;
     private AdType AdType;
     private BigDecimal budget;
-    private String status;
-    private User user;
+    private AdStatus status;
+    private UserResponseDto user;
     private Instant createdAt;
-    private Category category;
+    private CategoryResponseDto category;
 }

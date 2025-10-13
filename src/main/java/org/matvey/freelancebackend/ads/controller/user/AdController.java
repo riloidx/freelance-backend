@@ -1,0 +1,67 @@
+package org.matvey.freelancebackend.ads.controller.user;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.matvey.freelancebackend.ads.dto.request.AdCreateDto;
+import org.matvey.freelancebackend.ads.dto.request.AdUpdateDto;
+import org.matvey.freelancebackend.ads.dto.response.AdResponseDto;
+import org.matvey.freelancebackend.ads.service.api.AdCommandService;
+import org.matvey.freelancebackend.ads.service.api.AdQueryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/ads")
+@RequiredArgsConstructor
+public class AdController {
+
+    private final AdCommandService adCommandService;
+    private final AdQueryService adQueryService;
+
+    /** Получить список всех объявлений (активных) */
+    @GetMapping
+    public ResponseEntity<Page<AdResponseDto>> findAll(
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable) {
+        Page<AdResponseDto> ads = adQueryService.findAllByOrderByCreatedDesc(pageable);
+        return ResponseEntity.ok(ads);
+    }
+
+    /** Получить объявление по ID */
+    @GetMapping("/{id}")
+    public ResponseEntity<AdResponseDto> findById(@PathVariable long id) {
+        AdResponseDto ad = adQueryService.findById(id);
+        return ResponseEntity.ok(ad);
+    }
+
+    /** Создать объявление (для авторизованного пользователя) */
+    @PostMapping
+    public ResponseEntity<AdResponseDto> create(@Valid @RequestBody AdCreateDto adCreateDto,
+                                                Authentication authentication) {
+        AdResponseDto created = adCommandService.create(adCreateDto, authentication);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    /** Обновить объявление (только владелец или админ) */
+    @PutMapping("/{id}")
+    public ResponseEntity<AdResponseDto> update(@PathVariable long id,
+                                                @Valid @RequestBody AdUpdateDto adUpdateDto,
+                                                Authentication authentication) {
+        adUpdateDto.setId(id);
+        AdResponseDto updated = adCommandService.update(adUpdateDto, authentication);
+        return ResponseEntity.ok(updated);
+    }
+
+    /** Удалить объявление (только владелец или админ) */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id, Authentication authentication) {
+        adCommandService.delete(id, authentication);
+        return ResponseEntity.noContent().build();
+    }
+}

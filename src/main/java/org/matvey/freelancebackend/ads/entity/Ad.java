@@ -1,9 +1,7 @@
 package org.matvey.freelancebackend.ads.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.matvey.freelancebackend.category.entity.Category;
@@ -14,6 +12,8 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "ads")
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

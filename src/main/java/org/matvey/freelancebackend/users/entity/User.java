@@ -1,10 +1,7 @@
 package org.matvey.freelancebackend.users.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.matvey.freelancebackend.ads.entity.Ad;
@@ -19,6 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
