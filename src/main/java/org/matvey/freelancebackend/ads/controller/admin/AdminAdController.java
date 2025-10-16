@@ -26,20 +26,20 @@ public class AdminAdController {
             Pageable pageable) {
         Page<AdResponseDto> ads = adQueryService.findAllByOrderByCreatedDesc(pageable);
 
-        return ResponseEntity.ok(ads);
+        return ResponseEntity.status(HttpStatus.OK).body(ads);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AdResponseDto> findById(@PathVariable long id) {
         AdResponseDto ad = adQueryService.findById(id);
 
-        return ResponseEntity.ok(ad);
+        return ResponseEntity.status(HttpStatus.OK).body(ad);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
         adCommandService.delete(id, null);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }

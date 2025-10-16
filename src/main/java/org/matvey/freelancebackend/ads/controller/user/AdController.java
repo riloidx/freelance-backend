@@ -24,44 +24,44 @@ public class AdController {
     private final AdCommandService adCommandService;
     private final AdQueryService adQueryService;
 
-    /** Получить список всех объявлений (активных) */
     @GetMapping
     public ResponseEntity<Page<AdResponseDto>> findAll(
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
             Pageable pageable) {
         Page<AdResponseDto> ads = adQueryService.findAllByOrderByCreatedDesc(pageable);
-        return ResponseEntity.ok(ads);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ads);
     }
 
-    /** Получить объявление по ID */
     @GetMapping("/{id}")
     public ResponseEntity<AdResponseDto> findById(@PathVariable long id) {
         AdResponseDto ad = adQueryService.findById(id);
-        return ResponseEntity.ok(ad);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ad);
     }
 
-    /** Создать объявление (для авторизованного пользователя) */
     @PostMapping
     public ResponseEntity<AdResponseDto> create(@Valid @RequestBody AdCreateDto adCreateDto,
                                                 Authentication authentication) {
         AdResponseDto created = adCommandService.create(adCreateDto, authentication);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    /** Обновить объявление (только владелец или админ) */
     @PutMapping("/{id}")
     public ResponseEntity<AdResponseDto> update(@PathVariable long id,
                                                 @Valid @RequestBody AdUpdateDto adUpdateDto,
                                                 Authentication authentication) {
         adUpdateDto.setId(id);
         AdResponseDto updated = adCommandService.update(adUpdateDto, authentication);
-        return ResponseEntity.ok(updated);
+
+        return ResponseEntity.status(HttpStatus.OK).body(updated);
     }
 
-    /** Удалить объявление (только владелец или админ) */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id, Authentication authentication) {
         adCommandService.delete(id, authentication);
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }
