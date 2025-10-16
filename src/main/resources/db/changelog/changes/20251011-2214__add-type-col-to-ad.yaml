@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 20251011-2214__add-type-col-to-ad.yaml
+      id: 20251011-2214-add-type-col-to-ad.yaml
       author: matvey
       changes:
         - addColumn:
