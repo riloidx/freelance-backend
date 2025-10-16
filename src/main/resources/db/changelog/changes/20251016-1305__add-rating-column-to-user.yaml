@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251016-1305-add-rating-column-to-user
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: rating
+                  type: DECIMAL(3,2)
+                  defaultValueNumeric: "0.00"
+                  constraints:
+                    nullable: false
