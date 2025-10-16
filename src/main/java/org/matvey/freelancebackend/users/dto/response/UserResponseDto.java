@@ -2,7 +2,7 @@ package org.matvey.freelancebackend.users.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
-import org.matvey.freelancebackend.ads.entity.Ad;
+import org.matvey.freelancebackend.ads.dto.response.AdResponseDto;
 
 import java.time.Instant;
 import java.util.List;
@@ -17,6 +17,6 @@ public class UserResponseDto {
     private String description;
     private String name;
     private Instant createdAt;
-    private List<Ad> ads;
+    private List<AdResponseDto> ads;
     private Set<String> roles;
 }
