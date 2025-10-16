@@ -13,10 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AdQueryServiceImpl implements AdQueryService {
-
     private final AdRepository adRepo;
     private final AdMapper adMapper;
 
@@ -26,13 +27,22 @@ public class AdQueryServiceImpl implements AdQueryService {
                 Sort.by("createdAt"));
 
         Page<Ad> page = adRepo.findAll(sorted);
+
         return adMapper.toDto(page);
+    }
+
+    @Override
+    public List<AdResponseDto> findAllByUserId(long userId) {
+        List<Ad> ads = adRepo.findAllByUserId(userId);
+
+        return adMapper.toDto(ads);
     }
 
     @Override
     public AdResponseDto findById(long id) {
         Ad ad = adRepo.findById(id)
                 .orElseThrow(() -> new AdNotFoundException("id", String.valueOf(id)));
+
         return adMapper.toDto(ad);
     }
 }

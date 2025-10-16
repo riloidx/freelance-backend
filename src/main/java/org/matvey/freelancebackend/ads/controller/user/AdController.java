@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 public class AdController {
-
     private final AdCommandService adCommandService;
     private final AdQueryService adQueryService;
 

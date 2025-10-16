@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/ads")
 @RequiredArgsConstructor
 public class AdminAdController {
-
     private final AdQueryService adQueryService;
     private final AdCommandService adCommandService;
 

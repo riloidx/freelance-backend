@@ -14,9 +14,13 @@ import org.matvey.freelancebackend.roles.mapper.RoleMapper;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {UserMapper.class, RoleMapper.class, CategoryMapper.class})
 public interface AdMapper {
     AdResponseDto toDto(Ad ad);
+
+    List<AdResponseDto> toDto(List<Ad> ads);
 
     Page<AdResponseDto> toDto(Page<Ad> ads);
 
