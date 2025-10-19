@@ -1,0 +1,98 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251019-1601-create-contracts-table
+      author: matvey
+      changes:
+        - createTable:
+            tableName: contracts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: ad_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: proposal_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: customer_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: freelancer_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: price
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: contract_status
+                  type: VARCHAR(64)
+                  defaultValue: 'PENDING'
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: contracts
+            baseColumnNames: ad_id
+            constraintName: fk_contracts_ads
+            referencedTableName: ads
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: contracts
+            baseColumnNames: proposal_id
+            constraintName: fk_contracts_proposals
+            referencedTableName: proposals
+            referencedColumnNames: id
+            onDelete: SET NULL
+
+        - addForeignKeyConstraint:
+            baseTableName: contracts
+            baseColumnNames: customer_id
+            constraintName: fk_contracts_customer
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: contracts
+            baseColumnNames: freelancer_id
+            constraintName: fk_contracts_freelancer
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE

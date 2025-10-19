@@ -17,3 +17,5 @@ databaseChangeLog:
       file: db/changelog/changes/20251016-1305__add-rating-column-to-user.yaml
   - include:
       file: db/changelog/changes/20251019-1552__create-proposal-table.yaml
+  - include:
+      file: db/changelog/changes/20251019-1601__create-contracts-table.yaml
