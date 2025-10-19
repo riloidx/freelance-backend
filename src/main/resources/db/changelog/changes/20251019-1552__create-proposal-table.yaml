@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251019-1552-create-proposal-table
+      author: matvey
+      changes:
+        - createTable:
+            tableName: proposals
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: ad_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: price
+                  type: DECIMAL(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: message
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: proposal_status
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: proposals
+            baseColumnNames: ad_id
+            constraintName: fk_proposals_ads
+            referencedTableName: ads
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: proposals
+            baseColumnNames: user_id
+            constraintName: fk_proposals_users
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
