@@ -20,5 +20,4 @@ public class Role {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-
 }

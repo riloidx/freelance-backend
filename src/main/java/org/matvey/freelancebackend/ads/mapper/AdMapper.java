@@ -22,7 +22,9 @@ public interface AdMapper {
 
     List<AdResponseDto> toDto(List<Ad> ads);
 
-    Page<AdResponseDto> toDto(Page<Ad> ads);
+    default Page<AdResponseDto> toDto(Page<Ad> ads) {
+        return ads.map(this::toDto);
+    }
 
     Ad toEntity(AdCreateDto adCreateDto);
 
