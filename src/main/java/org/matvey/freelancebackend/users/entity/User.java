@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.matvey.freelancebackend.ads.entity.Ad;
+import org.matvey.freelancebackend.contracts.entity.Contract;
+import org.matvey.freelancebackend.proposal.entity.Proposal;
 import org.matvey.freelancebackend.reviews.entity.Review;
 import org.matvey.freelancebackend.roles.entity.Role;
 
@@ -24,37 +26,46 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "description", length = Integer.MAX_VALUE)
+    @Column(name = "description")
     private String description;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "password_hash")
     private String passwordHash;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Ad> ads = new ArrayList<>();
 
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<Review> receivedReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<Review> writtenReviews = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
-    private List<Review> reviews = new ArrayList<>();
+    private List<Proposal> proposals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<Contract> contracts = new ArrayList<>();
 
     @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER)

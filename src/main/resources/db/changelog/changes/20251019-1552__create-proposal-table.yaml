@@ -48,6 +48,7 @@ databaseChangeLog:
               - column:
                   name: proposal_status
                   type: VARCHAR(64)
+                  defaultValue: 'PENDING'
                   constraints:
                     nullable: false
 
