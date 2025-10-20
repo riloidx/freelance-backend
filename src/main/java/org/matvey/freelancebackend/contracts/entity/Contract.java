@@ -22,15 +22,10 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "proposal_id")
-    private Proposal proposal;
-
-    @NotNull
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "contract_status", nullable = false, length = 64)
+    @Column(name = "contract_status")
     @Enumerated(EnumType.STRING)
     private ContractStatus contractStatus =  ContractStatus.PENDING;
 
@@ -39,4 +34,8 @@ public class Contract {
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proposal_id")
+    private Proposal proposal;
 }

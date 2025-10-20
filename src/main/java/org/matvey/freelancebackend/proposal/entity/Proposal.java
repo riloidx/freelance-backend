@@ -26,29 +26,26 @@ public class Proposal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "price", precision = 10, scale = 2)
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @NotNull
-    @Column(name = "message")
+    @Column(name = "message", nullable = false)
     private String message;
+
+    @Column(name = "proposal_status", nullable = false)
+    private ProposalStatus proposalStatus;
 
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Column(name = "proposal_status")
-    private ProposalStatus proposalStatus;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_id")
     private Ad ad;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
-    @JoinColumn(name = "proposal_id")
-    private Set<Contract> contracts = new LinkedHashSet<>();
+    @OneToOne(mappedBy = "proposal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Contract contract;
 }
