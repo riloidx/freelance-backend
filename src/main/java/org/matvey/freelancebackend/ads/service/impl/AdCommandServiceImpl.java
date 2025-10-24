@@ -40,8 +40,7 @@ public class AdCommandServiceImpl implements AdCommandService {
 
     @Override
     public AdResponseDto update(AdUpdateDto dto, Authentication authentication) {
-        Ad existing = adValidator.findExistingAd(dto.getId());
-        adSecurityUtil.checkUpdatePermission(existing, authentication);
+        Ad existing = adSecurityUtil.checkAdOwnerPermission(dto.getId(), authentication);
 
         adUpdater.updateAdFromDto(existing, dto);
         Ad saved = adRepo.save(existing);
@@ -51,8 +50,7 @@ public class AdCommandServiceImpl implements AdCommandService {
 
     @Override
     public void delete(long id, Authentication authentication) {
-        Ad existing = adValidator.findExistingAd(id);
-        adSecurityUtil.checkDeletePermission(existing, authentication);
+        Ad existing = adSecurityUtil.checkAdOwnerPermission(id, authentication);
 
         adRepo.delete(existing);
     }
