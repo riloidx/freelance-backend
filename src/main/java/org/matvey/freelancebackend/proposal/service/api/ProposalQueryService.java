@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.proposal.service.api;
 
 import org.matvey.freelancebackend.proposal.dto.response.ProposalResponseDto;
+import org.matvey.freelancebackend.proposal.entity.Proposal;
 import org.matvey.freelancebackend.proposal.entity.ProposalStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,4 +12,7 @@ public interface ProposalQueryService {
                                                      ProposalStatus status,
                                                      Pageable pageable,
                                                      Authentication authentication);
+
+    Proposal findById(long id);
+
 }
