@@ -5,10 +5,12 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.matvey.freelancebackend.category.entity.Category;
+import org.matvey.freelancebackend.proposal.entity.Proposal;
 import org.matvey.freelancebackend.users.entity.User;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "ads")
@@ -55,4 +57,7 @@ public class Ad {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Proposal> proposals;
 }

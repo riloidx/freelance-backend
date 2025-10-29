@@ -34,7 +34,7 @@ public class AdController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AdResponseDto> findById(@PathVariable long id) {
-        AdResponseDto ad = adQueryService.findById(id);
+        AdResponseDto ad = adQueryService.findDtoById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(ad);
     }

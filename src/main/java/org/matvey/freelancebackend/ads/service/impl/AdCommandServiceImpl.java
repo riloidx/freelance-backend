@@ -11,7 +11,6 @@ import org.matvey.freelancebackend.ads.repository.AdRepository;
 import org.matvey.freelancebackend.ads.service.api.AdCommandService;
 import org.matvey.freelancebackend.ads.service.util.AdSecurityUtil;
 import org.matvey.freelancebackend.ads.service.util.AdUpdater;
-import org.matvey.freelancebackend.ads.service.util.AdValidator;
 import org.matvey.freelancebackend.category.entity.Category;
 import org.matvey.freelancebackend.category.service.api.CategoryQueryService;
 import org.matvey.freelancebackend.users.entity.User;
@@ -27,7 +26,6 @@ public class AdCommandServiceImpl implements AdCommandService {
     private final UserQueryService userQueryService;
     private final CategoryQueryService categoryQueryService;
     private final AdSecurityUtil adSecurityUtil;
-    private final AdValidator adValidator;
     private final AdUpdater adUpdater;
 
     @Override
@@ -59,6 +57,7 @@ public class AdCommandServiceImpl implements AdCommandService {
         User user = userQueryService.findUserByEmail(authentication.getName());
         Category category = categoryQueryService.findCategoryById(adCreateDto.getCategoryId());
         Ad ad = adMapper.toEntity(adCreateDto);
+
         ad.setUser(user);
         ad.setCategory(category);
         ad.setStatus(AdStatus.ACTIVE);

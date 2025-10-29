@@ -7,7 +7,6 @@ import org.matvey.freelancebackend.ads.exception.AdNotFoundException;
 import org.matvey.freelancebackend.ads.mapper.AdMapper;
 import org.matvey.freelancebackend.ads.repository.AdRepository;
 import org.matvey.freelancebackend.ads.service.api.AdQueryService;
-import org.matvey.freelancebackend.ads.service.util.AdValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,6 @@ import java.util.List;
 public class AdQueryServiceImpl implements AdQueryService {
     private final AdRepository adRepo;
     private final AdMapper adMapper;
-    private final AdValidator adValidator;
 
     @Override
     public Page<AdResponseDto> findAllByOrderByCreatedDesc(Pageable pageable) {
@@ -41,8 +39,14 @@ public class AdQueryServiceImpl implements AdQueryService {
     }
 
     @Override
-    public AdResponseDto findById(long id) {
-        Ad ad = adValidator.findExistingAd(id);
+    public Ad findAdById(long id) {
+        return adRepo.findById(id)
+                .orElseThrow(() -> new AdNotFoundException("id", String.valueOf(id)));
+    }
+
+    @Override
+    public AdResponseDto findDtoById(long id) {
+        Ad ad = findAdById(id);
 
         return adMapper.toDto(ad);
     }
