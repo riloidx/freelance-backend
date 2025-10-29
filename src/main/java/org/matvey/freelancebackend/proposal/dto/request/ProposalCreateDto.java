@@ -1,9 +1,11 @@
 package org.matvey.freelancebackend.proposal.dto.request;
 
 import jakarta.validation.constraints.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
+@Data
 public class ProposalCreateDto {
     @NotNull(message = "Price is required")
     @DecimalMin(value = "10.00", message = "Minimal value is 10.00")
@@ -18,5 +20,5 @@ public class ProposalCreateDto {
     private Long adId;
 
     @NotNull(message = "User id is required")
-    private Long userId;
+    private Long freelancerId;
 }

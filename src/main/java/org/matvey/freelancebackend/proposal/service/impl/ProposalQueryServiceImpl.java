@@ -2,7 +2,6 @@ package org.matvey.freelancebackend.proposal.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.ads.service.util.AdSecurityUtil;
-import org.matvey.freelancebackend.ads.service.util.AdValidator;
 import org.matvey.freelancebackend.proposal.dto.response.ProposalResponseDto;
 import org.matvey.freelancebackend.proposal.entity.Proposal;
 import org.matvey.freelancebackend.proposal.entity.ProposalStatus;
@@ -30,7 +29,7 @@ public class ProposalQueryServiceImpl implements ProposalQueryService {
 
         adSecurityUtil.checkAdOwnerPermission(adId, authentication);
 
-        Page<Proposal> proposals = proposalRepo.findAllByAdId(adId, pageable);
+        Page<Proposal> proposals = proposalRepo.findAllByAdIdAndProposalStatus(adId, status, pageable);
 
         return proposalMapper.toDto(proposals);
     }
@@ -40,5 +39,10 @@ public class ProposalQueryServiceImpl implements ProposalQueryService {
 
         return proposalRepo.findById(id).
                 orElseThrow(() -> new ProposalNotFoundException("id", String.valueOf(id)));
+    }
+
+    @Override
+    public ProposalResponseDto findDtoById(long id) {
+        return proposalMapper.toDto(findById(id));
     }
 }

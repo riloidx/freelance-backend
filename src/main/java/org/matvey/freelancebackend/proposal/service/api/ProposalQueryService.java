@@ -15,4 +15,6 @@ public interface ProposalQueryService {
 
     Proposal findById(long id);
 
+    ProposalResponseDto findDtoById(long id);
+
 }
