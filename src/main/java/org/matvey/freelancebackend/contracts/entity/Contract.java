@@ -27,9 +27,6 @@ public class Contract {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proposal_id")
     private Proposal proposal;
