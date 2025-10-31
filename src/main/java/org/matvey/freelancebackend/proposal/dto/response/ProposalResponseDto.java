@@ -3,7 +3,7 @@ package org.matvey.freelancebackend.proposal.dto.response;
 import lombok.Builder;
 import lombok.Data;
 import org.matvey.freelancebackend.ads.dto.response.AdResponseDto;
-import org.matvey.freelancebackend.proposal.entity.ProposalStatus;
+import org.matvey.freelancebackend.contracts.dto.response.ContractResponseDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ public class ProposalResponseDto {
     private Long id;
     private BigDecimal price;
     private String message;
-    private ProposalStatus proposalStatus;
+    private String proposalStatus;
     private Instant createdAt;
     private AdResponseDto ad;
     private UserResponseDto user;
