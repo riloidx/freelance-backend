@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.contracts.dto.response.ContractResponseDto;
 import org.matvey.freelancebackend.contracts.entity.Contract;
 import org.matvey.freelancebackend.contracts.entity.ContractStatus;
+import org.matvey.freelancebackend.contracts.exception.ContractNotFoundException;
 import org.matvey.freelancebackend.contracts.mapper.ContractMapper;
 import org.matvey.freelancebackend.contracts.repository.ContractRepository;
 import org.matvey.freelancebackend.contracts.service.api.ContractQueryService;
@@ -28,5 +29,11 @@ public class ContractQueryServiceImpl implements ContractQueryService {
         Page<Contract> contracts = contractRepo.findContractsByUserIdAndProposalStatus(userId, contractStatus, pageable);
 
         return contractMapper.toDto(contracts);
+    }
+
+    @Override
+    public Contract findById(long id) {
+        return contractRepo.findById(id).
+                orElseThrow(() -> new ContractNotFoundException("id", String.valueOf(id)));
     }
 }

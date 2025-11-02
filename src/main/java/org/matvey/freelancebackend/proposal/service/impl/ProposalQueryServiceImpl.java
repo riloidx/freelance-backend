@@ -27,7 +27,7 @@ public class ProposalQueryServiceImpl implements ProposalQueryService {
                                                             Pageable pageable,
                                                             Authentication authentication) {
 
-        adSecurityUtil.checkAdOwnerPermission(adId, authentication);
+        adSecurityUtil.checkAdOwnerPermissionAndReturn(adId, authentication);
 
         Page<Proposal> proposals = proposalRepo.findAllByAdIdAndProposalStatus(adId, status, pageable);
 

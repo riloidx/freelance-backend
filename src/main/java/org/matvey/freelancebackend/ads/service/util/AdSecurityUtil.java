@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class AdSecurityUtil {
     private final AdQueryService adQueryService;
 
-    public Ad checkAdOwnerPermission(long adId, Authentication auth) {
+    public Ad checkAdOwnerPermissionAndReturn(long adId, Authentication auth) {
         Ad ad = adQueryService.findAdById(adId);
 
         if (auth == null || !auth.getName().equals(ad.getUser().getEmail())) {

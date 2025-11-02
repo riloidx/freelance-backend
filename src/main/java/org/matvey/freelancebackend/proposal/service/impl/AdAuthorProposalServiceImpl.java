@@ -49,7 +49,7 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
         Proposal proposal = proposalQueryService.findById(proposalId);
         long adId = proposal.getAd().getId();
 
-        adSecurityUtil.checkAdOwnerPermission(adId, auth);
+        adSecurityUtil.checkAdOwnerPermissionAndReturn(adId, auth);
 
         return proposal;
     }
