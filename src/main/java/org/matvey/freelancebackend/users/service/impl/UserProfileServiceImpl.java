@@ -3,6 +3,7 @@ package org.matvey.freelancebackend.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.security.exception.UnauthorizedException;
+import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.dto.request.UserUpdateDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
@@ -23,9 +24,9 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserResponseDto getUserProfile(Authentication authentication) {
-        String authName = authentication.getName();
+        User curUser = ((CustomUserDetails) authentication.getPrincipal()).user();
 
-        return userQueryService.findUserDtoByEmail(authName);
+        return userMapper.toDto(curUser);
     }
 
     @Override
@@ -43,14 +44,13 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     public void deleteUserProfile(long id, Authentication authentication) {
         userQueryService.findUserById(id);
-        userQueryService.findUserByEmail(authentication.getName());
         User user = prepareVerificatedUser(id, authentication);
 
         userRepo.delete(user);
     }
 
     private User prepareVerificatedUser(long id, Authentication authentication) {
-        User user = userQueryService.findUserByEmail(authentication.getName());
+        User user = ((CustomUserDetails) authentication.getPrincipal()).user();
         verifyUserById(user.getId(), id);
 
         return user;

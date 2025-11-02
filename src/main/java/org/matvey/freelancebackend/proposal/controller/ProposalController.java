@@ -28,6 +28,7 @@ public class ProposalController {
             Authentication authentication
     ) {
         ProposalResponseDto response = freelancerProposalService.create(proposalCreateDto, authentication);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

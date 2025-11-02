@@ -13,6 +13,7 @@ import org.matvey.freelancebackend.ads.service.util.AdSecurityUtil;
 import org.matvey.freelancebackend.ads.service.util.AdUpdater;
 import org.matvey.freelancebackend.category.entity.Category;
 import org.matvey.freelancebackend.category.service.api.CategoryQueryService;
+import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.security.core.Authentication;
@@ -54,7 +55,7 @@ public class AdCommandServiceImpl implements AdCommandService {
     }
 
     private Ad prepareAd(AdCreateDto adCreateDto, Authentication authentication) {
-        User user = userQueryService.findUserByEmail(authentication.getName());
+        User user = ((CustomUserDetails) authentication.getPrincipal()).user();
         Category category = categoryQueryService.findCategoryById(adCreateDto.getCategoryId());
         Ad ad = adMapper.toEntity(adCreateDto);
 

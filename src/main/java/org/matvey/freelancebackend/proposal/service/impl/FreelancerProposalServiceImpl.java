@@ -10,8 +10,9 @@ import org.matvey.freelancebackend.proposal.entity.ProposalStatus;
 import org.matvey.freelancebackend.proposal.mapper.ProposalMapper;
 import org.matvey.freelancebackend.proposal.repository.ProposalRepository;
 import org.matvey.freelancebackend.proposal.service.api.FreelancerProposalService;
+import org.matvey.freelancebackend.security.service.impl.UserDetailsServiceImpl;
+import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
-import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class FreelancerProposalServiceImpl implements FreelancerProposalService 
     private final ProposalRepository proposalRepo;
     private final ProposalMapper proposalMapper;
     private final AdQueryService adQueryService;
-    private final UserQueryService userQueryService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Override
     public ProposalResponseDto create(ProposalCreateDto proposalCreateDto, Authentication authentication) {
@@ -35,7 +36,7 @@ public class FreelancerProposalServiceImpl implements FreelancerProposalService 
     public Proposal prepareProposal(ProposalCreateDto proposalCreateDto, Authentication authentication) {
         Proposal proposal = proposalMapper.toEntity(proposalCreateDto);
         Ad ad = adQueryService.findAdById(proposalCreateDto.getAdId());
-        User freelancer = userQueryService.findUserByEmail(authentication.getName());
+        User freelancer = ((CustomUserDetails) authentication.getPrincipal()).user();
 
         proposal.setProposalStatus(ProposalStatus.PENDING);
         proposal.setAd(ad);

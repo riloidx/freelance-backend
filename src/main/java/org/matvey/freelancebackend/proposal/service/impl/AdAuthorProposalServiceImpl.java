@@ -71,6 +71,7 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
 
     private void rejectProposal(Proposal proposal) {
         proposal.setProposalStatus(ProposalStatus.REJECTED);
+
         proposalRepository.save(proposal);
     }
 }
