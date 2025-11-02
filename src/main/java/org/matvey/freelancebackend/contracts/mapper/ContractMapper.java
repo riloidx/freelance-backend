@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 public interface ContractMapper {
     ContractResponseDto toDto(Contract contract);
 
-    default Page<ContractResponseDto> toDtoPage(Page<Contract> contracts) {
+    default Page<ContractResponseDto> toDto(Page<Contract> contracts) {
         return contracts.map(this::toDto);
     }
 }

@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 
 public interface ContractQueryService {
-    Page<ContractResponseDto> findMyContracts(Authentication auth,
-                                              Pageable pageable,
-                                              ContractStatus contractStatus);
+    Page<ContractResponseDto> findMyContracts(Pageable pageable,
+                                              ContractStatus contractStatus,
+                                              Authentication auth);
 
 }
