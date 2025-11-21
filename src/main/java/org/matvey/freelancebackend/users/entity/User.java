@@ -52,7 +52,7 @@ public class User {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Ad> ads = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL,  orphanRemoval = true)
@@ -61,10 +61,10 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Review> writtenReviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Proposal> proposals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Contract> contracts = new ArrayList<>();
 
     @Builder.Default

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.matvey.freelancebackend.proposal.entity.Proposal;
+import org.matvey.freelancebackend.users.entity.User;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -30,4 +31,8 @@ public class Contract {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proposal_id")
     private Proposal proposal;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "freelancer_id")
+    private User freelancer;
 }

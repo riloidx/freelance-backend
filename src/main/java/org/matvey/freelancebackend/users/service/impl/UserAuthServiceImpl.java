@@ -36,9 +36,8 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     private User prepareUser(RegistrationDto dto) {
         User user = userMapper.toEntity(dto);
-        System.out.println(user);
-        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
 
+        user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
 
         Role role = roleQueryService.findRoleByName("USER");
         user.getRoles().add(role);

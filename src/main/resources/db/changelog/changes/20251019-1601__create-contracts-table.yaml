@@ -25,6 +25,7 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: true
+                    unique: true
 
               - column:
                   name: customer_id
