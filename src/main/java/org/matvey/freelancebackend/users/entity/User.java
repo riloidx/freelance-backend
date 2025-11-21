@@ -61,10 +61,10 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Review> writtenReviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Proposal> proposals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Contract> contracts = new ArrayList<>();
 
     @Builder.Default
