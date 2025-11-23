@@ -16,12 +16,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 public class AdController {
     private final AdCommandService adCommandService;
     private final AdQueryService adQueryService;
+
+    @GetMapping("/me")
+    public ResponseEntity<List<AdResponseDto>> getMyAds(
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable,
+            Authentication authentication) {
+        List<AdResponseDto> ads = adQueryService.findAdsByUser(authentication, pageable);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ads);
+    }
 
     @GetMapping
     public ResponseEntity<Page<AdResponseDto>> findAll(

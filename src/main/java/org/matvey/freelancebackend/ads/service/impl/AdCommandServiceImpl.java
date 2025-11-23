@@ -62,6 +62,7 @@ public class AdCommandServiceImpl implements AdCommandService {
         ad.setUser(user);
         ad.setCategory(category);
         ad.setStatus(AdStatus.ACTIVE);
+        ad.setAdType(adCreateDto.getAdType());
 
         return ad;
     }
