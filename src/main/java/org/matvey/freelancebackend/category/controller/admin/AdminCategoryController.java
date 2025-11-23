@@ -1,5 +1,6 @@
 package org.matvey.freelancebackend.category.controller.admin;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.category.dto.request.CategoryCreateDto;
 import org.matvey.freelancebackend.category.dto.request.CategoryUpdateDto;
@@ -16,7 +17,7 @@ public class AdminCategoryController {
     private final CategoryCommandService categoryCommandService;
 
     @PostMapping
-    public ResponseEntity<CategoryResponseDto> createCategoryDto(CategoryCreateDto categoryCreateDto) {
+    public ResponseEntity<CategoryResponseDto> createCategoryDto(@RequestBody @Valid CategoryCreateDto categoryCreateDto) {
         var category = categoryCommandService.create(categoryCreateDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(category);

@@ -21,7 +21,6 @@ public class CategoryCommandServiceImpl implements CategoryCommandService {
     private final CategoryMapper categoryMapper;
     private final CategoryQueryService categoryQueryService;
 
-
     @Override
     @Transactional
     public CategoryResponseDto create(CategoryCreateDto categoryCreateDto) {
