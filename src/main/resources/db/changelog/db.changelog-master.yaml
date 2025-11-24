@@ -19,3 +19,5 @@ databaseChangeLog:
       file: db/changelog/changes/20251019-1552__create-proposal-table.yaml
   - include:
       file: db/changelog/changes/20251019-1601__create-contracts-table.yaml
+  - include:
+      file: db/changelog/changes/20251124-0828__insert-categories.yaml
