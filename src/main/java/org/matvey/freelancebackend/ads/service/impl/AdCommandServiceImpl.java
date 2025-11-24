@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 public class AdCommandServiceImpl implements AdCommandService {
     private final AdRepository adRepo;
     private final AdMapper adMapper;
-    private final UserQueryService userQueryService;
     private final CategoryQueryService categoryQueryService;
     private final AdSecurityUtil adSecurityUtil;
     private final AdUpdater adUpdater;
