@@ -9,6 +9,8 @@ import org.matvey.freelancebackend.contracts.entity.ContractStatus;
 import org.matvey.freelancebackend.contracts.mapper.ContractMapper;
 import org.matvey.freelancebackend.contracts.repository.ContractRepository;
 import org.matvey.freelancebackend.contracts.service.util.ContractSecurityUtil;
+import org.matvey.freelancebackend.users.entity.User;
+import org.matvey.freelancebackend.users.service.api.UserProfileService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,6 +18,8 @@ import org.springframework.security.core.Authentication;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
+import java.math.BigDecimal;
 
 @ExtendWith(MockitoExtension.class)
 class ContractCommandServiceImplTest {
@@ -30,6 +34,9 @@ class ContractCommandServiceImplTest {
     private ContractSecurityUtil contractSecurityUtil;
     
     @Mock
+    private UserProfileService userProfileService;
+    
+    @Mock
     private Authentication authentication;
     
     @InjectMocks
@@ -37,12 +44,19 @@ class ContractCommandServiceImplTest {
     
     private Contract contract;
     private ContractResponseDto contractResponseDto;
+    private User freelancer;
 
     @BeforeEach
     void setUp() {
+        freelancer = new User();
+        freelancer.setId(1L);
+        freelancer.setUsername("freelancer");
+        
         contract = new Contract();
         contract.setId(1L);
         contract.setContractStatus(ContractStatus.PENDING);
+        contract.setFreelancer(freelancer);
+        contract.setPrice(BigDecimal.valueOf(100.00));
         
         contractResponseDto = new ContractResponseDto();
         contractResponseDto.setId(1L);
@@ -61,6 +75,7 @@ class ContractCommandServiceImplTest {
         assertEquals(ContractStatus.APPROVED, contract.getContractStatus());
         verify(contractRepository).save(contract);
         verify(contractMapper).toDto(contract);
+        verify(userProfileService).addBalance(freelancer.getId(), contract.getPrice());
     }
 
     @Test
@@ -75,5 +90,6 @@ class ContractCommandServiceImplTest {
         assertEquals(ContractStatus.REJECTED, contract.getContractStatus());
         verify(contractRepository).save(contract);
         verify(contractMapper).toDto(contract);
+        verify(userProfileService, never()).addBalance(any(), any());
     }
 }

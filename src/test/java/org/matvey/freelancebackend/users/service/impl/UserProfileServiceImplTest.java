@@ -20,6 +20,10 @@ import org.springframework.security.core.Authentication;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.math.BigDecimal;
+import org.matvey.freelancebackend.users.dto.request.WithdrawBalanceDto;
+import org.matvey.freelancebackend.users.exception.InsufficientBalanceException;
+
 @ExtendWith(MockitoExtension.class)
 class UserProfileServiceImplTest {
 
@@ -43,6 +47,7 @@ class UserProfileServiceImplTest {
 
     private User user;
     private UserResponseDto userResponseDto;
+    private UserProfileResponseDto userProfileResponseDto;
     private UserUpdateDto userUpdateDto;
 
     @BeforeEach
@@ -57,18 +62,18 @@ class UserProfileServiceImplTest {
         userResponseDto.setUsername("testuser");
         userResponseDto.setEmail("test@example.com");
 
+        userProfileResponseDto = new UserProfileResponseDto();
+        userProfileResponseDto.setId(1L);
+        userProfileResponseDto.setUsername("testuser");
+        userProfileResponseDto.setEmail("test@example.com");
+
         userUpdateDto = new UserUpdateDto();
         userUpdateDto.setId(1L);
         userUpdateDto.setName("updateduser");
     }
 
     @Test
-    void GetUserProfileShouldReturnUserResponseDto() {
-        UserProfileResponseDto userProfileResponseDto = UserProfileResponseDto.builder().
-                id(1L).
-                build();
-
-
+    void GetUserProfileShouldReturnUserProfileResponseDto() {
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(userDetails.user()).thenReturn(user);
         when(userMapper.toProfileDto(user)).thenReturn(userProfileResponseDto);
@@ -76,7 +81,7 @@ class UserProfileServiceImplTest {
         UserProfileResponseDto result = userProfileService.getUserProfile(authentication);
 
         assertNotNull(result);
-        assertEquals(userResponseDto.getId(), result.getId());
+        assertEquals(userProfileResponseDto.getId(), result.getId());
     }
 
     @Test
@@ -131,5 +136,53 @@ class UserProfileServiceImplTest {
                 () -> userProfileService.deleteUserProfile(2L, authentication));
 
         verify(userRepo, never()).delete(any());
+    }
+
+    @Test
+    void WithdrawBalanceShouldReturnUpdatedUser() {
+        user.setBalance(BigDecimal.valueOf(100.00));
+        WithdrawBalanceDto withdrawDto = new WithdrawBalanceDto();
+        withdrawDto.setAmount(BigDecimal.valueOf(50.00));
+
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.user()).thenReturn(user);
+        when(userRepo.save(user)).thenReturn(user);
+        when(userMapper.toProfileDto(user)).thenReturn(userProfileResponseDto);
+
+        UserProfileResponseDto result = userProfileService.withdrawBalance(authentication, withdrawDto);
+
+        assertNotNull(result);
+        assertEquals(BigDecimal.valueOf(50.00), user.getBalance());
+        verify(userRepo).save(user);
+        verify(userMapper).toProfileDto(user);
+    }
+
+    @Test
+    void WithdrawBalanceShouldThrowExceptionWhenInsufficientBalance() {
+        user.setBalance(BigDecimal.valueOf(30.00));
+        WithdrawBalanceDto withdrawDto = new WithdrawBalanceDto();
+        withdrawDto.setAmount(BigDecimal.valueOf(50.00));
+
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.user()).thenReturn(user);
+
+        assertThrows(InsufficientBalanceException.class,
+                () -> userProfileService.withdrawBalance(authentication, withdrawDto));
+
+        verify(userRepo, never()).save(any());
+    }
+
+    @Test
+    void AddBalanceShouldIncreaseUserBalance() {
+        user.setBalance(BigDecimal.valueOf(50.00));
+        BigDecimal amountToAdd = BigDecimal.valueOf(25.00);
+
+        when(userQueryService.findUserById(1L)).thenReturn(user);
+        when(userRepo.save(user)).thenReturn(user);
+
+        userProfileService.addBalance(1L, amountToAdd);
+
+        assertEquals(BigDecimal.valueOf(75.00), user.getBalance());
+        verify(userRepo).save(user);
     }
 }
