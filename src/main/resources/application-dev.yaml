@@ -1,15 +1,8 @@
-server:
-  servlet:
-    context-path: /api
-
 spring:
-  application:
-    name: freelance-backend
-
   datasource:
-    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/freelance_db}
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:postgres}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/freelance_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
 
 jwt:
   access:
