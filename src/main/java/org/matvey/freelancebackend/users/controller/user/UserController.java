@@ -2,6 +2,7 @@ package org.matvey.freelancebackend.users.controller.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.matvey.freelancebackend.ads.dto.response.AdResponseDto;
 import org.matvey.freelancebackend.users.dto.request.UserUpdateDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.service.api.UserProfileService;

@@ -22,7 +22,7 @@ public class AdResponseDto {
     private Long id;
     private String title;
     private String description;
-    private AdType AdType;
+    private AdType adType;
     private BigDecimal budget;
     private AdStatus status;
     private UserResponseDto user;

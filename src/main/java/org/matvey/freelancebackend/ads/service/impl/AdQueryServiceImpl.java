@@ -7,10 +7,12 @@ import org.matvey.freelancebackend.ads.exception.AdNotFoundException;
 import org.matvey.freelancebackend.ads.mapper.AdMapper;
 import org.matvey.freelancebackend.ads.repository.AdRepository;
 import org.matvey.freelancebackend.ads.service.api.AdQueryService;
+import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,5 +51,12 @@ public class AdQueryServiceImpl implements AdQueryService {
         Ad ad = findAdById(id);
 
         return adMapper.toDto(ad);
+    }
+
+    @Override
+    public List<AdResponseDto> findAdsByUser(Authentication authentication, Pageable pageable) {
+        List<Ad> ads = adRepo.findAllByUserId(((CustomUserDetails) authentication.getPrincipal()).user().getId());
+
+        return adMapper.toDto(ads);
     }
 }

@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251124-0828__insert-categories
+      author: matvey
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: name, value: "Development"}
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: name, value: "Design"}
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: name, value: "Writing"}
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: name, value: "Marketing"}
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: name, value: "Translation"}
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: name, value: "Data Entry"}

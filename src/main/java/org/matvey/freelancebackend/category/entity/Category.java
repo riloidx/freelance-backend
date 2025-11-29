@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.matvey.freelancebackend.ads.entity.Ad;
 
 import java.time.Instant;
@@ -21,16 +23,16 @@ public class Category {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Size(max = 32)
     @NotNull
+    @Size(max = 32)
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    @NotNull
+    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
