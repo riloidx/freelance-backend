@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryResponseDto {
+    private long id;
     private String name;
     private int adsCount;
 }
