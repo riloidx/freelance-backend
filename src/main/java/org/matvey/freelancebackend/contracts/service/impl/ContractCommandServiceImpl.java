@@ -2,11 +2,13 @@ package org.matvey.freelancebackend.contracts.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.contracts.dto.response.ContractResponseDto;
+import org.matvey.freelancebackend.contracts.entity.Contract;
 import org.matvey.freelancebackend.contracts.entity.ContractStatus;
 import org.matvey.freelancebackend.contracts.mapper.ContractMapper;
 import org.matvey.freelancebackend.contracts.repository.ContractRepository;
 import org.matvey.freelancebackend.contracts.service.api.ContractCommandService;
 import org.matvey.freelancebackend.contracts.service.util.ContractSecurityUtil;
+import org.matvey.freelancebackend.users.service.api.UserProfileService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ public class ContractCommandServiceImpl implements ContractCommandService {
     private final ContractRepository contractRepository;
     private final ContractMapper contractMapper;
     private final ContractSecurityUtil contractSecurityUtil;
+    private final UserProfileService userProfileService;
 
     @Override
     public ContractResponseDto accept(long contractId, Authentication auth) {
@@ -33,8 +36,13 @@ public class ContractCommandServiceImpl implements ContractCommandService {
     private ContractResponseDto updateStatusIfOwner(long contractId,
                                                     ContractStatus status,
                                                     Authentication auth) {
-        var contract = contractSecurityUtil.getContractIfOwner(contractId, auth);
+        Contract contract = contractSecurityUtil.getContractIfOwner(contractId, auth);
         contract.setContractStatus(status);
+
+        if (status == ContractStatus.APPROVED) {
+            userProfileService.addBalance(contract.getFreelancer().getId(), contract.getPrice());
+        }
+        
         return contractMapper.toDto(contractRepository.save(contract));
     }
 }

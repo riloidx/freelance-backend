@@ -6,6 +6,9 @@ import org.matvey.freelancebackend.security.exception.UnauthorizedException;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.dto.request.UserUpdateDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
+import org.matvey.freelancebackend.users.dto.response.UserProfileResponseDto;
+import org.matvey.freelancebackend.users.dto.request.WithdrawBalanceDto;
+import org.matvey.freelancebackend.users.exception.InsufficientBalanceException;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.matvey.freelancebackend.users.repository.UserRepository;
@@ -15,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class UserProfileServiceImpl implements UserProfileService {
@@ -23,10 +28,10 @@ public class UserProfileServiceImpl implements UserProfileService {
     private final UserQueryService userQueryService;
 
     @Override
-    public UserResponseDto getUserProfile(Authentication authentication) {
+    public UserProfileResponseDto getUserProfile(Authentication authentication) {
         User curUser = ((CustomUserDetails) authentication.getPrincipal()).user();
 
-        return userMapper.toDto(curUser);
+        return userMapper.toProfileDto(curUser);
     }
 
     @Override
@@ -47,6 +52,29 @@ public class UserProfileServiceImpl implements UserProfileService {
         User user = prepareVerificatedUser(id, authentication);
 
         userRepo.delete(user);
+    }
+
+    @Override
+    @Transactional
+    public UserProfileResponseDto withdrawBalance(Authentication authentication, WithdrawBalanceDto withdrawDto) {
+        User user = ((CustomUserDetails) authentication.getPrincipal()).user();
+        
+        if (user.getBalance().compareTo(withdrawDto.getAmount()) < 0) {
+            throw new InsufficientBalanceException("Insufficient balance. Current balance: " + user.getBalance());
+        }
+        
+        user.setBalance(user.getBalance().subtract(withdrawDto.getAmount()));
+        User savedUser = userRepo.save(user);
+        
+        return userMapper.toProfileDto(savedUser);
+    }
+
+    @Override
+    @Transactional
+    public void addBalance(Long userId, BigDecimal amount) {
+        User user = userQueryService.findUserById(userId);
+        user.setBalance(user.getBalance().add(amount));
+        userRepo.save(user);
     }
 
     private User prepareVerificatedUser(long id, Authentication authentication) {

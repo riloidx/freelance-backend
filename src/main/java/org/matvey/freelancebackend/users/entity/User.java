@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.users.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,6 +11,7 @@ import org.matvey.freelancebackend.proposal.entity.Proposal;
 import org.matvey.freelancebackend.reviews.entity.Review;
 import org.matvey.freelancebackend.roles.entity.Role;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,6 +45,10 @@ public class User {
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
+    @Builder.Default
+    @Column(name = "balance", nullable = false, precision = 10, scale = 2)
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

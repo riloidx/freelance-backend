@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.matvey.freelancebackend.security.exception.UnauthorizedException;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.dto.request.UserUpdateDto;
+import org.matvey.freelancebackend.users.dto.response.UserProfileResponseDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
@@ -24,22 +25,22 @@ class UserProfileServiceImplTest {
 
     @Mock
     private UserRepository userRepo;
-    
+
     @Mock
     private UserMapper userMapper;
-    
+
     @Mock
     private UserQueryService userQueryService;
-    
+
     @Mock
     private Authentication authentication;
-    
+
     @Mock
     private CustomUserDetails userDetails;
-    
+
     @InjectMocks
     private UserProfileServiceImpl userProfileService;
-    
+
     private User user;
     private UserResponseDto userResponseDto;
     private UserUpdateDto userUpdateDto;
@@ -50,12 +51,12 @@ class UserProfileServiceImplTest {
         user.setId(1L);
         user.setUsername("testuser");
         user.setEmail("test@example.com");
-        
+
         userResponseDto = new UserResponseDto();
         userResponseDto.setId(1L);
         userResponseDto.setUsername("testuser");
         userResponseDto.setEmail("test@example.com");
-        
+
         userUpdateDto = new UserUpdateDto();
         userUpdateDto.setId(1L);
         userUpdateDto.setName("updateduser");
@@ -63,15 +64,19 @@ class UserProfileServiceImplTest {
 
     @Test
     void GetUserProfileShouldReturnUserResponseDto() {
+        UserProfileResponseDto userProfileResponseDto = UserProfileResponseDto.builder().
+                id(1L).
+                build();
+
+
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(userDetails.user()).thenReturn(user);
-        when(userMapper.toDto(user)).thenReturn(userResponseDto);
+        when(userMapper.toProfileDto(user)).thenReturn(userProfileResponseDto);
 
-        UserResponseDto result = userProfileService.getUserProfile(authentication);
+        UserProfileResponseDto result = userProfileService.getUserProfile(authentication);
 
         assertNotNull(result);
         assertEquals(userResponseDto.getId(), result.getId());
-        verify(userMapper).toDto(user);
     }
 
     @Test
@@ -93,15 +98,15 @@ class UserProfileServiceImplTest {
     void UpdateUserProfileShouldThrowExceptionWhenUserIdMismatch() {
         User differentUser = new User();
         differentUser.setId(2L);
-        
+
         userUpdateDto.setId(2L);
-        
+
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(userDetails.user()).thenReturn(user);
 
-        assertThrows(UnauthorizedException.class, 
+        assertThrows(UnauthorizedException.class,
                 () -> userProfileService.updateUserProfile(authentication, userUpdateDto));
-        
+
         verify(userRepo, never()).save(any());
     }
 
@@ -122,9 +127,9 @@ class UserProfileServiceImplTest {
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(userDetails.user()).thenReturn(user);
 
-        assertThrows(UnauthorizedException.class, 
+        assertThrows(UnauthorizedException.class,
                 () -> userProfileService.deleteUserProfile(2L, authentication));
-        
+
         verify(userRepo, never()).delete(any());
     }
 }

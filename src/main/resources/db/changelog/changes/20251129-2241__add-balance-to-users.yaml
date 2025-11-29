@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251129-1200-add-balance-to-users
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: balance
+                  type: DECIMAL(10,2)
+                  defaultValue: 0.00
+                  constraints:
+                    nullable: false

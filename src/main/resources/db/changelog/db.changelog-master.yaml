@@ -21,3 +21,5 @@ databaseChangeLog:
       file: db/changelog/changes/20251019-1601__create-contracts-table.yaml
   - include:
       file: db/changelog/changes/20251124-0828__insert-categories.yaml
+  - include:
+      file: db/changelog/changes/20251129-2241__add-balance-to-users.yaml

@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.ads.dto.response.AdResponseDto;
 import org.matvey.freelancebackend.users.dto.request.UserUpdateDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
+import org.matvey.freelancebackend.users.dto.response.UserProfileResponseDto;
+import org.matvey.freelancebackend.users.dto.request.WithdrawBalanceDto;
 import org.matvey.freelancebackend.users.service.api.UserProfileService;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.data.domain.Page;
@@ -24,8 +26,8 @@ public class UserController {
     private final UserProfileService userProfileService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponseDto> me(Authentication authentication) {
-        UserResponseDto user = userProfileService.getUserProfile(authentication);
+    public ResponseEntity<UserProfileResponseDto> me(Authentication authentication) {
+        UserProfileResponseDto user = userProfileService.getUserProfile(authentication);
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
@@ -59,5 +61,13 @@ public class UserController {
         userProfileService.deleteUserProfile(id, authentication);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @PostMapping("/me/withdraw")
+    public ResponseEntity<UserProfileResponseDto> withdrawBalance(Authentication authentication,
+                                                                  @RequestBody @Valid WithdrawBalanceDto withdrawDto) {
+        UserProfileResponseDto user = userProfileService.withdrawBalance(authentication, withdrawDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }
