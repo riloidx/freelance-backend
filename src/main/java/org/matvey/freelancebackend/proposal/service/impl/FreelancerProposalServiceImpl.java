@@ -15,6 +15,7 @@ import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class FreelancerProposalServiceImpl implements FreelancerProposalService 
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
+    @Transactional
     public ProposalResponseDto create(ProposalCreateDto proposalCreateDto, Authentication authentication) {
         Proposal proposal = prepareProposal(proposalCreateDto, authentication);
 

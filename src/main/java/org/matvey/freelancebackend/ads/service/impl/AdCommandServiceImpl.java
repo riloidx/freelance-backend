@@ -18,6 +18,7 @@ import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class AdCommandServiceImpl implements AdCommandService {
     private final AdUpdater adUpdater;
 
     @Override
+    @Transactional
     public AdResponseDto create(AdCreateDto adCreateDto, Authentication authentication) {
         Ad ad = prepareAd(adCreateDto, authentication);
         Ad saved = adRepo.save(ad);
@@ -37,6 +39,7 @@ public class AdCommandServiceImpl implements AdCommandService {
     }
 
     @Override
+    @Transactional
     public AdResponseDto update(AdUpdateDto dto, Authentication authentication) {
         Ad existing = adSecurityUtil.checkAdOwnerPermissionAndReturn(dto.getId(), authentication);
 
@@ -47,6 +50,7 @@ public class AdCommandServiceImpl implements AdCommandService {
     }
 
     @Override
+    @Transactional
     public void delete(long id, Authentication authentication) {
         Ad existing = adSecurityUtil.checkAdOwnerPermissionAndReturn(id, authentication);
 
