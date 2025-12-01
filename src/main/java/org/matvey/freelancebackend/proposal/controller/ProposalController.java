@@ -70,4 +70,14 @@ public class ProposalController {
 
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
+    
+    @GetMapping("/me")
+    public ResponseEntity<Page<ProposalResponseDto>> getMyProposals(
+            Pageable pageable,
+            Authentication authentication
+    ) {
+        Page<ProposalResponseDto> page = proposalQueryService.findAllByFreelancer(pageable, authentication);
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
 }

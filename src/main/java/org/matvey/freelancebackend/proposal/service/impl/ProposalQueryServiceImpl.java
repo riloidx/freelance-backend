@@ -45,4 +45,16 @@ public class ProposalQueryServiceImpl implements ProposalQueryService {
     public ProposalResponseDto findDtoById(long id) {
         return proposalMapper.toDto(findById(id));
     }
+    
+    @Override
+    public Page<ProposalResponseDto> findAllByFreelancer(Pageable pageable, Authentication authentication) {
+        org.matvey.freelancebackend.security.user.CustomUserDetails userDetails = 
+            (org.matvey.freelancebackend.security.user.CustomUserDetails) authentication.getPrincipal();
+        
+        Long freelancerId = userDetails.user().getId();
+        
+        Page<Proposal> proposals = proposalRepo.findAllByFreelancerId(freelancerId, pageable);
+        
+        return proposalMapper.toDto(proposals);
+    }
 }
