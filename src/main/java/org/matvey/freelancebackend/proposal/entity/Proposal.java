@@ -3,6 +3,7 @@ package org.matvey.freelancebackend.proposal.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.matvey.freelancebackend.ads.entity.Ad;
 import org.matvey.freelancebackend.contracts.entity.Contract;
 import org.matvey.freelancebackend.users.entity.User;
@@ -29,6 +30,7 @@ public class Proposal {
     private ProposalStatus proposalStatus;
 
     @Column(name = "created_at")
+    @CreationTimestamp
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
