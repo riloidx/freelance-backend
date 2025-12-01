@@ -7,6 +7,7 @@ import org.matvey.freelancebackend.users.dto.request.UserUpdateDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.dto.response.UserProfileResponseDto;
 import org.matvey.freelancebackend.users.dto.request.WithdrawBalanceDto;
+import org.matvey.freelancebackend.users.dto.request.DepositBalanceDto;
 import org.matvey.freelancebackend.users.service.api.UserProfileService;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.data.domain.Page;
@@ -67,6 +68,14 @@ public class UserController {
     public ResponseEntity<UserProfileResponseDto> withdrawBalance(Authentication authentication,
                                                                   @RequestBody @Valid WithdrawBalanceDto withdrawDto) {
         UserProfileResponseDto user = userProfileService.withdrawBalance(authentication, withdrawDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @PostMapping("/me/deposit")
+    public ResponseEntity<UserProfileResponseDto> depositBalance(Authentication authentication,
+                                                                 @RequestBody @Valid DepositBalanceDto depositDto) {
+        UserProfileResponseDto user = userProfileService.depositBalance(authentication, depositDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }

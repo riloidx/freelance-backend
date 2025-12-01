@@ -8,6 +8,7 @@ import org.matvey.freelancebackend.users.dto.request.UserUpdateDto;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.dto.response.UserProfileResponseDto;
 import org.matvey.freelancebackend.users.dto.request.WithdrawBalanceDto;
+import org.matvey.freelancebackend.users.dto.request.DepositBalanceDto;
 import org.matvey.freelancebackend.users.exception.InsufficientBalanceException;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
@@ -64,6 +65,17 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
         
         user.setBalance(user.getBalance().subtract(withdrawDto.getAmount()));
+        User savedUser = userRepo.save(user);
+        
+        return userMapper.toProfileDto(savedUser);
+    }
+
+    @Override
+    @Transactional
+    public UserProfileResponseDto depositBalance(Authentication authentication, DepositBalanceDto depositDto) {
+        User user = ((CustomUserDetails) authentication.getPrincipal()).user();
+        
+        user.setBalance(user.getBalance().add(depositDto.getAmount()));
         User savedUser = userRepo.save(user);
         
         return userMapper.toProfileDto(savedUser);
