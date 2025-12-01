@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.matvey.freelancebackend.ads.entity.AdStatus;
 import org.matvey.freelancebackend.ads.entity.AdType;
 
 import java.math.BigDecimal;
@@ -30,4 +31,6 @@ public class AdUpdateDto {
 
     @NotNull(message = "Category id is required")
     private Long categoryId;
+
+    private AdStatus status;
 }

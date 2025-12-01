@@ -26,9 +26,9 @@ public class AdQueryServiceImpl implements AdQueryService {
     @Override
     public Page<AdResponseDto> findAllByOrderByCreatedDesc(Pageable pageable) {
         Pageable sorted = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                Sort.by("createdAt"));
+                Sort.by("createdAt").descending());
 
-        Page<Ad> page = adRepo.findAll(sorted);
+        Page<Ad> page = adRepo.findAllByStatus(org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, sorted);
 
         return adMapper.toDto(page);
     }
