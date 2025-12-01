@@ -13,7 +13,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
                 JOIN c.proposal p
                 JOIN p.ad a
                 WHERE a.user.id = :userId
-                AND c.contractStatus = :contractStatus
+                AND c.contractStatus = :status
             """)
     Page<Contract> findContractsByUserIdAndProposalStatus(long userId, ContractStatus status, Pageable pageable);
 }
