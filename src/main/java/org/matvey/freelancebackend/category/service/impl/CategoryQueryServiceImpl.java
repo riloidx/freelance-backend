@@ -39,14 +39,14 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
 
     @Override
     public CategoryResponseDto findCategoryDtoByName(String name) {
-        Category category = findCategoryByName(name);
+        Category category = findCategoryByNameEn(name);
 
         return categoryMapper.toDto(category);
     }
 
 
-    private Category findCategoryByName(String name) {
-        return categoryRepo.findByName(name).
-                orElseThrow(() -> new CategoryNotFoundException("name", name));
+    private Category findCategoryByNameEn(String nameEn) {
+        return categoryRepo.findByNameEn(nameEn).
+                orElseThrow(() -> new CategoryNotFoundException("nameEn", nameEn));
     }
 }

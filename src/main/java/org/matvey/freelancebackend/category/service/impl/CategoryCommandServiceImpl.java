@@ -24,7 +24,7 @@ public class CategoryCommandServiceImpl implements CategoryCommandService {
     @Override
     @Transactional
     public CategoryResponseDto create(CategoryCreateDto categoryCreateDto) {
-        isCategoryExistsByName(categoryCreateDto.getName());
+        validateCategoryUniqueness(categoryCreateDto.getNameEn(), categoryCreateDto.getNameRu(), null);
         Category category = categoryMapper.toEntity(categoryCreateDto);
 
         Category savedCategory = categoryRepo.save(category);
@@ -38,6 +38,7 @@ public class CategoryCommandServiceImpl implements CategoryCommandService {
         ValidationUtils.ensureSameId("Category", pathId, categoryUpdateDto.getId());
 
         Category category = categoryQueryService.findCategoryById(pathId);
+        validateCategoryUniqueness(categoryUpdateDto.getNameEn(), categoryUpdateDto.getNameRu(), pathId);
         categoryMapper.updateEntityFromDto(categoryUpdateDto, category);
 
         Category savedCategory = categoryRepo.save(category);
@@ -51,9 +52,17 @@ public class CategoryCommandServiceImpl implements CategoryCommandService {
         categoryRepo.deleteById(id);
     }
 
-    private void isCategoryExistsByName(String name) {
-        if (categoryRepo.findByName(name).isPresent()) {
-            throw new CategoryAlreadyExistsException("name", name);
-        }
+    private void validateCategoryUniqueness(String nameEn, String nameRu, Long excludeId) {
+        categoryRepo.findByNameEn(nameEn).ifPresent(existing -> {
+            if (!existing.getId().equals(excludeId)) {
+                throw new CategoryAlreadyExistsException("nameEn", nameEn);
+            }
+        });
+        
+        categoryRepo.findByNameRu(nameRu).ifPresent(existing -> {
+            if (!existing.getId().equals(excludeId)) {
+                throw new CategoryAlreadyExistsException("nameRu", nameRu);
+            }
+        });
     }
 }

@@ -25,8 +25,13 @@ public class Category {
 
     @NotNull
     @Size(max = 32)
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "name_en", nullable = false)
+    private String nameEn;
+
+    @NotNull
+    @Size(max = 32)
+    @Column(name = "name_ru", nullable = false)
+    private String nameRu;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)

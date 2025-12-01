@@ -13,6 +13,10 @@ import org.hibernate.validator.constraints.Length;
 public class CategoryUpdateDto {
     @NotNull(message = "Id is required field")
     private Long id;
-    @Length(min = 2, max = 50, message = "Length of name must be between 2 and 50")
-    private String name;
+    
+    @Length(min = 2, max = 32, message = "Length of nameEn must be between 2 and 32")
+    private String nameEn;
+    
+    @Length(min = 2, max = 32, message = "Length of nameRu must be between 2 and 32")
+    private String nameRu;
 }

@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251201-2000__add-localization-to-categories
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: categories
+            columns:
+              - column:
+                  name: name_en
+                  type: VARCHAR(32)
+              - column:
+                  name: name_ru
+                  type: VARCHAR(32)
+        
+        - sql:
+            sql: >
+              UPDATE categories SET name_en = name, name_ru = 
+              CASE 
+                WHEN name = 'Development' THEN 'Разработка'
+                WHEN name = 'Design' THEN 'Дизайн'
+                WHEN name = 'Writing' THEN 'Написание текстов'
+                WHEN name = 'Marketing' THEN 'Маркетинг'
+                WHEN name = 'Translation' THEN 'Перевод'
+                WHEN name = 'Data Entry' THEN 'Ввод данных'
+                ELSE name
+              END
+        
+        - dropColumn:
+            tableName: categories
+            columnName: name
+        
+        - addNotNullConstraint:
+            tableName: categories
+            columnName: name_en
+        
+        - addNotNullConstraint:
+            tableName: categories
+            columnName: name_ru
