@@ -15,7 +15,7 @@ public class AdSecurityUtil {
     public Ad checkAdOwnerPermissionAndReturn(long adId, Authentication auth) {
         Ad ad = adQueryService.findAdById(adId);
 
-        if (auth == null || !auth.getName().equals(ad.getUser().getEmail())) {
+        if (!auth.getAuthorities().toString().contains("ROLE_ADMIN") && !auth.getName().equals(ad.getUser().getEmail())) {
             throw new AccessDeniedException("You are not allowed to this ad");
         }
 
