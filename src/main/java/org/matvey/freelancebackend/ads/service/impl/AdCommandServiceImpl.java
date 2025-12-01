@@ -52,8 +52,11 @@ public class AdCommandServiceImpl implements AdCommandService {
     @Override
     @Transactional
     public void delete(long id, Authentication authentication) {
+        if (!adRepo.existsById(id)) {
+            throw new org.matvey.freelancebackend.ads.exception.AdNotFoundException("id", String.valueOf(id));
+        }
+        
         Ad existing = adSecurityUtil.checkAdOwnerPermissionAndReturn(id, authentication);
-
         adRepo.delete(existing);
     }
 

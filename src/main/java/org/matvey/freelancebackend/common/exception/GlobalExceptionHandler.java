@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.common.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.matvey.freelancebackend.ads.exception.AdNotFoundException;
 import org.matvey.freelancebackend.common.exception.dto.ErrorResponse;
 import org.matvey.freelancebackend.common.exception.dto.ValidationErrorResponse;
 import org.matvey.freelancebackend.users.exception.InsufficientBalanceException;
@@ -30,6 +31,14 @@ public class GlobalExceptionHandler {
         var body = buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
 
         return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(AdNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAdNotFoundException(AdNotFoundException e,
+                                                                   HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.NOT_FOUND, request);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
     @ExceptionHandler(Exception.class)
