@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 public class ProposalCreateDto {
     @NotNull(message = "Price is required")
     @DecimalMin(value = "10.00", message = "Minimal value is 10.00")
-    @DecimalMax(value = "200.00", message = "Max value is 200.00")
     @Digits(integer = 10, fraction = 2, message = "Format must be 10.00")
     private BigDecimal price;
 
