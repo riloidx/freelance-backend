@@ -25,3 +25,5 @@ databaseChangeLog:
       file: db/changelog/changes/20251129-2241__add-balance-to-users.yaml
   - include:
       file: db/changelog/changes/20251201-2000__add-localization-to-categories.yaml
+  - include:
+      file: db/changelog/changes/20251202-1200__update-contracts-table.yaml

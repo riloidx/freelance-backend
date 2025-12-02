@@ -28,6 +28,9 @@ public class Contract {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    @Column(name = "delivery_url", length = 1000)
+    private String deliveryUrl;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proposal_id")
     private Proposal proposal;
@@ -35,4 +38,8 @@ public class Contract {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "freelancer_id")
     private User freelancer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 }

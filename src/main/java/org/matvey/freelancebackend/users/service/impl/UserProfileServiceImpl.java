@@ -89,6 +89,19 @@ public class UserProfileServiceImpl implements UserProfileService {
         userRepo.save(user);
     }
 
+    @Override
+    @Transactional
+    public void subtractBalance(Long userId, BigDecimal amount) {
+        User user = userQueryService.findUserById(userId);
+        
+        if (user.getBalance().compareTo(amount) < 0) {
+            throw new InsufficientBalanceException("Insufficient balance. Current balance: " + user.getBalance());
+        }
+        
+        user.setBalance(user.getBalance().subtract(amount));
+        userRepo.save(user);
+    }
+
     private User prepareVerificatedUser(long id, Authentication authentication) {
         User user = ((CustomUserDetails) authentication.getPrincipal()).user();
         verifyUserById(user.getId(), id);

@@ -34,22 +34,33 @@ public class ContractController {
         return ResponseEntity.status(HttpStatus.OK).body(contracts);
     }
 
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<ContractResponseDto> completeWork(
+            @PathVariable long id,
+            @RequestBody org.matvey.freelancebackend.contracts.dto.request.CompleteWorkDto dto,
+            Authentication authentication) {
+        
+        ContractResponseDto contract = contractCommandService.completeWork(id, dto.getDeliveryUrl(), authentication);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(contract);
+    }
+
     @PatchMapping("/{id}/accept")
-    public ResponseEntity<ContractResponseDto> acceptContract(
+    public ResponseEntity<ContractResponseDto> acceptWork(
             @PathVariable long id,
             Authentication authentication) {
         
-        ContractResponseDto contract = contractCommandService.accept(id, authentication);
+        ContractResponseDto contract = contractCommandService.acceptWork(id, authentication);
         
         return ResponseEntity.status(HttpStatus.OK).body(contract);
     }
 
     @PatchMapping("/{id}/reject")
-    public ResponseEntity<ContractResponseDto> rejectContract(
+    public ResponseEntity<ContractResponseDto> rejectWork(
             @PathVariable long id,
             Authentication authentication) {
         
-        ContractResponseDto contract = contractCommandService.reject(id, authentication);
+        ContractResponseDto contract = contractCommandService.rejectWork(id, authentication);
         
         return ResponseEntity.status(HttpStatus.OK).body(contract);
     }

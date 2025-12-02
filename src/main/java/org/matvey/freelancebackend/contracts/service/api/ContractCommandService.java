@@ -4,6 +4,7 @@ import org.matvey.freelancebackend.contracts.dto.response.ContractResponseDto;
 import org.springframework.security.core.Authentication;
 
 public interface ContractCommandService {
-    ContractResponseDto accept(long contractId, Authentication auth);
-    ContractResponseDto reject(long contractId, Authentication auth);
+    ContractResponseDto completeWork(long contractId, String deliveryUrl, Authentication auth);
+    ContractResponseDto acceptWork(long contractId, Authentication auth);
+    ContractResponseDto rejectWork(long contractId, Authentication auth);
 }

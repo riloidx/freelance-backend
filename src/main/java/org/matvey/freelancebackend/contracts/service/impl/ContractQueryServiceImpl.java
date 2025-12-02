@@ -26,7 +26,7 @@ public class ContractQueryServiceImpl implements ContractQueryService {
                                                      Authentication auth) {
 
         long userId = ((CustomUserDetails) auth.getPrincipal()).user().getId();
-        Page<Contract> contracts = contractRepo.findContractsByUserIdAndProposalStatus(userId, contractStatus, pageable);
+        Page<Contract> contracts = contractRepo.findContractsByUserIdAndStatus(userId, contractStatus, pageable);
 
         return contractMapper.toDto(contracts);
     }

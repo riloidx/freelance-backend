@@ -29,7 +29,12 @@ public class ProposalQueryServiceImpl implements ProposalQueryService {
 
         adSecurityUtil.checkAdOwnerPermissionAndReturn(adId, authentication);
 
-        Page<Proposal> proposals = proposalRepo.findAllByAdIdAndProposalStatus(adId, status, pageable);
+        Page<Proposal> proposals;
+        if (status != null) {
+            proposals = proposalRepo.findAllByAdIdAndProposalStatus(adId, status, pageable);
+        } else {
+            proposals = proposalRepo.findAllByAdId(adId, pageable);
+        }
 
         return proposalMapper.toDto(proposals);
     }

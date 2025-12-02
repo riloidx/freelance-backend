@@ -24,4 +24,6 @@ public interface UserProfileService {
     UserProfileResponseDto depositBalance(Authentication authentication, DepositBalanceDto depositDto);
 
     void addBalance(Long userId, BigDecimal amount);
+
+    void subtractBalance(Long userId, BigDecimal amount);
 }

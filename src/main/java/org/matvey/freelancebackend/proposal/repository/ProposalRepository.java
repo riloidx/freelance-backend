@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 
+    Page<Proposal> findAllByAdId(Long adId, Pageable pageable);
+    
     Page<Proposal> findAllByAdIdAndProposalStatus(Long adId, ProposalStatus status, Pageable pageable);
     
     Page<Proposal> findAllByFreelancerId(Long freelancerId, Pageable pageable);

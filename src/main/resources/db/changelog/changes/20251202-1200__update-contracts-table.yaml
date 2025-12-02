@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251202-1200-add-delivery-url-to-contracts
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: contracts
+            columns:
+              - column:
+                  name: delivery_url
+                  type: VARCHAR(1000)
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 20251202-1201-rename-customer-to-buyer
+      author: matvey
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: contracts
+            constraintName: fk_contracts_customer
+        - renameColumn:
+            tableName: contracts
+            oldColumnName: customer_id
+            newColumnName: buyer_id
+            columnDataType: BIGINT
+        - addForeignKeyConstraint:
+            baseTableName: contracts
+            baseColumnNames: buyer_id
+            constraintName: fk_contracts_buyer
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+  - changeSet:
+      id: 20251202-1202-drop-ad-id-from-contracts
+      author: matvey
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: contracts
+            constraintName: fk_contracts_ads
+        - dropColumn:
+            tableName: contracts
+            columnName: ad_id
+
+  - changeSet:
+      id: 20251202-1203-update-contract-statuses
+      author: matvey
+      changes:
+        - sql:
+            sql: >
+              UPDATE contracts 
+              SET contract_status = 'IN_PROGRESS' 
+              WHERE contract_status = 'PENDING';
+        - sql:
+            sql: >
+              UPDATE contracts 
+              SET contract_status = 'COMPLETED' 
+              WHERE contract_status = 'APPROVED';

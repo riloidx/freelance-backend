@@ -10,10 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface ContractRepository extends JpaRepository<Contract, Long> {
     @Query("""
                 SELECT c FROM Contract c
-                JOIN c.proposal p
-                JOIN p.ad a
-                WHERE a.user.id = :userId
-                AND c.contractStatus = :status
+                WHERE (c.freelancer.id = :userId OR c.buyer.id = :userId)
+                AND (:status IS NULL OR c.contractStatus = :status)
             """)
-    Page<Contract> findContractsByUserIdAndProposalStatus(long userId, ContractStatus status, Pageable pageable);
+    Page<Contract> findContractsByUserIdAndStatus(long userId, ContractStatus status, Pageable pageable);
 }
