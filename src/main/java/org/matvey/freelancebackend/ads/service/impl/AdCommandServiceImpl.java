@@ -52,9 +52,9 @@ public class AdCommandServiceImpl implements AdCommandService {
     @Override
     @Transactional
     public void delete(long id, Authentication authentication) {
-        Ad existing = adSecurityUtil.checkAdOwnerPermissionAndReturn(id, authentication);
+        //Ad existing = adSecurityUtil.checkAdOwnerPermissionAndReturn(id, authentication);
 
-        adRepo.delete(existing);
+        adRepo.deleteById(id);
     }
 
     private Ad prepareAd(AdCreateDto adCreateDto, Authentication authentication) {
