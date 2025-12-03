@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251203-1720-make-ad-id-nullable-in-proposals
+      author: matvey
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: proposals
+            constraintName: fk_proposals_ads
+
+        - dropNotNullConstraint:
+            tableName: proposals
+            columnName: ad_id
+            columnDataType: BIGINT
+
+        - addForeignKeyConstraint:
+            baseTableName: proposals
+            baseColumnNames: ad_id
+            constraintName: fk_proposals_ads
+            referencedTableName: ads
+            referencedColumnNames: id
+            onDelete: CASCADE

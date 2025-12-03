@@ -34,12 +34,16 @@ public class Proposal {
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ad_id", nullable = false)
+    @JoinColumn(name = "ad_id", nullable = true)
     private Ad ad;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User freelancer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
     @OneToOne(mappedBy = "proposal", cascade = CascadeType.ALL, orphanRemoval = true)
     private Contract contract;

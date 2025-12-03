@@ -13,5 +13,9 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
     Page<Proposal> findAllByAdIdAndProposalStatus(Long adId, ProposalStatus status, Pageable pageable);
     
     Page<Proposal> findAllByFreelancerId(Long freelancerId, Pageable pageable);
+    
+    Page<Proposal> findAllByFreelancerIdAndAdIsNull(Long freelancerId, Pageable pageable);
+    
+    Page<Proposal> findAllByFreelancerIdAndAdIsNotNull(Long freelancerId, Pageable pageable);
 }
 

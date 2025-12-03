@@ -11,6 +11,8 @@ import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.matvey.freelancebackend.users.repository.UserRepository;
 import org.matvey.freelancebackend.users.service.api.AdminService;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

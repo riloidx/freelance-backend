@@ -6,4 +6,6 @@ import org.springframework.security.core.Authentication;
 
 public interface FreelancerProposalService {
     ProposalResponseDto create(ProposalCreateDto proposalCreateDto, Authentication authentication);
+    ProposalResponseDto acceptBuyerProposal(long proposalId, Authentication authentication);
+    ProposalResponseDto rejectBuyerProposal(long proposalId, Authentication authentication);
 }
