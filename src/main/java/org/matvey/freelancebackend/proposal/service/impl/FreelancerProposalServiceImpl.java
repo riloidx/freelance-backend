@@ -24,6 +24,9 @@ public class FreelancerProposalServiceImpl implements FreelancerProposalService 
     private final ProposalMapper proposalMapper;
     private final AdQueryService adQueryService;
     private final UserDetailsServiceImpl userDetailsService;
+    private final org.matvey.freelancebackend.proposal.service.api.ProposalQueryService proposalQueryService;
+    private final org.matvey.freelancebackend.contracts.repository.ContractRepository contractRepository;
+    private final org.matvey.freelancebackend.users.service.api.UserProfileService userProfileService;
 
     @Override
     @Transactional
@@ -45,6 +48,62 @@ public class FreelancerProposalServiceImpl implements FreelancerProposalService 
         proposal.setFreelancer(freelancer);
 
         return proposal;
+    }
+
+    @Override
+    @Transactional
+    public ProposalResponseDto acceptBuyerProposal(long proposalId, Authentication authentication) {
+        Proposal proposal = proposalQueryService.findById(proposalId);
+        User freelancer = ((CustomUserDetails) authentication.getPrincipal()).user();
+
+        if (!proposal.getFreelancer().getId().equals(freelancer.getId())) {
+            throw new RuntimeException("You are not authorized to accept this proposal");
+        }
+
+        if (proposal.getAd() != null) {
+            throw new RuntimeException("This is not a buyer proposal");
+        }
+
+        if (proposal.getBuyer() == null) {
+            throw new RuntimeException("Buyer not found in proposal");
+        }
+
+        userProfileService.subtractBalance(proposal.getBuyer().getId(), proposal.getPrice());
+
+        proposal.setProposalStatus(ProposalStatus.ACCEPTED);
+        proposalRepo.save(proposal);
+
+        org.matvey.freelancebackend.contracts.entity.Contract contract = new org.matvey.freelancebackend.contracts.entity.Contract();
+        contract.setProposal(proposal);
+        contract.setFreelancer(freelancer);
+        contract.setBuyer(proposal.getBuyer());
+        contract.setPrice(proposal.getPrice());
+        contract.setContractStatus(org.matvey.freelancebackend.contracts.entity.ContractStatus.IN_PROGRESS);
+        contract.setCreatedAt(java.time.Instant.now());
+
+        contractRepository.save(contract);
+
+        return proposalMapper.toDto(proposal);
+    }
+
+    @Override
+    @Transactional
+    public ProposalResponseDto rejectBuyerProposal(long proposalId, Authentication authentication) {
+        Proposal proposal = proposalQueryService.findById(proposalId);
+        User freelancer = ((CustomUserDetails) authentication.getPrincipal()).user();
+
+        if (!proposal.getFreelancer().getId().equals(freelancer.getId())) {
+            throw new RuntimeException("You are not authorized to reject this proposal");
+        }
+
+        if (proposal.getAd() != null) {
+            throw new RuntimeException("This is not a buyer proposal");
+        }
+
+        proposal.setProposalStatus(ProposalStatus.REJECTED);
+        proposalRepo.save(proposal);
+
+        return proposalMapper.toDto(proposal);
     }
 
 }

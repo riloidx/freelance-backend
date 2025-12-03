@@ -1,33 +1,67 @@
 databaseChangeLog:
   - changeSet:
+      id: 20251203-1500-add-localization-to-ads
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: ads
+            columns:
+              - column:
+                  name: title_en
+                  type: varchar(50)
+              - column:
+                  name: title_ru
+                  type: varchar(50)
+              - column:
+                  name: description_en
+                  type: varchar(1500)
+              - column:
+                  name: description_ru
+                  type: varchar(1500)
+        - sql:
+            sql: UPDATE ads SET title_en = title, description_en = description
+        - dropColumn:
+            tableName: ads
+            columnName: title
+        - dropColumn:
+            tableName: ads
+            columnName: description
+
+  - changeSet:
       id: 20251203-1410-insert-ads-development
       author: matvey
       changes:
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Build REST API for mobile app"}
-              - column: {name: description, value: "Need experienced backend developer to create REST API using Spring Boot. Must have experience with PostgreSQL and JWT authentication."}
+              - column: {name: title_en, value: "Build REST API for mobile app"}
+              - column: {name: title_ru, value: "Разработка REST API для мобильного приложения"}
+              - column: {name: description_en, value: "Need experienced backend developer to create REST API using Spring Boot. Must have experience with PostgreSQL and JWT authentication."}
+              - column: {name: description_ru, value: "Требуется опытный backend разработчик для создания REST API с использованием Spring Boot. Необходим опыт работы с PostgreSQL и JWT аутентификацией."}
               - column: {name: budget, value: 1500.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 2}
               - column: {name: category_id, value: 1}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "React frontend development"}
-              - column: {name: description, value: "Looking for React developer to build responsive web application. Experience with Redux and Material-UI required."}
+              - column: {name: title_en, value: "React frontend development"}
+              - column: {name: title_ru, value: "Разработка React фронтенда"}
+              - column: {name: description_en, value: "Looking for React developer to build responsive web application. Experience with Redux and Material-UI required."}
+              - column: {name: description_ru, value: "Ищу React разработчика для создания адаптивного веб-приложения. Требуется опыт работы с Redux и Material-UI."}
               - column: {name: budget, value: 2000.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 3}
               - column: {name: category_id, value: 1}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Full-stack developer available"}
-              - column: {name: description, value: "Experienced full-stack developer offering services. Proficient in Java, Spring, React, and PostgreSQL. Available for long-term projects."}
+              - column: {name: title_en, value: "Full-stack developer available"}
+              - column: {name: title_ru, value: "Full-stack разработчик доступен"}
+              - column: {name: description_en, value: "Experienced full-stack developer offering services. Proficient in Java, Spring, React, and PostgreSQL. Available for long-term projects."}
+              - column: {name: description_ru, value: "Опытный full-stack разработчик предлагает услуги. Владею Java, Spring, React и PostgreSQL. Доступен для долгосрочных проектов."}
               - column: {name: budget, value: 50.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 2}
@@ -41,28 +75,34 @@ databaseChangeLog:
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Logo design for startup"}
-              - column: {name: description, value: "Need creative logo designer for tech startup. Modern, minimalist style preferred. Provide 3-5 concepts."}
+              - column: {name: title_en, value: "Logo design for startup"}
+              - column: {name: title_ru, value: "Дизайн логотипа для стартапа"}
+              - column: {name: description_en, value: "Need creative logo designer for tech startup. Modern, minimalist style preferred. Provide 3-5 concepts."}
+              - column: {name: description_ru, value: "Требуется креативный дизайнер логотипов для технологического стартапа. Предпочтителен современный минималистичный стиль. Предоставить 3-5 концептов."}
               - column: {name: budget, value: 500.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 4}
               - column: {name: category_id, value: 2}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "UI/UX design for mobile app"}
-              - column: {name: description, value: "Looking for UI/UX designer to create modern interface for iOS and Android app. Figma experience required."}
+              - column: {name: title_en, value: "UI/UX design for mobile app"}
+              - column: {name: title_ru, value: "UI/UX дизайн для мобильного приложения"}
+              - column: {name: description_en, value: "Looking for UI/UX designer to create modern interface for iOS and Android app. Figma experience required."}
+              - column: {name: description_ru, value: "Ищу UI/UX дизайнера для создания современного интерфейса для iOS и Android приложения. Требуется опыт работы с Figma."}
               - column: {name: budget, value: 1200.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 5}
               - column: {name: category_id, value: 2}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Professional UI/UX designer"}
-              - column: {name: description, value: "Offering professional UI/UX design services. Specialized in mobile and web applications. Portfolio available upon request."}
+              - column: {name: title_en, value: "Professional UI/UX designer"}
+              - column: {name: title_ru, value: "Профессиональный UI/UX дизайнер"}
+              - column: {name: description_en, value: "Offering professional UI/UX design services. Specialized in mobile and web applications. Portfolio available upon request."}
+              - column: {name: description_ru, value: "Предлагаю профессиональные услуги UI/UX дизайна. Специализируюсь на мобильных и веб-приложениях. Портфолио доступно по запросу."}
               - column: {name: budget, value: 60.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 3}
@@ -76,28 +116,34 @@ databaseChangeLog:
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Blog articles about technology"}
-              - column: {name: description, value: "Need writer for 10 blog articles about AI and machine learning. Each article 1000-1500 words. SEO optimization required."}
+              - column: {name: title_en, value: "Blog articles about technology"}
+              - column: {name: title_ru, value: "Блог статьи о технологиях"}
+              - column: {name: description_en, value: "Need writer for 10 blog articles about AI and machine learning. Each article 1000-1500 words. SEO optimization required."}
+              - column: {name: description_ru, value: "Требуется писатель для 10 блог статей об ИИ и машинном обучении. Каждая статья 1000-1500 слов. Требуется SEO оптимизация."}
               - column: {name: budget, value: 800.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 6}
               - column: {name: category_id, value: 3}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Product descriptions for e-commerce"}
-              - column: {name: description, value: "Looking for copywriter to create compelling product descriptions for online store. 50 products total."}
+              - column: {name: title_en, value: "Product descriptions for e-commerce"}
+              - column: {name: title_ru, value: "Описания товаров для интернет-магазина"}
+              - column: {name: description_en, value: "Looking for copywriter to create compelling product descriptions for online store. 50 products total."}
+              - column: {name: description_ru, value: "Ищу копирайтера для создания привлекательных описаний товаров для интернет-магазина. Всего 50 товаров."}
               - column: {name: budget, value: 600.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 2}
               - column: {name: category_id, value: 3}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Content writer and copywriter"}
-              - column: {name: description, value: "Professional content writer available for hire. Specializing in tech, business, and lifestyle topics. Fast turnaround guaranteed."}
+              - column: {name: title_en, value: "Content writer and copywriter"}
+              - column: {name: title_ru, value: "Контент-райтер и копирайтер"}
+              - column: {name: description_en, value: "Professional content writer available for hire. Specializing in tech, business, and lifestyle topics. Fast turnaround guaranteed."}
+              - column: {name: description_ru, value: "Профессиональный контент-райтер доступен для найма. Специализируюсь на технологиях, бизнесе и образе жизни. Гарантирую быстрое выполнение."}
               - column: {name: budget, value: 40.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 4}
@@ -111,28 +157,34 @@ databaseChangeLog:
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Social media marketing campaign"}
-              - column: {name: description, value: "Need social media marketer to run 3-month campaign on Instagram and Facebook. Experience with paid ads required."}
+              - column: {name: title_en, value: "Social media marketing campaign"}
+              - column: {name: title_ru, value: "Кампания в социальных сетях"}
+              - column: {name: description_en, value: "Need social media marketer to run 3-month campaign on Instagram and Facebook. Experience with paid ads required."}
+              - column: {name: description_ru, value: "Требуется маркетолог для проведения 3-месячной кампании в Instagram и Facebook. Необходим опыт работы с платной рекламой."}
               - column: {name: budget, value: 2500.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 3}
               - column: {name: category_id, value: 4}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "SEO optimization for website"}
-              - column: {name: description, value: "Looking for SEO specialist to optimize corporate website. Keyword research and on-page optimization needed."}
+              - column: {name: title_en, value: "SEO optimization for website"}
+              - column: {name: title_ru, value: "SEO оптимизация для сайта"}
+              - column: {name: description_en, value: "Looking for SEO specialist to optimize corporate website. Keyword research and on-page optimization needed."}
+              - column: {name: description_ru, value: "Ищу SEO специалиста для оптимизации корпоративного сайта. Требуется исследование ключевых слов и внутренняя оптимизация."}
               - column: {name: budget, value: 900.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 6}
               - column: {name: category_id, value: 4}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Digital marketing expert"}
-              - column: {name: description, value: "Offering comprehensive digital marketing services including SEO, social media, and email marketing. Proven track record."}
+              - column: {name: title_en, value: "Digital marketing expert"}
+              - column: {name: title_ru, value: "Эксперт по цифровому маркетингу"}
+              - column: {name: description_en, value: "Offering comprehensive digital marketing services including SEO, social media, and email marketing. Proven track record."}
+              - column: {name: description_ru, value: "Предлагаю комплексные услуги цифрового маркетинга, включая SEO, социальные сети и email маркетинг. Проверенный опыт работы."}
               - column: {name: budget, value: 70.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 5}
@@ -146,28 +198,34 @@ databaseChangeLog:
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "English to Spanish translation"}
-              - column: {name: description, value: "Need professional translator for technical documentation. 50 pages from English to Spanish. Native speaker preferred."}
+              - column: {name: title_en, value: "English to Spanish translation"}
+              - column: {name: title_ru, value: "Перевод с английского на испанский"}
+              - column: {name: description_en, value: "Need professional translator for technical documentation. 50 pages from English to Spanish. Native speaker preferred."}
+              - column: {name: description_ru, value: "Требуется профессиональный переводчик для технической документации. 50 страниц с английского на испанский. Предпочтителен носитель языка."}
               - column: {name: budget, value: 700.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 4}
               - column: {name: category_id, value: 5}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Website localization"}
-              - column: {name: description, value: "Looking for translator to localize website content into French and German. Experience with web localization required."}
+              - column: {name: title_en, value: "Website localization"}
+              - column: {name: title_ru, value: "Локализация веб-сайта"}
+              - column: {name: description_en, value: "Looking for translator to localize website content into French and German. Experience with web localization required."}
+              - column: {name: description_ru, value: "Ищу переводчика для локализации контента сайта на французский и немецкий языки. Требуется опыт веб-локализации."}
               - column: {name: budget, value: 1100.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 2}
               - column: {name: category_id, value: 5}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Professional translator available"}
-              - column: {name: description, value: "Native English and Russian speaker offering translation services. Specialized in technical and business documents."}
+              - column: {name: title_en, value: "Professional translator available"}
+              - column: {name: title_ru, value: "Профессиональный переводчик доступен"}
+              - column: {name: description_en, value: "Native English and Russian speaker offering translation services. Specialized in technical and business documents."}
+              - column: {name: description_ru, value: "Носитель английского и русского языков предлагает услуги перевода. Специализируюсь на технических и деловых документах."}
               - column: {name: budget, value: 35.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 6}
@@ -181,28 +239,34 @@ databaseChangeLog:
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Data entry for CRM system"}
-              - column: {name: description, value: "Need data entry specialist to input customer information into CRM. 1000+ records. Accuracy is critical."}
+              - column: {name: title_en, value: "Data entry for CRM system"}
+              - column: {name: title_ru, value: "Ввод данных в CRM систему"}
+              - column: {name: description_en, value: "Need data entry specialist to input customer information into CRM. 1000+ records. Accuracy is critical."}
+              - column: {name: description_ru, value: "Требуется специалист по вводу данных для внесения информации о клиентах в CRM. Более 1000 записей. Точность критична."}
               - column: {name: budget, value: 400.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 5}
               - column: {name: category_id, value: 6}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Excel data processing"}
-              - column: {name: description, value: "Looking for someone to clean and organize large Excel dataset. Data validation and formatting required."}
+              - column: {name: title_en, value: "Excel data processing"}
+              - column: {name: title_ru, value: "Обработка данных в Excel"}
+              - column: {name: description_en, value: "Looking for someone to clean and organize large Excel dataset. Data validation and formatting required."}
+              - column: {name: description_ru, value: "Ищу специалиста для очистки и организации большого набора данных Excel. Требуется валидация и форматирование данных."}
               - column: {name: budget, value: 350.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 3}
               - column: {name: category_id, value: 6}
-              - column: {name: ad_type, value: "REQUEST"}
+              - column: {name: ad_type, value: "OFFER"}
         - insert:
             tableName: ads
             columns:
-              - column: {name: title, value: "Data entry specialist"}
-              - column: {name: description, value: "Experienced data entry specialist offering fast and accurate services. Proficient in Excel, Google Sheets, and various CRM systems."}
+              - column: {name: title_en, value: "Data entry specialist"}
+              - column: {name: title_ru, value: "Специалист по вводу данных"}
+              - column: {name: description_en, value: "Experienced data entry specialist offering fast and accurate services. Proficient in Excel, Google Sheets, and various CRM systems."}
+              - column: {name: description_ru, value: "Опытный специалист по вводу данных предлагает быстрые и точные услуги. Владею Excel, Google Sheets и различными CRM системами."}
               - column: {name: budget, value: 25.00}
               - column: {name: status, value: "ACTIVE"}
               - column: {name: user_id, value: 6}

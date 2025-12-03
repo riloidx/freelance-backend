@@ -20,8 +20,10 @@ import java.time.Instant;
 @AllArgsConstructor
 public class AdResponseDto {
     private Long id;
-    private String title;
-    private String description;
+    private String titleEn;
+    private String titleRu;
+    private String descriptionEn;
+    private String descriptionRu;
     private AdType adType;
     private BigDecimal budget;
     private AdStatus status;

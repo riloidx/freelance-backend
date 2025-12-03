@@ -11,6 +11,8 @@ import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.matvey.freelancebackend.users.repository.UserRepository;
 import org.matvey.freelancebackend.users.service.api.AdminService;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,5 +64,18 @@ public class AdminServiceImpl implements AdminService {
             throw new UserDoesntHasRoleException(
                     String.format("User with id=%d doesn't have role=%s", user.getId(), role.getName()));
         }
+    }
+
+    @Override
+    public Page<UserResponseDto> getAllUsers(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
+        return users.map(userMapper::toDto);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(long userId) {
+        User user = userQueryService.findUserById(userId);
+        userRepository.delete(user);
     }
 }

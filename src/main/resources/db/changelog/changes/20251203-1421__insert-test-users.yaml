@@ -16,8 +16,11 @@ databaseChangeLog:
                   name: name
                   value: John Smith
               - column:
-                  name: description
+                  name: description_en
                   value: Full-stack developer with 5 years of experience
+              - column:
+                  name: description_ru
+                  value: Full-stack разработчик с 5-летним опытом работы
               - column:
                   name: password_hash
                   value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
@@ -45,8 +48,11 @@ databaseChangeLog:
                   name: name
                   value: Sarah Johnson
               - column:
-                  name: description
+                  name: description_en
                   value: Creative UI/UX designer specializing in modern interfaces
+              - column:
+                  name: description_ru
+                  value: Креативный UI/UX дизайнер, специализирующийся на современных интерфейсах
               - column:
                   name: password_hash
                   value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
@@ -74,8 +80,11 @@ databaseChangeLog:
                   name: name
                   value: Mike Anderson
               - column:
-                  name: description
+                  name: description_en
                   value: Professional content writer and copywriter
+              - column:
+                  name: description_ru
+                  value: Профессиональный контент-райтер и копирайтер
               - column:
                   name: password_hash
                   value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
@@ -103,8 +112,11 @@ databaseChangeLog:
                   name: name
                   value: Anna Williams
               - column:
-                  name: description
+                  name: description_en
                   value: Digital marketing expert with focus on social media
+              - column:
+                  name: description_ru
+                  value: Эксперт по цифровому маркетингу с фокусом на социальные сети
               - column:
                   name: password_hash
                   value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
@@ -132,8 +144,11 @@ databaseChangeLog:
                   name: name
                   value: David Brown
               - column:
-                  name: description
+                  name: description_en
                   value: Data analyst and entry specialist
+              - column:
+                  name: description_ru
+                  value: Аналитик данных и специалист по вводу данных
               - column:
                   name: password_hash
                   value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q

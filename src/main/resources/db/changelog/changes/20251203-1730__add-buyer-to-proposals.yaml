@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251203-1730-add-buyer-to-proposals
+      author: matvey
+      changes:
+        - addColumn:
+            tableName: proposals
+            columns:
+              - column:
+                  name: buyer_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+
+        - addForeignKeyConstraint:
+            baseTableName: proposals
+            baseColumnNames: buyer_id
+            constraintName: fk_proposals_buyer
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE

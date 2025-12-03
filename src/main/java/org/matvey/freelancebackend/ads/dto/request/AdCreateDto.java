@@ -19,14 +19,19 @@ import java.math.BigDecimal;
 public class AdCreateDto {
     @NotBlank(message = "Title must not be empty or consist only of spaces")
     @Length(min = 10, max = 50)
-    private String title;
+    private String titleEn;
+
+    @NotBlank(message = "Title must not be empty or consist only of spaces")
+    @Length(min = 10, max = 50)
+    private String titleRu;
 
     @NotBlank(message = "Description must not be empty or consist only of spaces")
     @Length(min = 10, max = 1500, message = "Length must be between 10 and 1500")
-    private String description;
+    private String descriptionEn;
 
-    @NotNull(message = "Ad type is required")
-    private AdType adType;
+    @NotBlank(message = "Description must not be empty or consist only of spaces")
+    @Length(min = 10, max = 1500, message = "Length must be between 10 and 1500")
+    private String descriptionRu;
 
     @Positive(message = "Budget must be positive")
     private BigDecimal budget;

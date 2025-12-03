@@ -19,6 +19,9 @@ public class UserUpdateDto {
     @Length(min = 2, max = 50, message = "Name must have length between 2 and 50")
     private String name;
 
-    @Length(max = 3000, message = "Description must have length less then")
-    private String description;
+    @Length(max = 3000, message = "Description must have length less then 3000")
+    private String descriptionEn;
+
+    @Length(max = 3000, message = "Description must have length less then 3000")
+    private String descriptionRu;
 }

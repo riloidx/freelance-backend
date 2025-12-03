@@ -16,7 +16,8 @@ public class UserResponseDto {
     private Long id;
     private String username;
     private String email;
-    private String description;
+    private String descriptionEn;
+    private String descriptionRu;
     private String name;
     private Instant createdAt;
     private Set<String> roles;

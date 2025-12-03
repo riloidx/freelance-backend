@@ -17,7 +17,8 @@ public class UserProfileResponseDto {
     private Long id;
     private String username;
     private String email;
-    private String description;
+    private String descriptionEn;
+    private String descriptionRu;
     private String name;
     private BigDecimal balance;
     private Instant createdAt;

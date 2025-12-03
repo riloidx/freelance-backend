@@ -17,11 +17,19 @@ public class AdUpdateDto {
 
     @NotBlank(message = "Title must not be empty or consist only of spaces")
     @Length(min = 10, max = 50)
-    private String title;
+    private String titleEn;
+
+    @NotBlank(message = "Title must not be empty or consist only of spaces")
+    @Length(min = 10, max = 50)
+    private String titleRu;
 
     @NotBlank(message = "Description must not be empty or consist only of spaces")
     @Length(min = 10, max = 1500, message = "Length must be between 10 and 1500")
-    private String description;
+    private String descriptionEn;
+
+    @NotBlank(message = "Description must not be empty or consist only of spaces")
+    @Length(min = 10, max = 1500, message = "Length must be between 10 and 1500")
+    private String descriptionRu;
 
     @NotNull(message = "Ad type is required")
     private AdType adType;

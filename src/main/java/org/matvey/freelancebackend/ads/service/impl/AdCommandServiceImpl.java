@@ -6,6 +6,7 @@ import org.matvey.freelancebackend.ads.dto.request.AdUpdateDto;
 import org.matvey.freelancebackend.ads.dto.response.AdResponseDto;
 import org.matvey.freelancebackend.ads.entity.Ad;
 import org.matvey.freelancebackend.ads.entity.AdStatus;
+import org.matvey.freelancebackend.ads.entity.AdType;
 import org.matvey.freelancebackend.ads.mapper.AdMapper;
 import org.matvey.freelancebackend.ads.repository.AdRepository;
 import org.matvey.freelancebackend.ads.service.api.AdCommandService;
@@ -65,7 +66,7 @@ public class AdCommandServiceImpl implements AdCommandService {
         ad.setUser(user);
         ad.setCategory(category);
         ad.setStatus(AdStatus.ACTIVE);
-        ad.setAdType(adCreateDto.getAdType());
+        ad.setAdType(AdType.OFFER);
 
         return ad;
     }

@@ -39,8 +39,10 @@ public class ContractResponseDto {
     @Builder
     public static class AdSummaryDto {
         private Long id;
-        private String title;
-        private String description;
+        private String titleEn;
+        private String titleRu;
+        private String descriptionEn;
+        private String descriptionRu;
     }
 
     @Data

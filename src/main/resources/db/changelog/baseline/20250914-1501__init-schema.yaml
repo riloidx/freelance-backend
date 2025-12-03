@@ -25,7 +25,10 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
-                  name: description
+                  name: description_en
+                  type: TEXT
+              - column:
+                  name: description_ru
                   type: TEXT
               - column:
                   name: password_hash

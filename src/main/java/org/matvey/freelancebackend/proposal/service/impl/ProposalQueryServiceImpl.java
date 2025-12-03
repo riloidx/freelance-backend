@@ -60,7 +60,19 @@ public class ProposalQueryServiceImpl implements ProposalQueryService {
         
         Long freelancerId = userDetails.user().getId();
         
-        Page<Proposal> proposals = proposalRepo.findAllByFreelancerId(freelancerId, pageable);
+        Page<Proposal> proposals = proposalRepo.findAllByFreelancerIdAndAdIsNotNull(freelancerId, pageable);
+        
+        return proposalMapper.toDto(proposals);
+    }
+    
+    @Override
+    public Page<ProposalResponseDto> findBuyerProposalsByFreelancer(Pageable pageable, Authentication authentication) {
+        org.matvey.freelancebackend.security.user.CustomUserDetails userDetails = 
+            (org.matvey.freelancebackend.security.user.CustomUserDetails) authentication.getPrincipal();
+        
+        Long freelancerId = userDetails.user().getId();
+        
+        Page<Proposal> proposals = proposalRepo.findAllByFreelancerIdAndAdIsNull(freelancerId, pageable);
         
         return proposalMapper.toDto(proposals);
     }

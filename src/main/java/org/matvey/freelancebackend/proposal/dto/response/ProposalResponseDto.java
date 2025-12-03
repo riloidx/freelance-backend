@@ -22,4 +22,5 @@ public class ProposalResponseDto {
     private Instant createdAt;
     private AdResponseDto ad;
     private UserResponseDto user;
+    private UserResponseDto buyer;
 }

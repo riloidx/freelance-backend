@@ -37,8 +37,11 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "description_en")
+    private String descriptionEn;
+
+    @Column(name = "description_ru")
+    private String descriptionRu;
 
     @Column(name = "name", nullable = false)
     private String name;

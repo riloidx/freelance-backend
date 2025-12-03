@@ -25,11 +25,17 @@ public class Ad {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "title", nullable = false)
-    private String title;
+    @Column(name = "title_en", nullable = false)
+    private String titleEn;
 
-    @Column(name = "description", nullable = false)
-    private String description;
+    @Column(name = "title_ru", nullable = false)
+    private String titleRu;
+
+    @Column(name = "description_en", nullable = false)
+    private String descriptionEn;
+
+    @Column(name = "description_ru", nullable = false)
+    private String descriptionRu;
 
     @Column(name = "ad_type", nullable = false)
     @Enumerated(EnumType.STRING)

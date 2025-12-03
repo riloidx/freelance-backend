@@ -18,5 +18,7 @@ public interface ProposalQueryService {
     ProposalResponseDto findDtoById(long id);
     
     Page<ProposalResponseDto> findAllByFreelancer(Pageable pageable, Authentication authentication);
+    
+    Page<ProposalResponseDto> findBuyerProposalsByFreelancer(Pageable pageable, Authentication authentication);
 
 }

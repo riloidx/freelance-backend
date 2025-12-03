@@ -31,3 +31,7 @@ databaseChangeLog:
       file: db/changelog/changes/20251203-1421__insert-test-users.yaml
   - include:
       file: db/changelog/changes/20251203-1433__insert-test-ads.yaml
+  - include:
+      file: db/changelog/changes/20251203-1720__make-ad-id-nullable-in-proposals.yaml
+  - include:
+      file: db/changelog/changes/20251203-1730__add-buyer-to-proposals.yaml
