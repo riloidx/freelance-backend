@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.exception.UserNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserQueryServiceImpl implements UserQueryService {
     private final UserRepository userRepo;
     private final UserMapper userMapper;
+    private final LocalizationUtil localizationUtil;
 
     @Override
     public Page<UserResponseDto> findAllUsersDto(Pageable pageable) {
@@ -27,7 +29,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     @Override
     public User findUserById(long id) {
         return userRepo.findById(id).
-                orElseThrow(() -> new UserNotFoundException("id", String.valueOf(id)));
+                orElseThrow(() -> new UserNotFoundException(localizationUtil.getMessage("error.user.not.found", "id", String.valueOf(id))));
     }
 
     @Override
@@ -40,7 +42,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     @Override
     public User findUserByEmail(String email) {
         return userRepo.findByEmail(email).
-                orElseThrow(() -> new UserNotFoundException("email", email));
+                orElseThrow(() -> new UserNotFoundException(localizationUtil.getMessage("error.user.not.found", "email", email)));
     }
 
     @Override
@@ -51,7 +53,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     @Override
     public User findUserByUsername(String username) {
         return userRepo.findByUsername(username).
-                orElseThrow(() -> new UserNotFoundException("username", username));
+                orElseThrow(() -> new UserNotFoundException(localizationUtil.getMessage("error.user.not.found", "username", username)));
     }
 
     @Override

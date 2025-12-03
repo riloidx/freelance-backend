@@ -27,3 +27,7 @@ databaseChangeLog:
       file: db/changelog/changes/20251201-2000__add-localization-to-categories.yaml
   - include:
       file: db/changelog/changes/20251202-1200__update-contracts-table.yaml
+  - include:
+      file: db/changelog/changes/20251203-1421__insert-test-users.yaml
+  - include:
+      file: db/changelog/changes/20251203-1433__insert-test-ads.yaml

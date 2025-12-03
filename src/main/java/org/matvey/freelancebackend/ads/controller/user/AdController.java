@@ -38,8 +38,9 @@ public class AdController {
     @GetMapping
     public ResponseEntity<Page<AdResponseDto>> findAll(
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
-            Pageable pageable) {
-        Page<AdResponseDto> ads = adQueryService.findAllByOrderByCreatedDesc(pageable);
+            Pageable pageable,
+            Authentication authentication) {
+        Page<AdResponseDto> ads = adQueryService.findAllByOrderByCreatedDesc(pageable, authentication);
 
         return ResponseEntity.status(HttpStatus.OK).body(ads);
     }

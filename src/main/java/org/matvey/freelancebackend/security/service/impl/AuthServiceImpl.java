@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.security.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.security.dto.request.LoginDto;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.security.dto.response.AuthResponseDto;
@@ -9,6 +10,7 @@ import org.matvey.freelancebackend.security.jwt.JwtUtil;
 import org.matvey.freelancebackend.security.service.api.AuthService;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
+import org.matvey.freelancebackend.users.exception.UserNotFoundException;
 import org.matvey.freelancebackend.users.mapper.UserMapper;
 import org.matvey.freelancebackend.users.service.api.UserAuthService;
 import org.matvey.freelancebackend.users.service.api.UserQueryService;
@@ -23,6 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final LocalizationUtil localizationUtil;
 
     @Override
     public AuthResponseDto register(RegistrationDto registrationDto) {
@@ -35,7 +38,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDto login(LoginDto loginDto) {
-        User user = userQueryService.findUserByEmail(loginDto.getEmail());
+        User user;
+        try {
+            user = userQueryService.findUserByEmail(loginDto.getEmail());
+        } catch (UserNotFoundException e) {
+            throw new InvalidCredentialsException(localizationUtil.getMessage("error.invalid.credentials"));
+        }
+        
         matchPasswordOrThrow(user.getPasswordHash(), loginDto.getPassword());
 
         String token = jwtUtil.generateAccessToken(new CustomUserDetails(user));
@@ -45,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
 
     private void matchPasswordOrThrow(String hashPassword, String password) {
         if (!passwordEncoder.matches(password, hashPassword)) {
-            throw new InvalidCredentialsException("Invalid login or password");
+            throw new InvalidCredentialsException(localizationUtil.getMessage("error.invalid.credentials"));
         }
     }
 }

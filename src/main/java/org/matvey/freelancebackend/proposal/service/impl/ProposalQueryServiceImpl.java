@@ -2,6 +2,7 @@ package org.matvey.freelancebackend.proposal.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.ads.service.util.AdSecurityUtil;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.proposal.dto.response.ProposalResponseDto;
 import org.matvey.freelancebackend.proposal.entity.Proposal;
 import org.matvey.freelancebackend.proposal.entity.ProposalStatus;
@@ -20,6 +21,7 @@ public class ProposalQueryServiceImpl implements ProposalQueryService {
     private final ProposalRepository proposalRepo;
     private final ProposalMapper proposalMapper;
     private final AdSecurityUtil adSecurityUtil;
+    private final LocalizationUtil localizationUtil;
 
     @Override
     public Page<ProposalResponseDto> findAllProposalsByAdId(long adId,
@@ -43,7 +45,7 @@ public class ProposalQueryServiceImpl implements ProposalQueryService {
     public Proposal findById(long id) {
 
         return proposalRepo.findById(id).
-                orElseThrow(() -> new ProposalNotFoundException("id", String.valueOf(id)));
+                orElseThrow(() -> new ProposalNotFoundException(localizationUtil.getMessage("error.proposal.not.found", "id", String.valueOf(id))));
     }
 
     @Override

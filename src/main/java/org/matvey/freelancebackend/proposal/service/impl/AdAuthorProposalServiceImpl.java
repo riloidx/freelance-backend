@@ -2,6 +2,8 @@ package org.matvey.freelancebackend.proposal.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.matvey.freelancebackend.ads.entity.Ad;
+import org.matvey.freelancebackend.ads.entity.AdStatus;
+import org.matvey.freelancebackend.ads.repository.AdRepository;
 import org.matvey.freelancebackend.ads.service.util.AdSecurityUtil;
 import org.matvey.freelancebackend.contracts.entity.Contract;
 import org.matvey.freelancebackend.contracts.entity.ContractStatus;
@@ -32,6 +34,7 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
     private final AdSecurityUtil adSecurityUtil;
     private final ContractRepository contractRepository;
     private final UserProfileService userProfileService;
+    private final AdRepository adRepository;
 
     @Override
     @Transactional
@@ -42,6 +45,7 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
 
         rejectOtherProposals(ad, proposalId);
         approveProposal(proposal);
+        archiveAd(ad);
         createContract(proposal, userDetails.user());
 
         return proposalMapper.toDto(proposal);
@@ -98,5 +102,10 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
         contract.setCreatedAt(Instant.now());
 
         contractRepository.save(contract);
+    }
+
+    private void archiveAd(Ad ad) {
+        ad.setStatus(AdStatus.ARCHIVED);
+        adRepository.save(ad);
     }
 }

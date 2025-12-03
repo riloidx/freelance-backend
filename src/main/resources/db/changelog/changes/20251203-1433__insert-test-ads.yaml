@@ -1,0 +1,211 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251203-1410-insert-ads-development
+      author: matvey
+      changes:
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Build REST API for mobile app"}
+              - column: {name: description, value: "Need experienced backend developer to create REST API using Spring Boot. Must have experience with PostgreSQL and JWT authentication."}
+              - column: {name: budget, value: 1500.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 2}
+              - column: {name: category_id, value: 1}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "React frontend development"}
+              - column: {name: description, value: "Looking for React developer to build responsive web application. Experience with Redux and Material-UI required."}
+              - column: {name: budget, value: 2000.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 3}
+              - column: {name: category_id, value: 1}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Full-stack developer available"}
+              - column: {name: description, value: "Experienced full-stack developer offering services. Proficient in Java, Spring, React, and PostgreSQL. Available for long-term projects."}
+              - column: {name: budget, value: 50.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 2}
+              - column: {name: category_id, value: 1}
+              - column: {name: ad_type, value: "OFFER"}
+
+  - changeSet:
+      id: 20251203-1410-insert-ads-design
+      author: matvey
+      changes:
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Logo design for startup"}
+              - column: {name: description, value: "Need creative logo designer for tech startup. Modern, minimalist style preferred. Provide 3-5 concepts."}
+              - column: {name: budget, value: 500.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 4}
+              - column: {name: category_id, value: 2}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "UI/UX design for mobile app"}
+              - column: {name: description, value: "Looking for UI/UX designer to create modern interface for iOS and Android app. Figma experience required."}
+              - column: {name: budget, value: 1200.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 5}
+              - column: {name: category_id, value: 2}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Professional UI/UX designer"}
+              - column: {name: description, value: "Offering professional UI/UX design services. Specialized in mobile and web applications. Portfolio available upon request."}
+              - column: {name: budget, value: 60.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 3}
+              - column: {name: category_id, value: 2}
+              - column: {name: ad_type, value: "OFFER"}
+
+  - changeSet:
+      id: 20251203-1410-insert-ads-writing
+      author: matvey
+      changes:
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Blog articles about technology"}
+              - column: {name: description, value: "Need writer for 10 blog articles about AI and machine learning. Each article 1000-1500 words. SEO optimization required."}
+              - column: {name: budget, value: 800.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 6}
+              - column: {name: category_id, value: 3}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Product descriptions for e-commerce"}
+              - column: {name: description, value: "Looking for copywriter to create compelling product descriptions for online store. 50 products total."}
+              - column: {name: budget, value: 600.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 2}
+              - column: {name: category_id, value: 3}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Content writer and copywriter"}
+              - column: {name: description, value: "Professional content writer available for hire. Specializing in tech, business, and lifestyle topics. Fast turnaround guaranteed."}
+              - column: {name: budget, value: 40.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 4}
+              - column: {name: category_id, value: 3}
+              - column: {name: ad_type, value: "OFFER"}
+
+  - changeSet:
+      id: 20251203-1410-insert-ads-marketing
+      author: matvey
+      changes:
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Social media marketing campaign"}
+              - column: {name: description, value: "Need social media marketer to run 3-month campaign on Instagram and Facebook. Experience with paid ads required."}
+              - column: {name: budget, value: 2500.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 3}
+              - column: {name: category_id, value: 4}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "SEO optimization for website"}
+              - column: {name: description, value: "Looking for SEO specialist to optimize corporate website. Keyword research and on-page optimization needed."}
+              - column: {name: budget, value: 900.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 6}
+              - column: {name: category_id, value: 4}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Digital marketing expert"}
+              - column: {name: description, value: "Offering comprehensive digital marketing services including SEO, social media, and email marketing. Proven track record."}
+              - column: {name: budget, value: 70.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 5}
+              - column: {name: category_id, value: 4}
+              - column: {name: ad_type, value: "OFFER"}
+
+  - changeSet:
+      id: 20251203-1410-insert-ads-translation
+      author: matvey
+      changes:
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "English to Spanish translation"}
+              - column: {name: description, value: "Need professional translator for technical documentation. 50 pages from English to Spanish. Native speaker preferred."}
+              - column: {name: budget, value: 700.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 4}
+              - column: {name: category_id, value: 5}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Website localization"}
+              - column: {name: description, value: "Looking for translator to localize website content into French and German. Experience with web localization required."}
+              - column: {name: budget, value: 1100.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 2}
+              - column: {name: category_id, value: 5}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Professional translator available"}
+              - column: {name: description, value: "Native English and Russian speaker offering translation services. Specialized in technical and business documents."}
+              - column: {name: budget, value: 35.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 6}
+              - column: {name: category_id, value: 5}
+              - column: {name: ad_type, value: "OFFER"}
+
+  - changeSet:
+      id: 20251203-1410-insert-ads-data-entry
+      author: matvey
+      changes:
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Data entry for CRM system"}
+              - column: {name: description, value: "Need data entry specialist to input customer information into CRM. 1000+ records. Accuracy is critical."}
+              - column: {name: budget, value: 400.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 5}
+              - column: {name: category_id, value: 6}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Excel data processing"}
+              - column: {name: description, value: "Looking for someone to clean and organize large Excel dataset. Data validation and formatting required."}
+              - column: {name: budget, value: 350.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 3}
+              - column: {name: category_id, value: 6}
+              - column: {name: ad_type, value: "REQUEST"}
+        - insert:
+            tableName: ads
+            columns:
+              - column: {name: title, value: "Data entry specialist"}
+              - column: {name: description, value: "Experienced data entry specialist offering fast and accurate services. Proficient in Excel, Google Sheets, and various CRM systems."}
+              - column: {name: budget, value: 25.00}
+              - column: {name: status, value: "ACTIVE"}
+              - column: {name: user_id, value: 6}
+              - column: {name: category_id, value: 6}
+              - column: {name: ad_type, value: "OFFER"}
+

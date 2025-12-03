@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface AdQueryService {
-    Page<AdResponseDto> findAllByOrderByCreatedDesc(Pageable pageable);
+    Page<AdResponseDto> findAllByOrderByCreatedDesc(Pageable pageable, Authentication authentication);
 
     List<AdResponseDto> findAllByUserId(long userId);
 

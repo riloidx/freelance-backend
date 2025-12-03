@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.roles.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.roles.dto.response.RoleResponseDto;
 import org.matvey.freelancebackend.roles.entity.Role;
 import org.matvey.freelancebackend.roles.exception.RoleNotFoundException;
@@ -16,6 +17,7 @@ import java.util.List;
 public class RoleQueryServiceImpl implements RoleQueryService {
     private final RoleRepository roleRepo;
     private final RoleMapper roleMapper;
+    private final LocalizationUtil localizationUtil;
 
     @Override
     public List<RoleResponseDto> findAllRolesDto() {
@@ -27,7 +29,7 @@ public class RoleQueryServiceImpl implements RoleQueryService {
     @Override
     public Role findRoleById(long id) {
         return roleRepo.findById(id)
-                .orElseThrow(() -> new RoleNotFoundException("id", String.valueOf(id)));
+                .orElseThrow(() -> new RoleNotFoundException(localizationUtil.getMessage("error.role.not.found", "id", String.valueOf(id))));
     }
 
     @Override
@@ -38,7 +40,7 @@ public class RoleQueryServiceImpl implements RoleQueryService {
     @Override
     public Role findRoleByName(String name) {
         return roleRepo.findByName(name)
-                .orElseThrow(() -> new RoleNotFoundException("name", name));
+                .orElseThrow(() -> new RoleNotFoundException(localizationUtil.getMessage("error.role.not.found", "name", name)));
     }
 
     @Override

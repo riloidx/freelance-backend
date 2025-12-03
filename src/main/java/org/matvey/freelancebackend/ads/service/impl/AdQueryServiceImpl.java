@@ -7,6 +7,7 @@ import org.matvey.freelancebackend.ads.exception.AdNotFoundException;
 import org.matvey.freelancebackend.ads.mapper.AdMapper;
 import org.matvey.freelancebackend.ads.repository.AdRepository;
 import org.matvey.freelancebackend.ads.service.api.AdQueryService;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,13 +23,22 @@ import java.util.List;
 public class AdQueryServiceImpl implements AdQueryService {
     private final AdRepository adRepo;
     private final AdMapper adMapper;
+    private final LocalizationUtil localizationUtil;
 
     @Override
-    public Page<AdResponseDto> findAllByOrderByCreatedDesc(Pageable pageable) {
+    public Page<AdResponseDto> findAllByOrderByCreatedDesc(Pageable pageable, Authentication authentication) {
         Pageable sorted = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                 Sort.by("createdAt").descending());
 
-        Page<Ad> page = adRepo.findAllByStatus(org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, sorted);
+        Page<Ad> page;
+        if (authentication != null && authentication.isAuthenticated()) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            Long userId = userDetails.user().getId();
+            page = adRepo.findAllByStatusExcludingUserProposals(
+                org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, userId, sorted);
+        } else {
+            page = adRepo.findAllByStatus(org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, sorted);
+        }
 
         return adMapper.toDto(page);
     }
@@ -43,7 +53,7 @@ public class AdQueryServiceImpl implements AdQueryService {
     @Override
     public Ad findAdById(long id) {
         return adRepo.findById(id)
-                .orElseThrow(() -> new AdNotFoundException("id", String.valueOf(id)));
+                .orElseThrow(() -> new AdNotFoundException(localizationUtil.getMessage("error.ad.not.found", "id", String.valueOf(id))));
     }
 
     @Override

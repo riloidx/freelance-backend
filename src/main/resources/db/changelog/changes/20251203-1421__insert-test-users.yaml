@@ -1,0 +1,175 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20251203-1400-insert-test-user-1
+      author: matvey
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: john_dev
+              - column:
+                  name: email
+                  value: john.developer@example.com
+              - column:
+                  name: name
+                  value: John Smith
+              - column:
+                  name: description
+                  value: Full-stack developer with 5 years of experience
+              - column:
+                  name: password_hash
+                  value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
+              - column:
+                  name: balance
+                  value: 1500.00
+              - column:
+                  name: rating
+                  value: 4.5
+
+  - changeSet:
+      id: 20251203-1400-insert-test-user-2
+      author: matvey
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: sarah_design
+              - column:
+                  name: email
+                  value: sarah.designer@example.com
+              - column:
+                  name: name
+                  value: Sarah Johnson
+              - column:
+                  name: description
+                  value: Creative UI/UX designer specializing in modern interfaces
+              - column:
+                  name: password_hash
+                  value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
+              - column:
+                  name: balance
+                  value: 2300.00
+              - column:
+                  name: rating
+                  value: 4.8
+
+  - changeSet:
+      id: 20251203-1400-insert-test-user-3
+      author: matvey
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: mike_writer
+              - column:
+                  name: email
+                  value: mike.writer@example.com
+              - column:
+                  name: name
+                  value: Mike Anderson
+              - column:
+                  name: description
+                  value: Professional content writer and copywriter
+              - column:
+                  name: password_hash
+                  value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
+              - column:
+                  name: balance
+                  value: 800.00
+              - column:
+                  name: rating
+                  value: 4.2
+
+  - changeSet:
+      id: 20251203-1400-insert-test-user-4
+      author: matvey
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: anna_market
+              - column:
+                  name: email
+                  value: anna.marketing@example.com
+              - column:
+                  name: name
+                  value: Anna Williams
+              - column:
+                  name: description
+                  value: Digital marketing expert with focus on social media
+              - column:
+                  name: password_hash
+                  value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
+              - column:
+                  name: balance
+                  value: 1200.00
+              - column:
+                  name: rating
+                  value: 4.6
+
+  - changeSet:
+      id: 20251203-1400-insert-test-user-5
+      author: matvey
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: david_data
+              - column:
+                  name: email
+                  value: david.data@example.com
+              - column:
+                  name: name
+                  value: David Brown
+              - column:
+                  name: description
+                  value: Data analyst and entry specialist
+              - column:
+                  name: password_hash
+                  value: $2a$10$9l/2J.xFq9no1pAxjriiHO6CqDz1LPFcHX67NaKJAkidv7YKJva6q
+              - column:
+                  name: balance
+                  value: 950.00
+              - column:
+                  name: rating
+                  value: 4.3
+
+  - changeSet:
+      id: 20251203-1400-assign-user-roles
+      author: matvey
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: {name: user_id, value: 2}
+              - column: {name: role_id, value: 1}
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: {name: user_id, value: 3}
+              - column: {name: role_id, value: 1}
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: {name: user_id, value: 4}
+              - column: {name: role_id, value: 1}
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: {name: user_id, value: 5}
+              - column: {name: role_id, value: 1}
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: {name: user_id, value: 6}
+              - column: {name: role_id, value: 1}

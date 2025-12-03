@@ -4,7 +4,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.matvey.freelancebackend.ads.exception.AdNotFoundException;
 import org.matvey.freelancebackend.common.exception.dto.ErrorResponse;
 import org.matvey.freelancebackend.common.exception.dto.ValidationErrorResponse;
+import org.matvey.freelancebackend.proposal.exception.ProposalNotFoundException;
+import org.matvey.freelancebackend.roles.exception.RoleAlreadyExistsException;
+import org.matvey.freelancebackend.roles.exception.RoleNotFoundException;
+import org.matvey.freelancebackend.security.exception.InvalidCredentialsException;
 import org.matvey.freelancebackend.users.exception.InsufficientBalanceException;
+import org.matvey.freelancebackend.users.exception.UserAlreadyExistsException;
+import org.matvey.freelancebackend.users.exception.UserAlreadyHasRoleException;
+import org.matvey.freelancebackend.users.exception.UserDoesntHasRoleException;
+import org.matvey.freelancebackend.users.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,6 +47,70 @@ public class GlobalExceptionHandler {
         var body = buildErrorResponse(e, HttpStatus.NOT_FOUND, request);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException e,
+                                                                           HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.UNAUTHORIZED, request);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException e,
+                                                                     HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.NOT_FOUND, request);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException e,
+                                                                          HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(ProposalNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleProposalNotFoundException(ProposalNotFoundException e,
+                                                                         HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.NOT_FOUND, request);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleRoleNotFoundException(RoleNotFoundException e,
+                                                                     HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.NOT_FOUND, request);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler(RoleAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleRoleAlreadyExistsException(RoleAlreadyExistsException e,
+                                                                          HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
+    @ExceptionHandler(UserAlreadyHasRoleException.class)
+    public ResponseEntity<ErrorResponse> handleUserAlreadyHasRoleException(UserAlreadyHasRoleException e,
+                                                                           HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
+
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(UserDoesntHasRoleException.class)
+    public ResponseEntity<ErrorResponse> handleUserDoesntHasRoleException(UserDoesntHasRoleException e,
+                                                                          HttpServletRequest request) {
+        var body = buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
+
+        return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(Exception.class)

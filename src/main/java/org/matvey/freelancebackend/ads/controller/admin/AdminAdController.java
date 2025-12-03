@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,8 +23,9 @@ public class AdminAdController {
     @GetMapping
     public ResponseEntity<Page<AdResponseDto>> findAllAds(
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
-            Pageable pageable) {
-        Page<AdResponseDto> ads = adQueryService.findAllByOrderByCreatedDesc(pageable);
+            Pageable pageable,
+            Authentication auth) {
+        Page<AdResponseDto> ads = adQueryService.findAllByOrderByCreatedDesc(pageable, auth);
 
         return ResponseEntity.status(HttpStatus.OK).body(ads);
     }

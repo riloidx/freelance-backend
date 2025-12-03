@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.users.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.roles.entity.Role;
 import org.matvey.freelancebackend.roles.service.api.RoleQueryService;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
@@ -22,6 +23,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final RoleQueryService roleQueryService;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final LocalizationUtil localizationUtil;
 
     @Override
     @Transactional
@@ -47,13 +49,13 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     public void existsByUsernameOrThrow(String username) {
         if (userRepo.existsByUsername(username)) {
-            throw new UserAlreadyExistsException("username", username);
+            throw new UserAlreadyExistsException(localizationUtil.getMessage("error.user.already.exists", "username", username));
         }
     }
 
     public void existsByEmailOrThrow(String email) {
         if (userRepo.existsByEmail(email)) {
-            throw new UserAlreadyExistsException("email", email);
+            throw new UserAlreadyExistsException(localizationUtil.getMessage("error.user.already.exists", "email", email));
         }
     }
 }
