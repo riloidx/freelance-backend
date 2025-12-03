@@ -27,17 +27,14 @@ public class AdQueryServiceImpl implements AdQueryService {
 
     @Override
     public Page<AdResponseDto> findAllByOrderByCreatedDesc(Pageable pageable, Authentication authentication) {
-        Pageable sorted = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-                Sort.by("createdAt").descending());
-
         Page<Ad> page;
         if (authentication != null && authentication.isAuthenticated()) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             Long userId = userDetails.user().getId();
             page = adRepo.findAllByStatusExcludingUserProposals(
-                org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, userId, sorted);
+                org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, userId, pageable);
         } else {
-            page = adRepo.findAllByStatus(org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, sorted);
+            page = adRepo.findAllByStatus(org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, pageable);
         }
 
         return adMapper.toDto(page);

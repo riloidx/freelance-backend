@@ -1,11 +1,17 @@
-FROM gradle:jdk21-alpine AS build
+FROM eclipse-temurin:24-jdk AS builder
 WORKDIR /app
-COPY --chown=gradle:gradle . /app
-RUN gradle clean bootJar
 
+COPY gradle ./gradle
+COPY gradlew .
+COPY build.gradle settings.gradle ./
+RUN chmod +x gradlew
+RUN ./gradlew dependencies --no-daemon
 
-FROM eclipse-temurin:21-jdk-ubi10-minimal
+COPY src ./src
+RUN ./gradlew bootJar -x test --no-daemon
+
+FROM eclipse-temurin:24-jre
 WORKDIR /app
-COPY --from=build /app/build/libs/*SNAPSHOT.jar app.jar
+COPY --from=builder /app/build/libs/*.jar ./spring-boot-application.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "spring-boot-application.jar"]
