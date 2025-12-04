@@ -45,23 +45,27 @@ class CategoryCommandServiceImplTest {
     void setUp() {
         category = new Category();
         category.setId(1L);
-        category.setName("Test Category");
+        category.setNameEn("Test Category");
+        category.setNameRu("Тестовая категория");
         
         categoryCreateDto = new CategoryCreateDto();
-        categoryCreateDto.setName("Test Category");
+        categoryCreateDto.setNameEn("Test Category");
+        categoryCreateDto.setNameRu("Тестовая категория");
         
         categoryUpdateDto = new CategoryUpdateDto();
         categoryUpdateDto.setId(1L);
-        categoryUpdateDto.setName("Updated Category");
+        categoryUpdateDto.setNameEn("Updated Category");
         
         categoryResponseDto = new CategoryResponseDto();
         categoryResponseDto.setId(1L);
-        categoryResponseDto.setName("Test Category");
+        categoryResponseDto.setNameEn("Test Category");
+        categoryResponseDto.setNameRu("Тестовая категория");
     }
 
     @Test
     void CreateShouldReturnCategoryResponseDto() {
-        when(categoryRepo.findByName("Test Category")).thenReturn(Optional.empty());
+        when(categoryRepo.findByNameEn("Test Category")).thenReturn(Optional.empty());
+        when(categoryRepo.findByNameRu("Тестовая категория")).thenReturn(Optional.empty());
         when(categoryMapper.toEntity(categoryCreateDto)).thenReturn(category);
         when(categoryRepo.save(category)).thenReturn(category);
         when(categoryMapper.toDto(category)).thenReturn(categoryResponseDto);
@@ -76,11 +80,12 @@ class CategoryCommandServiceImplTest {
 
     @Test
     void CreateShouldThrowExceptionWhenCategoryExists() {
-        when(categoryRepo.findByName("Test Category")).thenReturn(Optional.of(category));
+        when(categoryRepo.findByNameEn("Test Category")).thenReturn(Optional.of(category));
 
-        assertThrows(CategoryAlreadyExistsException.class, 
+        Exception exception = assertThrows(CategoryAlreadyExistsException.class, 
                 () -> categoryCommandService.create(categoryCreateDto));
         
+        assertNotNull(exception);
         verify(categoryRepo, never()).save(any());
     }
 

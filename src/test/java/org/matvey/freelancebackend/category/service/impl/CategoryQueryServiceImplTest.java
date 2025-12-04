@@ -37,11 +37,13 @@ class CategoryQueryServiceImplTest {
     void setUp() {
         category = new Category();
         category.setId(1L);
-        category.setName("Test Category");
+        category.setNameEn("Test Category");
+        category.setNameRu("Тестовая категория");
         
         categoryResponseDto = new CategoryResponseDto();
         categoryResponseDto.setId(1L);
-        categoryResponseDto.setName("Test Category");
+        categoryResponseDto.setNameEn("Test Category");
+        categoryResponseDto.setNameRu("Тестовая категория");
     }
 
     @Test
@@ -96,24 +98,24 @@ class CategoryQueryServiceImplTest {
 
     @Test
     void FindCategoryDtoByNameShouldReturnCategoryResponseDto() {
-        when(categoryRepo.findByName("Test Category")).thenReturn(Optional.of(category));
+        when(categoryRepo.findByNameEn("Test Category")).thenReturn(Optional.of(category));
         when(categoryMapper.toDto(category)).thenReturn(categoryResponseDto);
 
         CategoryResponseDto result = categoryQueryService.findCategoryDtoByName("Test Category");
 
         assertNotNull(result);
-        assertEquals(categoryResponseDto.getName(), result.getName());
-        verify(categoryRepo).findByName("Test Category");
+        assertEquals(categoryResponseDto.getNameEn(), result.getNameEn());
+        verify(categoryRepo).findByNameEn("Test Category");
         verify(categoryMapper).toDto(category);
     }
 
     @Test
     void FindCategoryDtoByNameShouldThrowExceptionWhenNotFound() {
-        when(categoryRepo.findByName("Test Category")).thenReturn(Optional.empty());
+        when(categoryRepo.findByNameEn("Test Category")).thenReturn(Optional.empty());
 
         assertThrows(CategoryNotFoundException.class, 
                 () -> categoryQueryService.findCategoryDtoByName("Test Category"));
         
-        verify(categoryRepo).findByName("Test Category");
+        verify(categoryRepo).findByNameEn("Test Category");
     }
 }

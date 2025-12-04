@@ -31,13 +31,16 @@ class ContractCommandServiceImplTest {
     private ContractMapper contractMapper;
     
     @Mock
-    private ContractSecurityUtil contractSecurityUtil;
+    private org.matvey.freelancebackend.contracts.service.api.ContractQueryService contractQueryService;
     
     @Mock
     private UserProfileService userProfileService;
     
     @Mock
     private Authentication authentication;
+    
+    @Mock
+    private org.matvey.freelancebackend.security.user.CustomUserDetails userDetails;
     
     @InjectMocks
     private ContractCommandServiceImpl contractCommandService;
@@ -54,42 +57,71 @@ class ContractCommandServiceImplTest {
         
         contract = new Contract();
         contract.setId(1L);
-        contract.setContractStatus(ContractStatus.PENDING);
+        contract.setContractStatus(ContractStatus.IN_PROGRESS);
         contract.setFreelancer(freelancer);
         contract.setPrice(BigDecimal.valueOf(100.00));
         
         contractResponseDto = new ContractResponseDto();
         contractResponseDto.setId(1L);
-        contractResponseDto.setContractStatus(ContractStatus.APPROVED.name());
+        contractResponseDto.setContractStatus(ContractStatus.COMPLETED.name());
     }
 
     @Test
-    void AcceptShouldReturnApprovedContract() {
-        when(contractSecurityUtil.getContractIfOwner(1L, authentication)).thenReturn(contract);
+    void CompleteWorkShouldSetDeliveryUrlAndPendingReview() {
+        contract.setContractStatus(ContractStatus.IN_PROGRESS);
+        when(contractQueryService.findById(1L)).thenReturn(contract);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.user()).thenReturn(freelancer);
         when(contractRepository.save(contract)).thenReturn(contract);
         when(contractMapper.toDto(contract)).thenReturn(contractResponseDto);
 
-        ContractResponseDto result = contractCommandService.accept(1L, authentication);
+        ContractResponseDto result = contractCommandService.completeWork(1L, "http://delivery.url", authentication);
 
         assertNotNull(result);
-        assertEquals(ContractStatus.APPROVED, contract.getContractStatus());
+        assertEquals(ContractStatus.PENDING_REVIEW, contract.getContractStatus());
+        assertEquals("http://delivery.url", contract.getDeliveryUrl());
         verify(contractRepository).save(contract);
-        verify(contractMapper).toDto(contract);
-        verify(userProfileService).addBalance(freelancer.getId(), contract.getPrice());
     }
 
     @Test
-    void RejectShouldReturnRejectedContract() {
-        when(contractSecurityUtil.getContractIfOwner(1L, authentication)).thenReturn(contract);
+    void AcceptWorkShouldCompleteContractAndPayFreelancer() {
+        User buyer = new User();
+        buyer.setId(2L);
+        contract.setBuyer(buyer);
+        contract.setContractStatus(ContractStatus.PENDING_REVIEW);
+        
+        when(contractQueryService.findById(1L)).thenReturn(contract);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.user()).thenReturn(buyer);
         when(contractRepository.save(contract)).thenReturn(contract);
         when(contractMapper.toDto(contract)).thenReturn(contractResponseDto);
 
-        ContractResponseDto result = contractCommandService.reject(1L, authentication);
+        ContractResponseDto result = contractCommandService.acceptWork(1L, authentication);
+
+        assertNotNull(result);
+        assertEquals(ContractStatus.COMPLETED, contract.getContractStatus());
+        verify(userProfileService).addBalance(freelancer.getId(), contract.getPrice());
+        verify(contractRepository).save(contract);
+    }
+
+    @Test
+    void RejectWorkShouldRejectContractAndRefundBuyer() {
+        User buyer = new User();
+        buyer.setId(2L);
+        contract.setBuyer(buyer);
+        contract.setContractStatus(ContractStatus.PENDING_REVIEW);
+        
+        when(contractQueryService.findById(1L)).thenReturn(contract);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.user()).thenReturn(buyer);
+        when(contractRepository.save(contract)).thenReturn(contract);
+        when(contractMapper.toDto(contract)).thenReturn(contractResponseDto);
+
+        ContractResponseDto result = contractCommandService.rejectWork(1L, authentication);
 
         assertNotNull(result);
         assertEquals(ContractStatus.REJECTED, contract.getContractStatus());
+        verify(userProfileService).addBalance(buyer.getId(), contract.getPrice());
         verify(contractRepository).save(contract);
-        verify(contractMapper).toDto(contract);
-        verify(userProfileService, never()).addBalance(any(), any());
     }
 }

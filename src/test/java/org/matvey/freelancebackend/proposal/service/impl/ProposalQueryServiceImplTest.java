@@ -38,6 +38,9 @@ class ProposalQueryServiceImplTest {
     private AdSecurityUtil adSecurityUtil;
     
     @Mock
+    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
+    
+    @Mock
     private Authentication authentication;
     
     @InjectMocks
@@ -94,9 +97,10 @@ class ProposalQueryServiceImplTest {
     void FindByIdShouldThrowExceptionWhenNotFound() {
         when(proposalRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(ProposalNotFoundException.class, 
+        Exception exception = assertThrows(ProposalNotFoundException.class, 
                 () -> proposalQueryService.findById(1L));
         
+        assertNotNull(exception);
         verify(proposalRepo).findById(1L);
     }
 

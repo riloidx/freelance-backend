@@ -41,6 +41,15 @@ class FreelancerProposalServiceImplTest {
     private UserDetailsServiceImpl userDetailsService;
     
     @Mock
+    private org.matvey.freelancebackend.proposal.service.api.ProposalQueryService proposalQueryService;
+    
+    @Mock
+    private org.matvey.freelancebackend.contracts.repository.ContractRepository contractRepository;
+    
+    @Mock
+    private org.matvey.freelancebackend.users.service.api.UserProfileService userProfileService;
+    
+    @Mock
     private Authentication authentication;
     
     @Mock
@@ -112,5 +121,49 @@ class FreelancerProposalServiceImplTest {
         assertEquals(ProposalStatus.PENDING, result.getProposalStatus());
         assertEquals(ad, result.getAd());
         assertEquals(user, result.getFreelancer());
+    }
+
+    @Test
+    void AcceptBuyerProposalShouldCreateContract() {
+        User buyer = new User();
+        buyer.setId(2L);
+        buyer.setBalance(BigDecimal.valueOf(1000));
+        
+        proposal.setAd(null);
+        proposal.setBuyer(buyer);
+        proposal.setFreelancer(user);
+        
+        when(proposalQueryService.findById(1L)).thenReturn(proposal);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.user()).thenReturn(user);
+        when(proposalRepo.save(any(Proposal.class))).thenReturn(proposal);
+        when(contractRepository.save(any(org.matvey.freelancebackend.contracts.entity.Contract.class)))
+                .thenReturn(new org.matvey.freelancebackend.contracts.entity.Contract());
+        when(proposalMapper.toDto(proposal)).thenReturn(proposalResponseDto);
+
+        ProposalResponseDto result = freelancerProposalService.acceptBuyerProposal(1L, authentication);
+
+        assertNotNull(result);
+        verify(userProfileService).subtractBalance(buyer.getId(), proposal.getPrice());
+        verify(contractRepository).save(any(org.matvey.freelancebackend.contracts.entity.Contract.class));
+    }
+
+    @Test
+    void RejectBuyerProposalShouldRejectProposal() {
+        proposal.setAd(null);
+        proposal.setBuyer(new User());
+        proposal.setFreelancer(user);
+        
+        when(proposalQueryService.findById(1L)).thenReturn(proposal);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.user()).thenReturn(user);
+        when(proposalRepo.save(any(Proposal.class))).thenReturn(proposal);
+        when(proposalMapper.toDto(proposal)).thenReturn(proposalResponseDto);
+
+        ProposalResponseDto result = freelancerProposalService.rejectBuyerProposal(1L, authentication);
+
+        assertNotNull(result);
+        assertEquals(ProposalStatus.REJECTED, proposal.getProposalStatus());
+        verify(proposalRepo).save(proposal);
     }
 }

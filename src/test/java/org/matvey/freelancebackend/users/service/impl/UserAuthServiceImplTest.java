@@ -36,6 +36,9 @@ class UserAuthServiceImplTest {
     @Mock
     private UserMapper userMapper;
     
+    @Mock
+    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
+    
     @InjectMocks
     private UserAuthServiceImpl userAuthService;
     
@@ -82,9 +85,10 @@ class UserAuthServiceImplTest {
     void CreateUserShouldThrowExceptionWhenUsernameExists() {
         when(userRepo.existsByUsername("testuser")).thenReturn(true);
 
-        assertThrows(UserAlreadyExistsException.class, 
+        Exception exception = assertThrows(UserAlreadyExistsException.class, 
                 () -> userAuthService.createUser(registrationDto));
         
+        assertNotNull(exception);
         verify(userRepo, never()).save(any());
     }
 
@@ -93,9 +97,10 @@ class UserAuthServiceImplTest {
         when(userRepo.existsByUsername("testuser")).thenReturn(false);
         when(userRepo.existsByEmail("test@example.com")).thenReturn(true);
 
-        assertThrows(UserAlreadyExistsException.class, 
+        Exception exception = assertThrows(UserAlreadyExistsException.class, 
                 () -> userAuthService.createUser(registrationDto));
         
+        assertNotNull(exception);
         verify(userRepo, never()).save(any());
     }
 
@@ -103,8 +108,10 @@ class UserAuthServiceImplTest {
     void ExistsByUsernameOrThrowShouldThrowExceptionWhenExists() {
         when(userRepo.existsByUsername("testuser")).thenReturn(true);
 
-        assertThrows(UserAlreadyExistsException.class, 
+        Exception exception = assertThrows(UserAlreadyExistsException.class, 
                 () -> userAuthService.existsByUsernameOrThrow("testuser"));
+        
+        assertNotNull(exception);
     }
 
     @Test
@@ -118,8 +125,10 @@ class UserAuthServiceImplTest {
     void ExistsByEmailOrThrowShouldThrowExceptionWhenExists() {
         when(userRepo.existsByEmail("test@example.com")).thenReturn(true);
 
-        assertThrows(UserAlreadyExistsException.class, 
+        Exception exception = assertThrows(UserAlreadyExistsException.class, 
                 () -> userAuthService.existsByEmailOrThrow("test@example.com"));
+        
+        assertNotNull(exception);
     }
 
     @Test

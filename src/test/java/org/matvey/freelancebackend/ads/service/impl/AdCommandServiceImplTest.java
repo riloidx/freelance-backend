@@ -72,8 +72,10 @@ class AdCommandServiceImplTest {
         
         ad = new Ad();
         ad.setId(1L);
-        ad.setTitle("Test Ad");
-        ad.setDescription("Test Description");
+        ad.setTitleEn("Test Ad");
+        ad.setTitleRu("Тестовое объявление");
+        ad.setDescriptionEn("Test Description");
+        ad.setDescriptionRu("Тестовое описание");
         ad.setBudget(BigDecimal.valueOf(1000));
         ad.setStatus(AdStatus.ACTIVE);
         ad.setAdType(AdType.OFFER);
@@ -81,19 +83,20 @@ class AdCommandServiceImplTest {
         ad.setCategory(category);
         
         adCreateDto = new AdCreateDto();
-        adCreateDto.setTitle("Test Ad");
-        adCreateDto.setDescription("Test Description");
+        adCreateDto.setTitleEn("Test Ad Title");
+        adCreateDto.setTitleRu("Тестовое объявление");
+        adCreateDto.setDescriptionEn("Test Description");
+        adCreateDto.setDescriptionRu("Тестовое описание");
         adCreateDto.setBudget(BigDecimal.valueOf(1000));
         adCreateDto.setCategoryId(1L);
-        adCreateDto.setAdType(AdType.OFFER);
         
         adUpdateDto = new AdUpdateDto();
         adUpdateDto.setId(1L);
-        adUpdateDto.setTitle("Updated Ad");
+        adUpdateDto.setTitleEn("Updated Ad");
         
         adResponseDto = new AdResponseDto();
         adResponseDto.setId(1L);
-        adResponseDto.setTitle("Test Ad");
+        adResponseDto.setTitleEn("Test Ad");
     }
 
     @Test
@@ -129,10 +132,8 @@ class AdCommandServiceImplTest {
 
     @Test
     void DeleteShouldRemoveAd() {
-        when(adSecurityUtil.checkAdOwnerPermissionAndReturn(1L, authentication)).thenReturn(ad);
-
         adCommandService.delete(1L, authentication);
 
-        verify(adRepo).delete(ad);
+        verify(adRepo).deleteById(1L);
     }
 }

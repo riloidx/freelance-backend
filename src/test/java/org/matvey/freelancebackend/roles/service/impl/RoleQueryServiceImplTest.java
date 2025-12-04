@@ -27,6 +27,9 @@ class RoleQueryServiceImplTest {
     @Mock
     private RoleMapper roleMapper;
     
+    @Mock
+    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
+    
     @InjectMocks
     private RoleQueryServiceImpl roleQueryService;
     
@@ -75,9 +78,10 @@ class RoleQueryServiceImplTest {
     void FindRoleByIdShouldThrowExceptionWhenNotFound() {
         when(roleRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(RoleNotFoundException.class, 
+        Exception exception = assertThrows(RoleNotFoundException.class, 
                 () -> roleQueryService.findRoleById(1L));
         
+        assertNotNull(exception);
         verify(roleRepo).findById(1L);
     }
 
@@ -109,9 +113,10 @@ class RoleQueryServiceImplTest {
     void FindRoleByNameShouldThrowExceptionWhenNotFound() {
         when(roleRepo.findByName("USER")).thenReturn(Optional.empty());
 
-        assertThrows(RoleNotFoundException.class, 
+        Exception exception = assertThrows(RoleNotFoundException.class, 
                 () -> roleQueryService.findRoleByName("USER"));
         
+        assertNotNull(exception);
         verify(roleRepo).findByName("USER");
     }
 

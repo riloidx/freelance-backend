@@ -36,6 +36,9 @@ class AdQueryServiceImplTest {
     private AdMapper adMapper;
     
     @Mock
+    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
+    
+    @Mock
     private Authentication authentication;
     
     @Mock
@@ -56,11 +59,12 @@ class AdQueryServiceImplTest {
         
         ad = new Ad();
         ad.setId(1L);
-        ad.setTitle("Test Ad");
+        ad.setTitleEn("Test Ad");
+        ad.setTitleRu("Тестовое объявление");
         
         adResponseDto = new AdResponseDto();
         adResponseDto.setId(1L);
-        adResponseDto.setTitle("Test Ad");
+        adResponseDto.setTitleEn("Test Ad");
         
         pageable = PageRequest.of(0, 10);
     }
@@ -70,14 +74,20 @@ class AdQueryServiceImplTest {
         Page<Ad> adPage = new PageImpl<>(List.of(ad));
         Page<AdResponseDto> expectedPage = new PageImpl<>(List.of(adResponseDto));
         
-        when(adRepo.findAll(any(Pageable.class))).thenReturn(adPage);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(userDetails.user()).thenReturn(user);
+        when(adRepo.findAllByStatusExcludingUserProposals(
+                org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, 1L, pageable))
+                .thenReturn(adPage);
         when(adMapper.toDto(adPage)).thenReturn(expectedPage);
 
-        Page<AdResponseDto> result = adQueryService.findAllByOrderByCreatedDesc(pageable);
+        Page<AdResponseDto> result = adQueryService.findAllByOrderByCreatedDesc(pageable, authentication);
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
-        verify(adRepo).findAll(any(Pageable.class));
+        verify(adRepo).findAllByStatusExcludingUserProposals(
+                org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE, 1L, pageable);
     }
 
     @Test
@@ -110,7 +120,8 @@ class AdQueryServiceImplTest {
     void FindAdByIdShouldThrowExceptionWhenNotFound() {
         when(adRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(AdNotFoundException.class, () -> adQueryService.findAdById(1L));
+        Exception exception = assertThrows(AdNotFoundException.class, () -> adQueryService.findAdById(1L));
+        assertNotNull(exception);
         verify(adRepo).findById(1L);
     }
 

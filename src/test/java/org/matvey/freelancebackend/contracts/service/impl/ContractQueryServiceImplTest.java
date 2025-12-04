@@ -56,11 +56,11 @@ class ContractQueryServiceImplTest {
         
         contract = new Contract();
         contract.setId(1L);
-        contract.setContractStatus(ContractStatus.PENDING);
+        contract.setContractStatus(ContractStatus.IN_PROGRESS);
         
         contractResponseDto = new ContractResponseDto();
         contractResponseDto.setId(1L);
-        contractResponseDto.setContractStatus(String.valueOf(ContractStatus.PENDING));
+        contractResponseDto.setContractStatus(String.valueOf(ContractStatus.IN_PROGRESS));
         
         pageable = PageRequest.of(0, 10);
     }
@@ -72,16 +72,16 @@ class ContractQueryServiceImplTest {
         
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(userDetails.user()).thenReturn(user);
-        when(contractRepo.findContractsByUserIdAndProposalStatus(1L, ContractStatus.PENDING, pageable))
+        when(contractRepo.findContractsByUserIdAndStatus(1L, ContractStatus.IN_PROGRESS, pageable))
                 .thenReturn(contractPage);
         when(contractMapper.toDto(contractPage)).thenReturn(expectedPage);
 
         Page<ContractResponseDto> result = contractQueryService.findMyContracts(
-                pageable, ContractStatus.PENDING, authentication);
+                pageable, ContractStatus.IN_PROGRESS, authentication);
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
-        verify(contractRepo).findContractsByUserIdAndProposalStatus(1L, ContractStatus.PENDING, pageable);
+        verify(contractRepo).findContractsByUserIdAndStatus(1L, ContractStatus.IN_PROGRESS, pageable);
     }
 
     @Test

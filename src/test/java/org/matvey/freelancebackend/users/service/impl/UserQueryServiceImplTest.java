@@ -31,6 +31,9 @@ class UserQueryServiceImplTest {
     @Mock
     private UserMapper userMapper;
     
+    @Mock
+    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
+    
     @InjectMocks
     private UserQueryServiceImpl userQueryService;
     
@@ -84,9 +87,10 @@ class UserQueryServiceImplTest {
     void FindUserByIdShouldThrowExceptionWhenNotFound() {
         when(userRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, 
+        Exception exception = assertThrows(UserNotFoundException.class, 
                 () -> userQueryService.findUserById(1L));
         
+        assertNotNull(exception);
         verify(userRepo).findById(1L);
     }
 
@@ -118,9 +122,10 @@ class UserQueryServiceImplTest {
     void FindUserByEmailShouldThrowExceptionWhenNotFound() {
         when(userRepo.findByEmail("test@example.com")).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, 
+        Exception exception = assertThrows(UserNotFoundException.class, 
                 () -> userQueryService.findUserByEmail("test@example.com"));
         
+        assertNotNull(exception);
         verify(userRepo).findByEmail("test@example.com");
     }
 
@@ -152,9 +157,10 @@ class UserQueryServiceImplTest {
     void FindUserByUsernameShouldThrowExceptionWhenNotFound() {
         when(userRepo.findByUsername("testuser")).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, 
+        Exception exception = assertThrows(UserNotFoundException.class, 
                 () -> userQueryService.findUserByUsername("testuser"));
         
+        assertNotNull(exception);
         verify(userRepo).findByUsername("testuser");
     }
 

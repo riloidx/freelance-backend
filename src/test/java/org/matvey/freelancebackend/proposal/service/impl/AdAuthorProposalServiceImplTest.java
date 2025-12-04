@@ -39,7 +39,19 @@ class AdAuthorProposalServiceImplTest {
     private AdSecurityUtil adSecurityUtil;
     
     @Mock
+    private org.matvey.freelancebackend.contracts.repository.ContractRepository contractRepository;
+    
+    @Mock
+    private org.matvey.freelancebackend.users.service.api.UserProfileService userProfileService;
+    
+    @Mock
+    private org.matvey.freelancebackend.ads.repository.AdRepository adRepository;
+    
+    @Mock
     private Authentication authentication;
+    
+    @Mock
+    private org.matvey.freelancebackend.security.user.CustomUserDetails userDetails;
     
     @InjectMocks
     private AdAuthorProposalServiceImpl adAuthorProposalService;
@@ -48,16 +60,28 @@ class AdAuthorProposalServiceImplTest {
     private Proposal otherProposal;
     private Ad ad;
     private ProposalResponseDto proposalResponseDto;
+    private org.matvey.freelancebackend.users.entity.User buyer;
+    private org.matvey.freelancebackend.users.entity.User freelancer;
 
     @BeforeEach
     void setUp() {
+        buyer = new org.matvey.freelancebackend.users.entity.User();
+        buyer.setId(1L);
+        buyer.setBalance(java.math.BigDecimal.valueOf(1000));
+        
+        freelancer = new org.matvey.freelancebackend.users.entity.User();
+        freelancer.setId(2L);
+        
         ad = new Ad();
         ad.setId(1L);
+        ad.setStatus(org.matvey.freelancebackend.ads.entity.AdStatus.ACTIVE);
         
         proposal = new Proposal();
         proposal.setId(1L);
         proposal.setProposalStatus(ProposalStatus.PENDING);
         proposal.setAd(ad);
+        proposal.setFreelancer(freelancer);
+        proposal.setPrice(java.math.BigDecimal.valueOf(100));
         
         otherProposal = new Proposal();
         otherProposal.setId(2L);
@@ -77,7 +101,12 @@ class AdAuthorProposalServiceImplTest {
     void ApproveShouldAcceptProposalAndRejectOthers() {
         when(proposalQueryService.findById(1L)).thenReturn(proposal);
         when(adSecurityUtil.checkAdOwnerPermissionAndReturn(1L, authentication)).thenReturn(ad);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.user()).thenReturn(buyer);
         when(proposalRepository.save(proposal)).thenReturn(proposal);
+        when(adRepository.save(ad)).thenReturn(ad);
+        when(contractRepository.save(any(org.matvey.freelancebackend.contracts.entity.Contract.class)))
+                .thenReturn(new org.matvey.freelancebackend.contracts.entity.Contract());
         when(proposalMapper.toDto(proposal)).thenReturn(proposalResponseDto);
 
         ProposalResponseDto result = adAuthorProposalService.approve(1L, authentication);
@@ -85,8 +114,12 @@ class AdAuthorProposalServiceImplTest {
         assertNotNull(result);
         assertEquals(ProposalStatus.ACCEPTED, proposal.getProposalStatus());
         assertEquals(ProposalStatus.REJECTED, otherProposal.getProposalStatus());
+        assertEquals(org.matvey.freelancebackend.ads.entity.AdStatus.ARCHIVED, ad.getStatus());
         verify(proposalRepository).save(proposal);
         verify(proposalRepository).saveAll(any(List.class));
+        verify(contractRepository).save(any(org.matvey.freelancebackend.contracts.entity.Contract.class));
+        verify(userProfileService).subtractBalance(buyer.getId(), proposal.getPrice());
+        verify(adRepository).save(ad);
     }
 
     @Test
