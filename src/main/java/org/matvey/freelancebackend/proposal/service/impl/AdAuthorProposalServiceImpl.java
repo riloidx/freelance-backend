@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.proposal.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.matvey.freelancebackend.ads.entity.Ad;
 import org.matvey.freelancebackend.ads.entity.AdStatus;
 import org.matvey.freelancebackend.ads.repository.AdRepository;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
@@ -39,25 +41,37 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
     @Override
     @Transactional
     public ProposalResponseDto approve(long proposalId, Authentication auth) {
-        Proposal proposal = getProposalWithPermissionCheck(proposalId, auth);
-        Ad ad = proposal.getAd();
-        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        log.debug("Approving proposal with id: {}", proposalId);
+        try {
+            Proposal proposal = getProposalWithPermissionCheck(proposalId, auth);
+            Ad ad = proposal.getAd();
+            CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
 
-        rejectOtherProposals(ad, proposalId);
-        approveProposal(proposal);
-        archiveAd(ad);
-        createContract(proposal, userDetails.user());
-
-        return proposalMapper.toDto(proposal);
+            rejectOtherProposals(ad, proposalId);
+            approveProposal(proposal);
+            archiveAd(ad);
+            createContract(proposal, userDetails.user());
+            log.info("Successfully approved proposal with id: {} and created contract", proposalId);
+            return proposalMapper.toDto(proposal);
+        } catch (Exception e) {
+            log.error("Error approving proposal with id: {}", proposalId, e);
+            throw e;
+        }
     }
 
     @Override
     @Transactional
     public ProposalResponseDto reject(long proposalId, Authentication auth) {
-        Proposal proposal = getProposalWithPermissionCheck(proposalId, auth);
-        rejectProposal(proposal);
-
-        return proposalMapper.toDto(proposal);
+        log.debug("Rejecting proposal with id: {}", proposalId);
+        try {
+            Proposal proposal = getProposalWithPermissionCheck(proposalId, auth);
+            rejectProposal(proposal);
+            log.info("Successfully rejected proposal with id: {}", proposalId);
+            return proposalMapper.toDto(proposal);
+        } catch (Exception e) {
+            log.error("Error rejecting proposal with id: {}", proposalId, e);
+            throw e;
+        }
     }
 
     private Proposal getProposalWithPermissionCheck(long proposalId, Authentication auth) {
@@ -75,13 +89,16 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
     }
 
     private void rejectOtherProposals(Ad ad, long approvedProposalId) {
+        log.debug("Rejecting other proposals for ad id: {}, except proposal id: {}", ad.getId(), approvedProposalId);
         List<Proposal> proposals = ad.getProposals();
-        proposals.stream()
+        long rejectedCount = proposals.stream()
                 .filter(p -> !p.getId().equals(approvedProposalId))
                 .filter(p -> p.getProposalStatus() != ProposalStatus.REJECTED)
-                .forEach(p -> p.setProposalStatus(ProposalStatus.REJECTED));
+                .peek(p -> p.setProposalStatus(ProposalStatus.REJECTED))
+                .count();
 
         proposalRepository.saveAll(proposals);
+        log.debug("Rejected {} other proposals for ad id: {}", rejectedCount, ad.getId());
     }
 
     private void rejectProposal(Proposal proposal) {
@@ -91,6 +108,8 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
     }
 
     private void createContract(Proposal proposal, User buyer) {
+        log.debug("Creating contract for proposal id: {}, buyer: {}, freelancer: {}", 
+                  proposal.getId(), buyer.getId(), proposal.getFreelancer().getId());
         userProfileService.subtractBalance(buyer.getId(), proposal.getPrice());
 
         Contract contract = new Contract();
@@ -102,6 +121,7 @@ public class AdAuthorProposalServiceImpl implements AdAuthorProposalService {
         contract.setCreatedAt(Instant.now());
 
         contractRepository.save(contract);
+        log.debug("Contract created successfully for proposal id: {}", proposal.getId());
     }
 
     private void archiveAd(Ad ad) {

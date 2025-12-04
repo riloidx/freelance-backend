@@ -3,6 +3,7 @@ package org.matvey.freelancebackend.roles.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.roles.dto.response.RoleResponseDto;
 import org.matvey.freelancebackend.roles.entity.Role;
 import org.matvey.freelancebackend.roles.exception.RoleNotFoundException;
@@ -16,23 +17,24 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class RoleQueryServiceImplTest {
 
     @Mock
     private RoleRepository roleRepo;
-    
+
     @Mock
     private RoleMapper roleMapper;
-    
+
     @Mock
-    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
-    
+    private LocalizationUtil localizationUtil;
+
     @InjectMocks
     private RoleQueryServiceImpl roleQueryService;
-    
+
     private Role role;
     private RoleResponseDto roleResponseDto;
 
@@ -41,7 +43,7 @@ class RoleQueryServiceImplTest {
         role = new Role();
         role.setId(1L);
         role.setName("USER");
-        
+
         roleResponseDto = new RoleResponseDto();
         roleResponseDto.setId(1L);
         roleResponseDto.setName("USER");
@@ -51,7 +53,7 @@ class RoleQueryServiceImplTest {
     void FindAllRolesDtoShouldReturnListOfRoles() {
         List<Role> roles = List.of(role);
         List<RoleResponseDto> expectedDtos = List.of(roleResponseDto);
-        
+
         when(roleRepo.findAll()).thenReturn(roles);
         when(roleMapper.toDto(roles)).thenReturn(expectedDtos);
 
@@ -78,9 +80,9 @@ class RoleQueryServiceImplTest {
     void FindRoleByIdShouldThrowExceptionWhenNotFound() {
         when(roleRepo.findById(1L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(RoleNotFoundException.class, 
+        Exception exception = assertThrows(RoleNotFoundException.class,
                 () -> roleQueryService.findRoleById(1L));
-        
+
         assertNotNull(exception);
         verify(roleRepo).findById(1L);
     }
@@ -113,9 +115,9 @@ class RoleQueryServiceImplTest {
     void FindRoleByNameShouldThrowExceptionWhenNotFound() {
         when(roleRepo.findByName("USER")).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(RoleNotFoundException.class, 
+        Exception exception = assertThrows(RoleNotFoundException.class,
                 () -> roleQueryService.findRoleByName("USER"));
-        
+
         assertNotNull(exception);
         verify(roleRepo).findByName("USER");
     }

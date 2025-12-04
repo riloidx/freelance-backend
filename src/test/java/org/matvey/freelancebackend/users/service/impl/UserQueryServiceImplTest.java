@@ -3,6 +3,7 @@ package org.matvey.freelancebackend.users.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.users.dto.response.UserResponseDto;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.exception.UserNotFoundException;
@@ -20,23 +21,24 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserQueryServiceImplTest {
 
     @Mock
     private UserRepository userRepo;
-    
+
     @Mock
     private UserMapper userMapper;
-    
+
     @Mock
-    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
-    
+    private LocalizationUtil localizationUtil;
+
     @InjectMocks
     private UserQueryServiceImpl userQueryService;
-    
+
     private User user;
     private UserResponseDto userResponseDto;
     private Pageable pageable;
@@ -47,12 +49,12 @@ class UserQueryServiceImplTest {
         user.setId(1L);
         user.setUsername("testuser");
         user.setEmail("test@example.com");
-        
+
         userResponseDto = new UserResponseDto();
         userResponseDto.setId(1L);
         userResponseDto.setUsername("testuser");
         userResponseDto.setEmail("test@example.com");
-        
+
         pageable = PageRequest.of(0, 10);
     }
 
@@ -60,7 +62,7 @@ class UserQueryServiceImplTest {
     void FindAllUsersDtoShouldReturnPageOfUsers() {
         Page<User> userPage = new PageImpl<>(List.of(user));
         Page<UserResponseDto> expectedPage = new PageImpl<>(List.of(userResponseDto));
-        
+
         when(userRepo.findAll(pageable)).thenReturn(userPage);
         when(userMapper.toDto(userPage)).thenReturn(expectedPage);
 
@@ -87,9 +89,9 @@ class UserQueryServiceImplTest {
     void FindUserByIdShouldThrowExceptionWhenNotFound() {
         when(userRepo.findById(1L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(UserNotFoundException.class, 
+        Exception exception = assertThrows(UserNotFoundException.class,
                 () -> userQueryService.findUserById(1L));
-        
+
         assertNotNull(exception);
         verify(userRepo).findById(1L);
     }
@@ -122,9 +124,9 @@ class UserQueryServiceImplTest {
     void FindUserByEmailShouldThrowExceptionWhenNotFound() {
         when(userRepo.findByEmail("test@example.com")).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(UserNotFoundException.class, 
+        Exception exception = assertThrows(UserNotFoundException.class,
                 () -> userQueryService.findUserByEmail("test@example.com"));
-        
+
         assertNotNull(exception);
         verify(userRepo).findByEmail("test@example.com");
     }
@@ -157,9 +159,9 @@ class UserQueryServiceImplTest {
     void FindUserByUsernameShouldThrowExceptionWhenNotFound() {
         when(userRepo.findByUsername("testuser")).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(UserNotFoundException.class, 
+        Exception exception = assertThrows(UserNotFoundException.class,
                 () -> userQueryService.findUserByUsername("testuser"));
-        
+
         assertNotNull(exception);
         verify(userRepo).findByUsername("testuser");
     }

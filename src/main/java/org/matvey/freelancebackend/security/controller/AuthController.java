@@ -2,6 +2,7 @@ package org.matvey.freelancebackend.security.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.matvey.freelancebackend.security.dto.request.LoginDto;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
 import org.matvey.freelancebackend.security.dto.response.AuthResponseDto;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -21,15 +23,15 @@ public class AuthController {
 
     @PostMapping("/registration")
     public ResponseEntity<AuthResponseDto> registration(@Valid @RequestBody RegistrationDto registrationDto) {
+        log.info("Registration request received for email: {}", registrationDto.getEmail());
         AuthResponseDto response = authService.register(registrationDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
+        log.info("Login request received for email: {}", loginDto.getEmail());
         AuthResponseDto response = authService.login(loginDto);
-
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

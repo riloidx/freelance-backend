@@ -3,6 +3,7 @@ package org.matvey.freelancebackend.users.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.roles.entity.Role;
 import org.matvey.freelancebackend.roles.service.api.RoleQueryService;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
@@ -26,22 +27,22 @@ class UserAuthServiceImplTest {
 
     @Mock
     private UserRepository userRepo;
-    
+
     @Mock
     private RoleQueryService roleQueryService;
-    
+
     @Mock
     private PasswordEncoder passwordEncoder;
-    
+
     @Mock
     private UserMapper userMapper;
-    
+
     @Mock
-    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
-    
+    private LocalizationUtil localizationUtil;
+
     @InjectMocks
     private UserAuthServiceImpl userAuthService;
-    
+
     private User user;
     private Role role;
     private RegistrationDto registrationDto;
@@ -51,13 +52,13 @@ class UserAuthServiceImplTest {
         role = new Role();
         role.setId(1L);
         role.setName("USER");
-        
+
         user = new User();
         user.setId(1L);
         user.setUsername("testuser");
         user.setEmail("test@example.com");
         user.setRoles(new HashSet<>());
-        
+
         registrationDto = new RegistrationDto();
         registrationDto.setUsername("testuser");
         registrationDto.setEmail("test@example.com");
@@ -85,9 +86,9 @@ class UserAuthServiceImplTest {
     void CreateUserShouldThrowExceptionWhenUsernameExists() {
         when(userRepo.existsByUsername("testuser")).thenReturn(true);
 
-        Exception exception = assertThrows(UserAlreadyExistsException.class, 
+        Exception exception = assertThrows(UserAlreadyExistsException.class,
                 () -> userAuthService.createUser(registrationDto));
-        
+
         assertNotNull(exception);
         verify(userRepo, never()).save(any());
     }
@@ -97,9 +98,9 @@ class UserAuthServiceImplTest {
         when(userRepo.existsByUsername("testuser")).thenReturn(false);
         when(userRepo.existsByEmail("test@example.com")).thenReturn(true);
 
-        Exception exception = assertThrows(UserAlreadyExistsException.class, 
+        Exception exception = assertThrows(UserAlreadyExistsException.class,
                 () -> userAuthService.createUser(registrationDto));
-        
+
         assertNotNull(exception);
         verify(userRepo, never()).save(any());
     }
@@ -108,9 +109,9 @@ class UserAuthServiceImplTest {
     void ExistsByUsernameOrThrowShouldThrowExceptionWhenExists() {
         when(userRepo.existsByUsername("testuser")).thenReturn(true);
 
-        Exception exception = assertThrows(UserAlreadyExistsException.class, 
+        Exception exception = assertThrows(UserAlreadyExistsException.class,
                 () -> userAuthService.existsByUsernameOrThrow("testuser"));
-        
+
         assertNotNull(exception);
     }
 
@@ -125,9 +126,9 @@ class UserAuthServiceImplTest {
     void ExistsByEmailOrThrowShouldThrowExceptionWhenExists() {
         when(userRepo.existsByEmail("test@example.com")).thenReturn(true);
 
-        Exception exception = assertThrows(UserAlreadyExistsException.class, 
+        Exception exception = assertThrows(UserAlreadyExistsException.class,
                 () -> userAuthService.existsByEmailOrThrow("test@example.com"));
-        
+
         assertNotNull(exception);
     }
 

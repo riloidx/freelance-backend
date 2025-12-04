@@ -8,7 +8,6 @@ import org.matvey.freelancebackend.contracts.entity.Contract;
 import org.matvey.freelancebackend.contracts.entity.ContractStatus;
 import org.matvey.freelancebackend.contracts.mapper.ContractMapper;
 import org.matvey.freelancebackend.contracts.repository.ContractRepository;
-import org.matvey.freelancebackend.contracts.service.util.ContractSecurityUtil;
 import org.matvey.freelancebackend.users.entity.User;
 import org.matvey.freelancebackend.users.service.api.UserProfileService;
 import org.mockito.InjectMocks;
@@ -16,10 +15,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ContractCommandServiceImplTest {

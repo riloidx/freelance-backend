@@ -11,7 +11,6 @@ import org.matvey.freelancebackend.proposal.entity.Proposal;
 import org.matvey.freelancebackend.proposal.entity.ProposalStatus;
 import org.matvey.freelancebackend.proposal.mapper.ProposalMapper;
 import org.matvey.freelancebackend.proposal.repository.ProposalRepository;
-import org.matvey.freelancebackend.security.service.impl.UserDetailsServiceImpl;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
 import org.mockito.InjectMocks;
@@ -21,43 +20,42 @@ import org.springframework.security.core.Authentication;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FreelancerProposalServiceImplTest {
 
     @Mock
     private ProposalRepository proposalRepo;
-    
+
     @Mock
     private ProposalMapper proposalMapper;
-    
+
     @Mock
     private AdQueryService adQueryService;
-    
-    @Mock
-    private UserDetailsServiceImpl userDetailsService;
-    
+
     @Mock
     private org.matvey.freelancebackend.proposal.service.api.ProposalQueryService proposalQueryService;
-    
+
     @Mock
     private org.matvey.freelancebackend.contracts.repository.ContractRepository contractRepository;
-    
+
     @Mock
     private org.matvey.freelancebackend.users.service.api.UserProfileService userProfileService;
-    
+
     @Mock
     private Authentication authentication;
-    
+
     @Mock
     private CustomUserDetails userDetails;
-    
+
     @InjectMocks
     private FreelancerProposalServiceImpl freelancerProposalService;
-    
+
     private Proposal proposal;
     private ProposalCreateDto proposalCreateDto;
     private ProposalResponseDto proposalResponseDto;
@@ -68,10 +66,10 @@ class FreelancerProposalServiceImplTest {
     void setUp() {
         user = new User();
         user.setId(1L);
-        
+
         ad = new Ad();
         ad.setId(1L);
-        
+
         proposal = new Proposal();
         proposal.setId(1L);
         proposal.setMessage("Test proposal");
@@ -79,12 +77,12 @@ class FreelancerProposalServiceImplTest {
         proposal.setProposalStatus(ProposalStatus.PENDING);
         proposal.setAd(ad);
         proposal.setFreelancer(user);
-        
+
         proposalCreateDto = new ProposalCreateDto();
         proposalCreateDto.setAdId(1L);
         proposalCreateDto.setMessage("Test proposal");
         proposalCreateDto.setPrice(BigDecimal.valueOf(500));
-        
+
         proposalResponseDto = new ProposalResponseDto();
         proposalResponseDto.setId(1L);
         proposalResponseDto.setMessage("Test proposal");
@@ -128,11 +126,11 @@ class FreelancerProposalServiceImplTest {
         User buyer = new User();
         buyer.setId(2L);
         buyer.setBalance(BigDecimal.valueOf(1000));
-        
+
         proposal.setAd(null);
         proposal.setBuyer(buyer);
         proposal.setFreelancer(user);
-        
+
         when(proposalQueryService.findById(1L)).thenReturn(proposal);
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(userDetails.user()).thenReturn(user);
@@ -153,7 +151,7 @@ class FreelancerProposalServiceImplTest {
         proposal.setAd(null);
         proposal.setBuyer(new User());
         proposal.setFreelancer(user);
-        
+
         when(proposalQueryService.findById(1L)).thenReturn(proposal);
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(userDetails.user()).thenReturn(user);

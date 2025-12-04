@@ -8,3 +8,12 @@ spring:
   application:
     name: freelance-backend
 
+logging:
+  level:
+    root: INFO
+    org.matvey.freelancebackend: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+

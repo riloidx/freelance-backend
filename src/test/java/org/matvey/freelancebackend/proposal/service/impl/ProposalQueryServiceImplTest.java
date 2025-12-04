@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.matvey.freelancebackend.ads.service.util.AdSecurityUtil;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.proposal.dto.response.ProposalResponseDto;
 import org.matvey.freelancebackend.proposal.entity.Proposal;
 import org.matvey.freelancebackend.proposal.entity.ProposalStatus;
@@ -30,22 +31,22 @@ class ProposalQueryServiceImplTest {
 
     @Mock
     private ProposalRepository proposalRepo;
-    
+
     @Mock
     private ProposalMapper proposalMapper;
-    
+
     @Mock
     private AdSecurityUtil adSecurityUtil;
-    
+
     @Mock
-    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
-    
+    private LocalizationUtil localizationUtil;
+
     @Mock
     private Authentication authentication;
-    
+
     @InjectMocks
     private ProposalQueryServiceImpl proposalQueryService;
-    
+
     private Proposal proposal;
     private ProposalResponseDto proposalResponseDto;
     private Pageable pageable;
@@ -55,11 +56,11 @@ class ProposalQueryServiceImplTest {
         proposal = new Proposal();
         proposal.setId(1L);
         proposal.setProposalStatus(ProposalStatus.PENDING);
-        
+
         proposalResponseDto = new ProposalResponseDto();
         proposalResponseDto.setId(1L);
         proposalResponseDto.setProposalStatus(ProposalStatus.PENDING.name());
-        
+
         pageable = PageRequest.of(0, 10);
     }
 
@@ -67,7 +68,7 @@ class ProposalQueryServiceImplTest {
     void FindAllProposalsByAdIdShouldReturnPageOfProposals() {
         Page<Proposal> proposalPage = new PageImpl<>(List.of(proposal));
         Page<ProposalResponseDto> expectedPage = new PageImpl<>(List.of(proposalResponseDto));
-        
+
         when(adSecurityUtil.checkAdOwnerPermissionAndReturn(1L, authentication)).thenReturn(null);
         when(proposalRepo.findAllByAdIdAndProposalStatus(1L, ProposalStatus.PENDING, pageable))
                 .thenReturn(proposalPage);
@@ -97,9 +98,9 @@ class ProposalQueryServiceImplTest {
     void FindByIdShouldThrowExceptionWhenNotFound() {
         when(proposalRepo.findById(1L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(ProposalNotFoundException.class, 
+        Exception exception = assertThrows(ProposalNotFoundException.class,
                 () -> proposalQueryService.findById(1L));
-        
+
         assertNotNull(exception);
         verify(proposalRepo).findById(1L);
     }

@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.proposal.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.matvey.freelancebackend.proposal.dto.request.BuyerProposalCreateDto;
 import org.matvey.freelancebackend.proposal.dto.response.ProposalResponseDto;
 import org.matvey.freelancebackend.proposal.entity.Proposal;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BuyerProposalServiceImpl implements BuyerProposalService {
@@ -28,21 +30,32 @@ public class BuyerProposalServiceImpl implements BuyerProposalService {
     @Transactional
     public ProposalResponseDto createBuyerProposal(BuyerProposalCreateDto dto, Authentication authentication) {
         User buyer = ((CustomUserDetails) authentication.getPrincipal()).user();
-        User freelancer = userQueryService.findUserById(dto.getFreelancerId());
+        log.debug("Creating buyer proposal from buyer: {} to freelancer: {}", buyer.getId(), dto.getFreelancerId());
+        
+        try {
+            User freelancer = userQueryService.findUserById(dto.getFreelancerId());
 
-        if (buyer.getBalance().compareTo(dto.getPrice()) < 0) {
-            throw new InsufficientBalanceException(localizationUtil.getMessage("error.insufficient.balance"));
+            if (buyer.getBalance().compareTo(dto.getPrice()) < 0) {
+                log.warn("Buyer {} has insufficient balance for proposal. Required: {}, Available: {}", 
+                         buyer.getId(), dto.getPrice(), buyer.getBalance());
+                throw new InsufficientBalanceException(localizationUtil.getMessage("error.insufficient.balance"));
+            }
+
+            Proposal proposal = new Proposal();
+            proposal.setPrice(dto.getPrice());
+            proposal.setMessage(dto.getMessage());
+            proposal.setProposalStatus(ProposalStatus.PENDING);
+            proposal.setFreelancer(freelancer);
+            proposal.setBuyer(buyer);
+            proposal.setAd(null);
+
+            Proposal savedProposal = proposalRepository.save(proposal);
+            log.info("Successfully created buyer proposal with id: {}", savedProposal.getId());
+            return proposalMapper.toDto(savedProposal);
+        } catch (Exception e) {
+            log.error("Error creating buyer proposal from buyer: {} to freelancer: {}", 
+                      buyer.getId(), dto.getFreelancerId(), e);
+            throw e;
         }
-
-        Proposal proposal = new Proposal();
-        proposal.setPrice(dto.getPrice());
-        proposal.setMessage(dto.getMessage());
-        proposal.setProposalStatus(ProposalStatus.PENDING);
-        proposal.setFreelancer(freelancer);
-        proposal.setBuyer(buyer);
-        proposal.setAd(null);
-
-        Proposal savedProposal = proposalRepository.save(proposal);
-        return proposalMapper.toDto(savedProposal);
     }
 }

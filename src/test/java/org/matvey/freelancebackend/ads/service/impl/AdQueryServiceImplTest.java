@@ -8,6 +8,7 @@ import org.matvey.freelancebackend.ads.entity.Ad;
 import org.matvey.freelancebackend.ads.exception.AdNotFoundException;
 import org.matvey.freelancebackend.ads.mapper.AdMapper;
 import org.matvey.freelancebackend.ads.repository.AdRepository;
+import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.security.user.CustomUserDetails;
 import org.matvey.freelancebackend.users.entity.User;
 import org.mockito.InjectMocks;
@@ -23,30 +24,30 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AdQueryServiceImplTest {
 
     @Mock
     private AdRepository adRepo;
-    
+
     @Mock
     private AdMapper adMapper;
-    
+
     @Mock
-    private org.matvey.freelancebackend.common.util.LocalizationUtil localizationUtil;
-    
+    private LocalizationUtil localizationUtil;
+
     @Mock
     private Authentication authentication;
-    
+
     @Mock
     private CustomUserDetails userDetails;
-    
+
     @InjectMocks
     private AdQueryServiceImpl adQueryService;
-    
+
     private Ad ad;
     private AdResponseDto adResponseDto;
     private User user;
@@ -56,16 +57,16 @@ class AdQueryServiceImplTest {
     void setUp() {
         user = new User();
         user.setId(1L);
-        
+
         ad = new Ad();
         ad.setId(1L);
         ad.setTitleEn("Test Ad");
         ad.setTitleRu("Тестовое объявление");
-        
+
         adResponseDto = new AdResponseDto();
         adResponseDto.setId(1L);
         adResponseDto.setTitleEn("Test Ad");
-        
+
         pageable = PageRequest.of(0, 10);
     }
 
@@ -73,7 +74,7 @@ class AdQueryServiceImplTest {
     void FindAllByOrderByCreatedDescShouldReturnPageOfAds() {
         Page<Ad> adPage = new PageImpl<>(List.of(ad));
         Page<AdResponseDto> expectedPage = new PageImpl<>(List.of(adResponseDto));
-        
+
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(authentication.isAuthenticated()).thenReturn(true);
         when(userDetails.user()).thenReturn(user);
@@ -94,7 +95,7 @@ class AdQueryServiceImplTest {
     void FindAllByUserIdShouldReturnListOfAds() {
         List<Ad> ads = List.of(ad);
         List<AdResponseDto> expectedDtos = List.of(adResponseDto);
-        
+
         when(adRepo.findAllByUserId(1L)).thenReturn(ads);
         when(adMapper.toDto(ads)).thenReturn(expectedDtos);
 
@@ -142,7 +143,7 @@ class AdQueryServiceImplTest {
     void FindAdsByUserShouldReturnUserAds() {
         List<Ad> ads = List.of(ad);
         List<AdResponseDto> expectedDtos = List.of(adResponseDto);
-        
+
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(userDetails.user()).thenReturn(user);
         when(adRepo.findAllByUserId(1L)).thenReturn(ads);

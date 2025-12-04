@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.security.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.matvey.freelancebackend.common.util.LocalizationUtil;
 import org.matvey.freelancebackend.security.dto.request.LoginDto;
 import org.matvey.freelancebackend.security.dto.request.RegistrationDto;
@@ -17,6 +18,7 @@ import org.matvey.freelancebackend.users.service.api.UserQueryService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -29,27 +31,41 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDto register(RegistrationDto registrationDto) {
-        User user = userAuthService.createUser(registrationDto);
-
-        String token = jwtUtil.generateAccessToken(new CustomUserDetails(user));
-
-        return new AuthResponseDto(userMapper.toDto(user), token);
+        log.debug("Registration attempt for email: {}", registrationDto.getEmail());
+        try {
+            User user = userAuthService.createUser(registrationDto);
+            String token = jwtUtil.generateAccessToken(new CustomUserDetails(user));
+            log.info("User successfully registered: {}", registrationDto.getEmail());
+            return new AuthResponseDto(userMapper.toDto(user), token);
+        } catch (Exception e) {
+            log.error("Error during registration for email: {}", registrationDto.getEmail(), e);
+            throw e;
+        }
     }
 
     @Override
     public AuthResponseDto login(LoginDto loginDto) {
+        log.debug("Login attempt for email: {}", loginDto.getEmail());
         User user;
         try {
             user = userQueryService.findUserByEmail(loginDto.getEmail());
         } catch (UserNotFoundException e) {
+            log.warn("Login failed: user not found with email: {}", loginDto.getEmail());
             throw new InvalidCredentialsException(localizationUtil.getMessage("error.invalid.credentials"));
         }
         
-        matchPasswordOrThrow(user.getPasswordHash(), loginDto.getPassword());
-
-        String token = jwtUtil.generateAccessToken(new CustomUserDetails(user));
-
-        return new AuthResponseDto(userMapper.toDto(user), token);
+        try {
+            matchPasswordOrThrow(user.getPasswordHash(), loginDto.getPassword());
+            String token = jwtUtil.generateAccessToken(new CustomUserDetails(user));
+            log.info("User successfully logged in: {}", loginDto.getEmail());
+            return new AuthResponseDto(userMapper.toDto(user), token);
+        } catch (InvalidCredentialsException e) {
+            log.warn("Login failed: invalid password for email: {}", loginDto.getEmail());
+            throw e;
+        } catch (Exception e) {
+            log.error("Error during login for email: {}", loginDto.getEmail(), e);
+            throw e;
+        }
     }
 
     private void matchPasswordOrThrow(String hashPassword, String password) {

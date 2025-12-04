@@ -1,6 +1,7 @@
 package org.matvey.freelancebackend.proposal.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.matvey.freelancebackend.proposal.dto.request.BuyerProposalCreateDto;
 import org.matvey.freelancebackend.proposal.dto.request.ProposalCreateDto;
 import org.matvey.freelancebackend.proposal.dto.response.ProposalResponseDto;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/proposals")
 @RequiredArgsConstructor
@@ -30,8 +32,8 @@ public class ProposalController {
             @RequestBody ProposalCreateDto proposalCreateDto,
             Authentication authentication
     ) {
+        log.info("POST /proposals - Creating new proposal");
         ProposalResponseDto response = freelancerProposalService.create(proposalCreateDto, authentication);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -40,8 +42,8 @@ public class ProposalController {
             @PathVariable long proposalId,
             Authentication authentication
     ) {
+        log.info("POST /proposals/{}/approve - Approving proposal", proposalId);
         ProposalResponseDto response = adAuthorProposalService.approve(proposalId, authentication);
-
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -50,8 +52,8 @@ public class ProposalController {
             @PathVariable long proposalId,
             Authentication authentication
     ) {
+        log.info("POST /proposals/{}/reject - Rejecting proposal", proposalId);
         ProposalResponseDto response = adAuthorProposalService.reject(proposalId, authentication);
-
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

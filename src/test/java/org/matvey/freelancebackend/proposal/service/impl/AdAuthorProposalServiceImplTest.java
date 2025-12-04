@@ -11,6 +11,7 @@ import org.matvey.freelancebackend.proposal.entity.ProposalStatus;
 import org.matvey.freelancebackend.proposal.mapper.ProposalMapper;
 import org.matvey.freelancebackend.proposal.repository.ProposalRepository;
 import org.matvey.freelancebackend.proposal.service.api.ProposalQueryService;
+import org.matvey.freelancebackend.users.entity.User;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -60,8 +61,8 @@ class AdAuthorProposalServiceImplTest {
     private Proposal otherProposal;
     private Ad ad;
     private ProposalResponseDto proposalResponseDto;
-    private org.matvey.freelancebackend.users.entity.User buyer;
-    private org.matvey.freelancebackend.users.entity.User freelancer;
+    private User buyer;
+    private User freelancer;
 
     @BeforeEach
     void setUp() {
