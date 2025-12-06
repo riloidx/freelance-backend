@@ -7,7 +7,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE_ACTIVE}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE_ACTIVE:-docker}
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -15,6 +15,9 @@ services:
       JWT_ACCESS_EXPIRATION: ${JWT_ACCESS_EXPIRATION}
       JWT_REFRESH_KEY: ${JWT_REFRESH_KEY}
       JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION}
+      LOG_DIR: ${LOG_DIR:-/app/logs}
+    volumes:
+      - ${HOST_LOG_DIR:-./logs}:/app/logs
 
   db:
     image: postgres:15-alpine
