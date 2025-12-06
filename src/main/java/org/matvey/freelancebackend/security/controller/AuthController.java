@@ -1,5 +1,6 @@
 package org.matvey.freelancebackend.security.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,8 +53,9 @@ public class AuthController {
      * @return ResponseEntity containing authentication response with JWT tokens
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
-        log.info("Login request received for email: {}", loginDto.getEmail());
+    public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request) {
+        log.info("Login request received for email: {} with Accept-Language: {}", 
+                loginDto.getEmail(), request.getHeader("Accept-Language"));
         AuthResponseDto response = authService.login(loginDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

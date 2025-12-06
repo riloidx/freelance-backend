@@ -1,9 +1,12 @@
 package org.matvey.freelancebackend.common.util;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.util.Locale;
 
 /**
  * Utility class for handling internationalization and localization.
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
  * @version 1.0
  * @since 1.0
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class LocalizationUtil {
@@ -29,6 +33,12 @@ public class LocalizationUtil {
      * @return the localized message string
      */
     public String getMessage(String key, Object... args) {
-        return messageSource.getMessage(key, args, LocaleContextHolder.getLocale());
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        log.debug("Getting message for key '{}' with locale '{}'", key, currentLocale);
+        
+        String message = messageSource.getMessage(key, args, currentLocale);
+        log.debug("Resolved message: '{}'", message);
+        
+        return message;
     }
 }
