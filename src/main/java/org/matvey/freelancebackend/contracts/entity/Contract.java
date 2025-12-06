@@ -9,6 +9,17 @@ import org.matvey.freelancebackend.users.entity.User;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * Entity representing a work contract between a client and freelancer.
+ * 
+ * Contracts are created when a client accepts a freelancer's proposal.
+ * They define the agreed price, track the contract status through its lifecycle,
+ * and can include delivery URLs when work is completed.
+ * 
+ * @author Matvey
+ * @version 1.0
+ * @since 1.0
+ */
 @Getter
 @Setter
 @Entity

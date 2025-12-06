@@ -23,10 +23,28 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static org.matvey.freelancebackend.common.exception.helper.ErrorResponseHelper.buildErrorResponse;
 import static org.matvey.freelancebackend.common.exception.helper.ErrorResponseHelper.buildValidationErrorResponse;
 
+/**
+ * Global exception handler for the freelance platform REST API.
+ * 
+ * Centralizes exception handling across all controllers, providing consistent
+ * error responses and appropriate HTTP status codes. Handles both business
+ * logic exceptions and validation errors with proper logging.
+ * 
+ * @author Matvey
+ * @version 1.0
+ * @since 1.0
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Handles validation errors from request body validation.
+     * 
+     * @param e the validation exception
+     * @param request the HTTP request that caused the error
+     * @return ResponseEntity with validation error details and 400 status
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
                                                                                          HttpServletRequest request) {
@@ -115,6 +133,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
+    /**
+     * Handles all unhandled exceptions as a fallback.
+     * 
+     * @param e the unhandled exception
+     * @param request the HTTP request that caused the error
+     * @return ResponseEntity with generic error message and 500 status
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e,
                                                          HttpServletRequest request) {

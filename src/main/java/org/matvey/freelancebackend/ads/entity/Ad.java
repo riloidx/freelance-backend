@@ -12,6 +12,17 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Entity representing a job advertisement in the freelance platform.
+ * 
+ * Ads are created by clients to describe work they need done. Each ad contains
+ * multilingual content (English and Russian), budget information, category classification,
+ * and can receive multiple proposals from freelancers.
+ * 
+ * @author Matvey
+ * @version 1.0
+ * @since 1.0
+ */
 @Entity
 @Table(name = "ads")
 @Setter

@@ -15,12 +15,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Security configuration for the freelance platform.
+ * 
+ * Configures Spring Security with JWT-based authentication, defines access rules
+ * for different endpoints, and sets up the security filter chain. Uses stateless
+ * session management suitable for REST API applications.
+ * 
+ * @author Matvey
+ * @version 1.0
+ * @since 1.0
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
+    /**
+     * Configures the security filter chain for HTTP requests.
+     * 
+     * Sets up JWT-based authentication, disables CSRF for stateless API,
+     * defines authorization rules for different endpoints, and adds the
+     * JWT filter to the security chain.
+     * 
+     * @param http the HttpSecurity configuration object
+     * @return configured SecurityFilterChain
+     * @throws Exception if configuration fails
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -37,6 +59,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Provides the authentication manager bean.
+     * 
+     * @param config the authentication configuration
+     * @return configured AuthenticationManager
+     * @throws Exception if configuration fails
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

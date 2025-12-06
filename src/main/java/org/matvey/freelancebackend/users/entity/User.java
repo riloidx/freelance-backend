@@ -18,6 +18,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Entity representing a user in the freelance platform.
+ * 
+ * Users can act as both clients (posting job advertisements) and freelancers 
+ * (submitting proposals). Each user has a profile with personal information,
+ * balance for transactions, and relationships to ads, proposals, contracts, and reviews.
+ * 
+ * @author Matvey
+ * @version 1.0
+ * @since 1.0
+ */
 @Entity
 @Table(name = "users")
 @Builder

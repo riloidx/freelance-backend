@@ -13,6 +13,17 @@ import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * Entity representing a job category in the freelance platform.
+ * 
+ * Categories are used to classify job advertisements and help users
+ * filter and find relevant work opportunities. Each category supports
+ * multilingual names (English and Russian) and tracks the number of associated ads.
+ * 
+ * @author Matvey
+ * @version 1.0
+ * @since 1.0
+ */
 @Getter
 @Setter
 @Entity

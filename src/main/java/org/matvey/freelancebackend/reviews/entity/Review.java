@@ -8,6 +8,17 @@ import org.matvey.freelancebackend.users.entity.User;
 
 import java.time.Instant;
 
+/**
+ * Entity representing a review in the freelance platform.
+ * 
+ * Reviews allow users to rate and provide feedback about their experience
+ * working with other users. They are associated with specific job advertisements
+ * and include both a numerical rating and descriptive text.
+ * 
+ * @author Matvey
+ * @version 1.0
+ * @since 1.0
+ */
 @Entity
 @Table(name = "reviews")
 @Getter

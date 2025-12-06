@@ -11,6 +11,17 @@ import org.matvey.freelancebackend.users.entity.User;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * Entity representing a freelancer's proposal for a job advertisement.
+ * 
+ * Proposals are submitted by freelancers in response to job ads. They include
+ * the proposed price, a message explaining their approach, and track the proposal
+ * status. Accepted proposals can be converted into contracts.
+ * 
+ * @author Matvey
+ * @version 1.0
+ * @since 1.0
+ */
 @Entity
 @Table(name = "proposals")
 @Getter
