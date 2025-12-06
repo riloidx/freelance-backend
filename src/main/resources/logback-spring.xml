@@ -93,9 +93,12 @@
     <!-- Spring Security -->
     <logger name="org.springframework.security" level="INFO"/>
     
-    <!-- Database -->
-    <logger name="org.hibernate.SQL" level="DEBUG"/>
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+    <!-- Database - disabled for production -->
+    <logger name="org.hibernate.SQL" level="WARN"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.springframework.orm.jpa" level="WARN"/>
+    <logger name="org.springframework.transaction" level="WARN"/>
     
     <!-- Root logger -->
     <springProfile name="dev">
